@@ -558,7 +558,7 @@ function startTunnel() {
       if (depth <= 0) continue;
 
       const perspective = FOV / depth;
-      const radius      = 320 * perspective;
+      const radius      = 520 * perspective;
       const alpha       = Math.min(1, depth / 200) * 0.55;
       const bright      = Math.min(1, 1.2 - depth / 900);
 
@@ -581,7 +581,7 @@ function startTunnel() {
         const nDepth = (r + 1) * (1000 / RINGS) + offset;
         if (nDepth > 0) {
           const nPersp  = FOV / nDepth;
-          const nRadius = 320 * nPersp;
+          const nRadius = 520 * nPersp;
           for (let s = 0; s < RING_SIDES; s++) {
             const angle = (s / RING_SIDES) * Math.PI * 2 - Math.PI / RING_SIDES;
             ctx.beginPath();
@@ -597,7 +597,7 @@ function startTunnel() {
     }
 
     // Center glow
-    const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.min(W,H)*0.35);
+    const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.min(W,H)*0.55);
     grd.addColorStop(0, 'rgba(4,180,10,0.07)');
     grd.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = grd;
