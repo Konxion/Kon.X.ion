@@ -466,7 +466,7 @@
         <span style="font-size:16px;">🎵</span>
         <span>Lineup</span>
       </button>
-      <button class="music-drop-item" onclick="(function(){ var app='youtube://www.youtube.com/@konxion'; var web='https://www.youtube.com/@konxion'; var start=Date.now(); var t=setTimeout(function(){ if(Date.now()-start<2000) window.location=web; },500); window.location=app; })();closeMusicDrop();">
+      <button class="music-drop-item" onclick="(function(){ var app='youtube://www.youtube.com/@OFCkonxion'; var web='https://www.youtube.com/@OFCkonxion'; var start=Date.now(); var t=setTimeout(function(){ if(Date.now()-start<2000) window.location=web; },500); window.location=app; })();closeMusicDrop();">
         <span style="font-size:16px;">▶</span>
         <span>YouTube Channel</span>
       </button>
@@ -515,7 +515,7 @@
   </div>
   <div class="tab-card">
     <div class="tab-card-title">Questions?</div>
-    <div style="color:rgba(255,255,255,0.45);font-size:12px;">Reach us at steve@konxion.us</div>
+    <div style="color:rgba(255,255,255,0.45);font-size:12px;">Reach us at steve@OFCkonxion.us</div>
   </div>
 </div>
 
@@ -897,7 +897,7 @@ function handleSend() {
   if (!name || !email || !msg) { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Please fill in all fields.'; return; }
   const subject = encodeURIComponent('Message from ' + name + ' (' + email + ')');
   const body    = encodeURIComponent(msg);
-  window.location.href = 'mailto:steve@konxion.us?subject=' + subject + '&body=' + body;
+  window.location.href = 'mailto:steve@OFCkonxion.us?subject=' + subject + '&body=' + body;
   conf.style.color='rgba(4,99,7,0.8)';
   conf.textContent='Opening your email app…';
 }
@@ -910,7 +910,7 @@ function handleRsvp() {
   if (!name || !email || !tickets) { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Please fill in all fields.'; return; }
   const subject = encodeURIComponent('RSVP — ' + name + ' (' + tickets + ' ticket' + (tickets === '1' ? '' : 's') + ')');
   const body    = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\nTickets: ' + tickets);
-  window.location.href = 'mailto:steve@konxion.us?subject=' + subject + '&body=' + body;
+  window.location.href = 'mailto:steve@OFCkonxion.us?subject=' + subject + '&body=' + body;
   conf.style.color='rgba(4,99,7,0.8)';
   conf.textContent='RSVP sent! We\'ll be in touch soon.';
 }
