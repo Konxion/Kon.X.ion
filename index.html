@@ -338,6 +338,33 @@
   }
 
 
+  /* ── CURSOR TRAIL ── */
+  #cursorTrail { position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden; }
+  .trail-dot {
+    position:absolute;
+    border-radius:50%;
+    transform:translate(-50%,-50%);
+    pointer-events:none;
+    animation:trailFade 0.6s ease-out forwards;
+  }
+  @keyframes trailFade {
+    0%   { opacity:0.8; transform:translate(-50%,-50%) scale(1); }
+    100% { opacity:0;   transform:translate(-50%,-50%) scale(0.2); }
+  }
+
+  /* ── MUSIC DROPDOWN ── */
+  .tab-dropdown-wrap { position:relative;display:flex;align-items:center;height:100%;flex:1;max-width:120px; }
+  .tab-dropdown-wrap .tab-btn { width:100%;max-width:none; }
+  .music-drop-item {
+    display:flex;align-items:center;gap:10px;width:100%;
+    background:rgba(4,200,10,0.06);border:0.5px solid rgba(4,200,10,0.18);
+    border-radius:10px;padding:12px 14px;cursor:pointer;
+    color:rgba(255,255,255,0.85);font-family:'DM Sans',sans-serif;
+    font-size:12px;letter-spacing:0.14em;text-transform:uppercase;
+    transition:background 0.2s,border-color 0.2s;text-align:left;
+  }
+  .music-drop-item:hover { background:rgba(4,200,10,0.14);border-color:rgba(4,200,10,0.4); }
+
   /* ── TAB BAR ── */
   #tabBar {
     position: fixed;
@@ -443,7 +470,19 @@
 
 <!-- ═══ TAB BAR ═══ -->
 <nav id="tabBar" style="opacity:0;pointer-events:none;transition:opacity 0.5s ease;">
-  <button class="tab-btn" onclick="switchTab('music')">Music</button>
+  <div class="tab-dropdown-wrap" id="musicDropWrap">
+    <button class="tab-btn" id="musicTabBtn" onclick="toggleMusicDrop(event)">Music <span id="musicArrow" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;">▼</span></button>
+    <div id="musicDropMenu" style="display:none;position:absolute;top:52px;left:50%;transform:translateX(-50%);z-index:200;display:none;flex-direction:column;gap:8px;padding:12px;background:rgba(5,10,5,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(4,200,10,0.22);border-radius:14px;min-width:160px;box-shadow:0 8px 32px rgba(0,0,0,0.6);">
+      <button class="music-drop-item" onclick="switchTab('music');closeMusicDrop();">
+        <span style="font-size:16px;">🎵</span>
+        <span>Lineup</span>
+      </button>
+      <button class="music-drop-item" onclick="window.open('https://www.youtube.com/@konxion','_blank');closeMusicDrop();">
+        <span style="font-size:16px;">▶</span>
+        <span>YouTube Channel</span>
+      </button>
+    </div>
+  </div>
   <button class="tab-btn" onclick="switchTab('plan')">Plan</button>
   <button class="tab-btn active" onclick="switchTab('experience')">Experience</button>
   <button class="tab-btn" onclick="switchTab('shop')">Shop</button>
@@ -1058,6 +1097,52 @@ function switchTab(name) {
     if (el) el.style.visibility = isExp ? '' : 'hidden';
   });
 }
+</script>
+<!-- CURSOR TRAIL -->
+<div id="cursorTrail"></div>
+
+<script>
+// ── Cursor trail ──
+(function(){
+  const trail = document.getElementById('cursorTrail');
+  let lastX = -999, lastY = -999;
+  document.addEventListener('mousemove', function(e){
+    const dx = e.clientX - lastX, dy = e.clientY - lastY;
+    if (Math.sqrt(dx*dx+dy*dy) < 4) return;
+    lastX = e.clientX; lastY = e.clientY;
+    const dot = document.createElement('div');
+    dot.className = 'trail-dot';
+    const size = Math.random()*6+3;
+    dot.style.cssText = 'left:'+e.clientX+'px;top:'+e.clientY+'px;width:'+size+'px;height:'+size+'px;background:rgba(4,200,10,'+(Math.random()*0.5+0.3)+');box-shadow:0 0 6px rgba(4,200,10,0.5);';
+    trail.appendChild(dot);
+    setTimeout(()=>{ if(dot.parentNode) dot.parentNode.removeChild(dot); }, 650);
+  });
+})();
+
+// ── Music dropdown ──
+let musicDropOpen = false;
+function toggleMusicDrop(e) {
+  e.stopPropagation();
+  musicDropOpen = !musicDropOpen;
+  const menu = document.getElementById('musicDropMenu');
+  const arrow = document.getElementById('musicArrow');
+  if (musicDropOpen) {
+    menu.style.display = 'flex';
+    arrow.style.transform = 'rotate(180deg)';
+  } else {
+    closeMusicDrop();
+  }
+}
+function closeMusicDrop() {
+  musicDropOpen = false;
+  const menu = document.getElementById('musicDropMenu');
+  const arrow = document.getElementById('musicArrow');
+  if (menu) menu.style.display = 'none';
+  if (arrow) arrow.style.transform = 'rotate(0deg)';
+}
+document.addEventListener('click', function(e){
+  if (!document.getElementById('musicDropWrap').contains(e.target)) closeMusicDrop();
+});
 </script>
 </body>
 </html>
