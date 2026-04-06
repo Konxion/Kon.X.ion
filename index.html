@@ -168,6 +168,28 @@
   #sheet.open {
     transform: translateY(0);
   }
+  #rsvpSheet {
+    position: fixed;
+    left: 0; right: 0;
+    bottom: 0;
+    z-index: 30;
+    border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+    background: var(--sheet-bg);
+    backdrop-filter: var(--sheet-blur);
+    -webkit-backdrop-filter: var(--sheet-blur);
+    box-shadow:
+      0 -1px 0 rgba(255,255,255,0.8),
+      0 -8px 40px rgba(0,0,0,0.12);
+    padding: 0 0 calc(24px + var(--safe-bottom)) 0;
+    transform: translateY(110%);
+    transition: transform 0.48s cubic-bezier(0.32,0.72,0,1);
+    max-height: 90dvh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  #rsvpSheet.open {
+    transform: translateY(0);
+  }
 
   /* drag handle */
   .sheet-handle {
@@ -407,6 +429,30 @@
   </div>
 </div>
 
+<!-- ═══ RSVP SHEET ═══ -->
+<div id="rsvpSheet" role="dialog" aria-modal="true" aria-label="RSVP">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <div class="sheet-title" style="color:#1b4332;">Reserve Your Spot</div>
+    <div class="sheet-sub">Saturday, July 18 &nbsp;·&nbsp; 1PM — 5AM</div>
+  </div>
+  <div class="form-section">
+    <label class="form-label">Your details</label>
+    <input class="form-field" type="text" id="rname" placeholder="Full Name" autocomplete="name">
+    <input class="form-field" type="email" id="remail" placeholder="Email" autocomplete="email">
+    <select class="form-field" id="rtickets" style="appearance:none;-webkit-appearance:none;background:transparent;cursor:pointer;">
+      <option value="" disabled selected>Number of tickets</option>
+      <option value="1">1 ticket</option>
+      <option value="2">2 tickets</option>
+      <option value="3">3 tickets</option>
+      <option value="4">4 tickets</option>
+      <option value="5+">5+ tickets</option>
+    </select>
+    <button class="send-btn" onclick="handleRsvp()" style="background:rgba(4,200,10,0.9);color:#000;font-weight:500;">Reserve →</button>
+    <div class="send-confirm" id="rsvpConfirm"></div>
+  </div>
+</div>
+
 <!-- ═══ JOURNEY PAGE (Option A — The Club Floor) ═══ -->
 <style>
   @keyframes jPulseRing { 0%{width:60px;height:60px;opacity:0.8} 100%{width:520px;height:520px;opacity:0} }
@@ -441,7 +487,7 @@
     </div>
   </div>
   <button id="journeyBack" onclick="closeJourney()" style="position:absolute;top:28px;left:24px;z-index:10;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:12px 24px;min-height:44px;color:rgba(4,200,10,0.8);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;transition:all 0.2s ease, opacity 0.5s ease;opacity:0;">← Back</button>
-  <button id="rsvpBtn" onclick="openSheet()" style="position:absolute;bottom:112px;left:50%;transform:translateX(-50%);z-index:10;background:rgba(4,200,10,0.9);border:none;border-radius:999px;padding:14px 48px;min-height:44px;color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;transition:opacity 0.5s ease;opacity:0;">RSVP</button>
+  <button id="rsvpBtn" onclick="openRsvpSheet()" style="position:absolute;bottom:112px;left:50%;transform:translateX(-50%);z-index:10;background:rgba(4,200,10,0.9);border:none;border-radius:999px;padding:14px 48px;min-height:44px;color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;transition:opacity 0.5s ease;opacity:0;">RSVP</button>
   <button id="touchBtn" onclick="openSheet()" style="position:absolute;bottom:56px;left:50%;transform:translateX(-50%);z-index:10;background:none;border:0.5px solid rgba(4,200,10,0.35);border-radius:999px;padding:14px 36px;min-height:44px;color:rgba(4,200,10,0.85);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:300;cursor:pointer;white-space:nowrap;transition:opacity 0.5s ease;opacity:0;">Get in Touch</button>
   <div style="position:absolute;bottom:0;left:0;right:0;z-index:5;height:36px;border-top:0.5px solid rgba(4,200,10,0.2);overflow:hidden;background:rgba(0,0,0,0.5);">
     <div style="display:inline-block;white-space:nowrap;line-height:36px;animation:jTicker 100s linear infinite;will-change:transform;font-size:12px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(4,200,10,0.7);font-weight:200;font-family:DM Sans,sans-serif;">Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · </div>
@@ -623,22 +669,27 @@ function igFallback(e) {
 }
 
 // ── SHEET LOGIC ──
-const sheet    = document.getElementById('sheet');
-const overlay  = document.getElementById('overlay');
-const hero     = document.getElementById('hero');
-const locTag   = document.getElementById('location');
-const beginBtn = document.getElementById('beginBtn');
+const sheet      = document.getElementById('sheet');
+const rsvpSheet  = document.getElementById('rsvpSheet');
+const overlay    = document.getElementById('overlay');
+const hero       = document.getElementById('hero');
+const locTag     = document.getElementById('location');
+const beginBtn   = document.getElementById('beginBtn');
 
-function openSheet()  { sheet.classList.add('open'); overlay.classList.add('active'); hero.classList.add('hidden'); if(locTag) locTag.classList.add('hidden'); }
-function closeSheet() { sheet.classList.remove('open'); overlay.classList.remove('active'); hero.classList.remove('hidden'); if(locTag) locTag.classList.remove('hidden'); }
+function openSheet()       { sheet.classList.add('open');     rsvpSheet.classList.remove('open'); overlay.classList.add('active'); hero.classList.add('hidden'); if(locTag) locTag.classList.add('hidden'); }
+function closeSheet()      { sheet.classList.remove('open');  overlay.classList.remove('active'); hero.classList.remove('hidden'); if(locTag) locTag.classList.remove('hidden'); }
+function openRsvpSheet()   { rsvpSheet.classList.add('open'); sheet.classList.remove('open');     overlay.classList.add('active'); hero.classList.add('hidden'); if(locTag) locTag.classList.add('hidden'); }
+function closeRsvpSheet()  { rsvpSheet.classList.remove('open'); overlay.classList.remove('active'); hero.classList.remove('hidden'); if(locTag) locTag.classList.remove('hidden'); }
 
 beginBtn.addEventListener('click', openJourney);
-overlay.addEventListener('click', closeSheet);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
+overlay.addEventListener('click', () => { closeSheet(); closeRsvpSheet(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeSheet(); closeRsvpSheet(); } });
 
 let touchStartY = 0;
 sheet.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
 sheet.addEventListener('touchend', e => { if (e.changedTouches[0].clientY - touchStartY > 60 && sheet.scrollTop === 0) closeSheet(); }, { passive: true });
+rsvpSheet.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
+rsvpSheet.addEventListener('touchend', e => { if (e.changedTouches[0].clientY - touchStartY > 60 && rsvpSheet.scrollTop === 0) closeRsvpSheet(); }, { passive: true });
 
 // ── FORM ──
 // Replace FORMSPREE_ID below with your form ID from https://formspree.io
@@ -655,6 +706,19 @@ function handleSend() {
   window.location.href = 'mailto:steve@konxion.us?subject=' + subject + '&body=' + body;
   conf.style.color='rgba(4,99,7,0.8)';
   conf.textContent='Opening your email app…';
+}
+
+function handleRsvp() {
+  const name    = document.getElementById('rname').value.trim();
+  const email   = document.getElementById('remail').value.trim();
+  const tickets = document.getElementById('rtickets').value;
+  const conf    = document.getElementById('rsvpConfirm');
+  if (!name || !email || !tickets) { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Please fill in all fields.'; return; }
+  const subject = encodeURIComponent('RSVP — ' + name + ' (' + tickets + ' ticket' + (tickets === '1' ? '' : 's') + ')');
+  const body    = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\nTickets: ' + tickets);
+  window.location.href = 'mailto:steve@konxion.us?subject=' + subject + '&body=' + body;
+  conf.style.color='rgba(4,99,7,0.8)';
+  conf.textContent='RSVP sent! We\'ll be in touch soon.';
 }
 
 // ── 3D HEART PARTICLE SYSTEM ──
