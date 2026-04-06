@@ -390,17 +390,16 @@
   .dj-social-btn:hover { background: rgba(4,200,10,0.12); border-color: rgba(4,200,10,0.5); }
   /* vertical grid cards */
   .dj-card-v {
-    flex: 0 0 calc(33.333% - 8px);
-    width: calc(33.333% - 8px);
+    flex: 1 1 0;
     min-width: 0;
     background: rgba(4,200,10,0.04);
     border: 0.5px solid rgba(4,200,10,0.18);
     border-radius: 16px;
-    padding: 20px 14px;
+    padding: 16px 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     box-sizing: border-box;
   }
   .dj-photo-wrap-v {
@@ -637,7 +636,7 @@
     </div>
 
     <!-- DJ ROW: all 3 side by side -->
-    <div style="display:flex;gap:14px;align-items:flex-start;">
+    <div style="display:flex;gap:10px;align-items:stretch;width:100%;">
 
       <!-- AGU -->
       <div class="dj-card-v" id="djAGU">
@@ -657,7 +656,7 @@
       <div class="dj-card-v" id="djLadoB">
         <div class="dj-photo-wrap-v">
           <img id="ladoBPhoto" src="" alt="P.I.N.E.A.L Live" style="width:100%;height:100%;object-fit:cover;display:none;border-radius:12px;">
-          <div id="ladoBPlaceholder" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:12px;background:rgba(4,200,10,0.06);"><span style="font-size:32px;">🎧</span></div>
+          <div id="ladoBPlaceholder" style="display:none;"><span style="font-size:32px;">🎧</span></div>
         </div>
         <div class="dj-name-v" style="font-size:14px;letter-spacing:0.04em;">P.I.N.E.A.L Live</div>
         <div class="dj-genres-v">Afro House · Tech House</div>
