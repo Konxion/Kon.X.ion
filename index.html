@@ -339,7 +339,7 @@
 
 
   /* ── CURSOR TRAIL ── */
-  #cursorTrailCanvas { position:fixed;inset:0;pointer-events:none;z-index:9999; }
+  #cursorTrailCanvas { position:fixed;inset:0;pointer-events:none;z-index:2147483647; }
 
   /* ── MUSIC DROPDOWN ── */
   .tab-dropdown-wrap { position:relative;display:flex;align-items:center;height:100%;flex:1;max-width:120px; }
@@ -1163,50 +1163,65 @@ function switchTab(name) {
     const N = resampled.length;
     if (N < 2) { requestAnimationFrame(draw); return; }
 
-    // ── Step 2: apply random perpendicular jitter to every point ──
-    const jittered = resampled.map((p, i) => {
-      const t = i / (N - 1); // 0=tail, 1=tip
-      const maxJ = (1 - t * t) * 7; // strong in middle/tail, zero at tip
-      const jx = (Math.random() - 0.5) * maxJ * 2;
-      const jy = (Math.random() - 0.5) * maxJ * 2;
-      return { x: p.x + jx, y: p.y + jy, t };
-    });
-    // lock tip to exact cursor position (no jitter at cursor)
-    jittered[N-1].x = resampled[N-1].x;
-    jittered[N-1].y = resampled[N-1].y;
+    // ── Step 2: perpendicular jitter every interior point uniformly ──
+    const jittered = resampled.map((p, i) => ({ x: p.x, y: p.y }));
+    for (let i = 1; i < N - 1; i++) {
+      // perpendicular direction from neighbouring points
+      const dx = resampled[i+1].x - resampled[i-1].x;
+      const dy = resampled[i+1].y - resampled[i-1].y;
+      const len2 = Math.sqrt(dx*dx + dy*dy) || 1;
+      const px = -dy / len2;  // perpendicular unit
+      const py =  dx / len2;
+      const offset = (Math.random() - 0.5) * 14; // uniform ±7px all the way along
+      jittered[i].x = resampled[i].x + px * offset;
+      jittered[i].y = resampled[i].y + py * offset;
+    }
+    // lock tip to exact cursor, keep tail end locked too
+    jittered[0].x   = resampled[0].x;   jittered[0].y   = resampled[0].y;
+    jittered[N-1].x = resampled[N-1].x; jittered[N-1].y = resampled[N-1].y;
 
-    // ── Step 3: draw the jagged path as one continuous stroke ──
+    // ── Step 3: draw the jagged bolt ──
+    // Outer glow (wide + dim)
+    ctx.beginPath();
+    ctx.moveTo(jittered[0].x, jittered[0].y);
+    for (let i = 1; i < N; i++) ctx.lineTo(jittered[i].x, jittered[i].y);
+    ctx.strokeStyle = `rgba(4,200,10,${0.3 * globalAlpha})`;
+    ctx.lineWidth   = 7;
+    ctx.lineCap     = 'round';
+    ctx.lineJoin    = 'round';
+    ctx.shadowColor = 'rgba(4,200,10,1)';
+    ctx.shadowBlur  = 20;
+    ctx.stroke();
+
     // Core bright bolt
     ctx.beginPath();
     ctx.moveTo(jittered[0].x, jittered[0].y);
     for (let i = 1; i < N; i++) ctx.lineTo(jittered[i].x, jittered[i].y);
-    ctx.strokeStyle = `rgba(4,200,10,${0.85 * globalAlpha})`;
+    ctx.strokeStyle = `rgba(4,220,10,${0.95 * globalAlpha})`;
     ctx.lineWidth   = 1.8;
-    ctx.lineCap     = 'round';
-    ctx.lineJoin    = 'round';
-    ctx.shadowColor = 'rgba(4,200,10,0.9)';
-    ctx.shadowBlur  = 10;
+    ctx.shadowColor = 'rgba(4,200,10,1)';
+    ctx.shadowBlur  = 12;
     ctx.stroke();
 
-    // Outer glow pass (wider, dimmer)
+    // Bright white-green hot core (centre of bolt)
     ctx.beginPath();
     ctx.moveTo(jittered[0].x, jittered[0].y);
     for (let i = 1; i < N; i++) ctx.lineTo(jittered[i].x, jittered[i].y);
-    ctx.strokeStyle = `rgba(4,200,10,${0.25 * globalAlpha})`;
-    ctx.lineWidth   = 5;
-    ctx.shadowBlur  = 18;
+    ctx.strokeStyle = `rgba(180,255,180,${0.55 * globalAlpha})`;
+    ctx.lineWidth   = 0.7;
+    ctx.shadowBlur  = 0;
     ctx.stroke();
 
-    // Occasional bright white-green spark flashes
-    if (Math.random() < 0.4) {
+    // Random spark flash on a random segment
+    if (Math.random() < 0.5) {
       const si = Math.floor(Math.random() * (N - 2));
       ctx.beginPath();
       ctx.moveTo(jittered[si].x, jittered[si].y);
       ctx.lineTo(jittered[si+1].x, jittered[si+1].y);
-      ctx.strokeStyle = `rgba(200,255,200,${0.7 * globalAlpha})`;
-      ctx.lineWidth   = 1;
-      ctx.shadowColor = 'rgba(200,255,200,0.9)';
-      ctx.shadowBlur  = 6;
+      ctx.strokeStyle = `rgba(220,255,220,${0.9 * globalAlpha})`;
+      ctx.lineWidth   = 1.2;
+      ctx.shadowColor = 'rgba(200,255,200,1)';
+      ctx.shadowBlur  = 8;
       ctx.stroke();
     }
 
