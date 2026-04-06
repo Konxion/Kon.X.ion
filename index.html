@@ -441,6 +441,7 @@
     </div>
   </div>
   <button id="journeyBack" onclick="closeJourney()" style="position:absolute;top:28px;left:24px;z-index:10;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:12px 24px;min-height:44px;color:rgba(4,200,10,0.8);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;transition:all 0.2s ease, opacity 0.5s ease;opacity:0;">← Back</button>
+  <button id="rsvpBtn" onclick="openSheet()" style="position:absolute;bottom:112px;left:50%;transform:translateX(-50%);z-index:10;background:rgba(4,200,10,0.9);border:none;border-radius:999px;padding:14px 48px;min-height:44px;color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;transition:opacity 0.5s ease;opacity:0;">RSVP</button>
   <button id="touchBtn" onclick="openSheet()" style="position:absolute;bottom:56px;left:50%;transform:translateX(-50%);z-index:10;background:none;border:0.5px solid rgba(4,200,10,0.35);border-radius:999px;padding:14px 36px;min-height:44px;color:rgba(4,200,10,0.85);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:300;cursor:pointer;white-space:nowrap;transition:opacity 0.5s ease;opacity:0;">Get in Touch</button>
   <div style="position:absolute;bottom:0;left:0;right:0;z-index:5;height:36px;border-top:0.5px solid rgba(4,200,10,0.2);overflow:hidden;background:rgba(0,0,0,0.5);">
     <div style="display:inline-block;white-space:nowrap;line-height:36px;animation:jTicker 100s linear infinite;will-change:transform;font-size:12px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(4,200,10,0.7);font-weight:200;font-family:DM Sans,sans-serif;">Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · </div>
@@ -491,6 +492,8 @@ function openJourney() {
     back.style.opacity    = '1';
     const touchBtn = document.getElementById('touchBtn');
     if (touchBtn) touchBtn.style.opacity = '1';
+    const rsvpBtn = document.getElementById('rsvpBtn');
+    if (rsvpBtn) rsvpBtn.style.opacity = '1';
   }, 2200);
 }
 
@@ -506,6 +509,8 @@ function closeJourney() {
   back.style.opacity    = '0';
   const touchBtn = document.getElementById('touchBtn');
   if (touchBtn) touchBtn.style.opacity = '0';
+  const rsvpBtn = document.getElementById('rsvpBtn');
+  if (rsvpBtn) rsvpBtn.style.opacity = '0';
 
   // Fade to black
   blackFade.style.transition = 'opacity 0.8s ease';
