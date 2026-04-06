@@ -466,7 +466,7 @@
         <span style="font-size:16px;">🎵</span>
         <span>Lineup</span>
       </button>
-      <button class="music-drop-item" onclick="window.open('https://www.youtube.com/@konxion','_blank');closeMusicDrop();">
+      <button class="music-drop-item" onclick="(function(){ var app='youtube://www.youtube.com/@konxion'; var web='https://www.youtube.com/@konxion'; var start=Date.now(); var t=setTimeout(function(){ if(Date.now()-start<2000) window.location=web; },500); window.location=app; })();closeMusicDrop();">
         <span style="font-size:16px;">▶</span>
         <span>YouTube Channel</span>
       </button>
@@ -1101,7 +1101,7 @@ function switchTab(name) {
   window.addEventListener('resize', resize);
 
   const points   = [];          // { x, y }
-  const MAX_LEN  = 96;          // ~1 inch in pixels (96dpi standard)
+  const MAX_LEN  = 144;         // ~1.5 inches in pixels (96dpi standard)
   let   totalLen = 0;
   let   idleTimer = null;
   let   globalAlpha = 1;        // fades to 0 when idle
