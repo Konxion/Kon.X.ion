@@ -1196,24 +1196,25 @@ function switchTab(name) {
   const points   = [];          // { x, y }
   const MAX_LEN  = 60;          // ~0.6 inches in pixels
   let   totalLen = 0;
-  let   idleTimer = null;
-  let   globalAlpha = 1;        // fades to 0 when idle
-  let   fading = false;
+  let   globalAlpha = 1;
+  let   lastMoveTime = 0;
+  let   lastX = -1, lastY = -1;
 
   document.addEventListener('mousemove', function(e){
-    // cursor moved — cancel any fade, restore full opacity
-    fading = false;
-    globalAlpha = 1;
-    clearTimeout(idleTimer);
-
     const nx = e.clientX, ny = e.clientY;
+    // only register as real movement if cursor actually changed position
+    const dx0 = nx - lastX, dy0 = ny - lastY;
+    if (Math.sqrt(dx0*dx0 + dy0*dy0) < 1) return;
+    lastX = nx; lastY = ny;
+    lastMoveTime = Date.now();
+    globalAlpha = 1;
+
     if (points.length > 0) {
       const last = points[points.length - 1];
       const dx = nx - last.x, dy = ny - last.y;
       totalLen += Math.sqrt(dx*dx + dy*dy);
     }
     points.push({ x: nx, y: ny });
-    // trim tail so total pixel length stays <= MAX_LEN
     while (points.length > 1) {
       const p0 = points[0], p1 = points[1];
       const dx = p1.x - p0.x, dy = p1.y - p0.y;
@@ -1221,18 +1222,16 @@ function switchTab(name) {
       if (totalLen - seg >= MAX_LEN) { totalLen -= seg; points.shift(); }
       else break;
     }
-
-    // start fade after 120ms of no movement
-    idleTimer = setTimeout(() => { fading = true; }, 120);
   });
 
   function draw(){
     ctx.clearRect(0, 0, W, H);
 
-    // fade out when idle
-    if (fading) {
+    // fade as soon as cursor stops (no timer, position-based)
+    const idle = Date.now() - lastMoveTime > 80;
+    if (idle) {
       globalAlpha = Math.max(0, globalAlpha - 0.55);
-      if (globalAlpha === 0) { points.length = 0; totalLen = 0; fading = false; }
+      if (globalAlpha === 0) { points.length = 0; totalLen = 0; }
     }
 
     if (points.length < 2) { requestAnimationFrame(draw); return; }
