@@ -1103,8 +1103,16 @@ function switchTab(name) {
   const points   = [];          // { x, y }
   const MAX_LEN  = 96;          // ~1 inch in pixels (96dpi standard)
   let   totalLen = 0;
+  let   idleTimer = null;
+  let   globalAlpha = 1;        // fades to 0 when idle
+  let   fading = false;
 
   document.addEventListener('mousemove', function(e){
+    // cursor moved — cancel any fade, restore full opacity
+    fading = false;
+    globalAlpha = 1;
+    clearTimeout(idleTimer);
+
     const nx = e.clientX, ny = e.clientY;
     if (points.length > 0) {
       const last = points[points.length - 1];
@@ -1120,10 +1128,20 @@ function switchTab(name) {
       if (totalLen - seg >= MAX_LEN) { totalLen -= seg; points.shift(); }
       else break;
     }
+
+    // start fade after 120ms of no movement
+    idleTimer = setTimeout(() => { fading = true; }, 120);
   });
 
   function draw(){
     ctx.clearRect(0, 0, W, H);
+
+    // fade out when idle
+    if (fading) {
+      globalAlpha = Math.max(0, globalAlpha - 0.06);
+      if (globalAlpha === 0) { points.length = 0; totalLen = 0; fading = false; }
+    }
+
     if (points.length < 2) { requestAnimationFrame(draw); return; }
 
     // compute cumulative distances for taper
@@ -1140,7 +1158,7 @@ function switchTab(name) {
       const p1 = points[i];
       const t  = dists[i] / len;                // 0 = tail, 1 = tip
       const width = t * 3.5 + 0.5;
-      const alpha = t * 0.85;
+      const alpha = t * 0.85 * globalAlpha;
 
       ctx.beginPath();
       ctx.moveTo(p0.x, p0.y);
