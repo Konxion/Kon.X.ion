@@ -1144,59 +1144,72 @@ function switchTab(name) {
 
     if (points.length < 2) { requestAnimationFrame(draw); return; }
 
-    // compute cumulative distances for taper
-    const dists = [0];
+    // ── Step 1: resample the smooth path into evenly-spaced points ──
+    const STEP = 4; // one sample every 4px
+    const resampled = [{ x: points[0].x, y: points[0].y }];
+    let carry = 0;
     for (let i = 1; i < points.length; i++) {
       const dx = points[i].x - points[i-1].x, dy = points[i].y - points[i-1].y;
-      dists.push(dists[i-1] + Math.sqrt(dx*dx + dy*dy));
-    }
-    const len = dists[dists.length - 1] || 1;
-
-    // ── Lightning bolt: subdivide each segment with random jitter ──
-    function lightningSegment(x0, y0, x1, y1, t, passes) {
-      const dx = x1 - x0, dy = y1 - y0;
-      const segLen = Math.sqrt(dx*dx + dy*dy);
-      if (segLen < 2 || passes === 0) {
-        // draw final sub-segment
-        const alpha = t * 0.9 * globalAlpha;
-        const width = t * 2.5 + 0.4;
-        ctx.beginPath();
-        ctx.moveTo(x0, y0);
-        ctx.lineTo(x1, y1);
-        ctx.strokeStyle = `rgba(4,200,10,${alpha})`;
-        ctx.lineWidth = width;
-        ctx.lineCap  = 'round';
-        ctx.shadowColor = 'rgba(4,200,10,0.8)';
-        ctx.shadowBlur  = t * 12;
-        ctx.stroke();
-        // occasional bright white-green spark
-        if (Math.random() < 0.08) {
-          ctx.beginPath();
-          ctx.moveTo(x0, y0);
-          ctx.lineTo(x1, y1);
-          ctx.strokeStyle = `rgba(180,255,180,${alpha * 0.6})`;
-          ctx.lineWidth = 0.8;
-          ctx.shadowBlur = 0;
-          ctx.stroke();
-        }
-        return;
+      const seg = Math.sqrt(dx*dx + dy*dy);
+      let walked = carry;
+      while (walked < seg) {
+        const frac = walked / seg;
+        resampled.push({ x: points[i-1].x + dx*frac, y: points[i-1].y + dy*frac });
+        walked += STEP;
       }
-      // midpoint with perpendicular jitter — more jitter near tail
-      const jitter = (1 - t) * segLen * 0.55 * (Math.random() - 0.5);
-      const nx = -dy / segLen, ny = dx / segLen; // perpendicular unit
-      const mx = (x0 + x1) / 2 + nx * jitter;
-      const my = (y0 + y1) / 2 + ny * jitter;
-      lightningSegment(x0, y0, mx, my, t, passes - 1);
-      lightningSegment(mx, my, x1, y1, t, passes - 1);
+      carry = walked - seg;
+    }
+    resampled.push({ x: points[points.length-1].x, y: points[points.length-1].y });
+    const N = resampled.length;
+    if (N < 2) { requestAnimationFrame(draw); return; }
+
+    // ── Step 2: apply random perpendicular jitter to every point ──
+    const jittered = resampled.map((p, i) => {
+      const t = i / (N - 1); // 0=tail, 1=tip
+      const maxJ = (1 - t * t) * 7; // strong in middle/tail, zero at tip
+      const jx = (Math.random() - 0.5) * maxJ * 2;
+      const jy = (Math.random() - 0.5) * maxJ * 2;
+      return { x: p.x + jx, y: p.y + jy, t };
+    });
+    // lock tip to exact cursor position (no jitter at cursor)
+    jittered[N-1].x = resampled[N-1].x;
+    jittered[N-1].y = resampled[N-1].y;
+
+    // ── Step 3: draw the jagged path as one continuous stroke ──
+    // Core bright bolt
+    ctx.beginPath();
+    ctx.moveTo(jittered[0].x, jittered[0].y);
+    for (let i = 1; i < N; i++) ctx.lineTo(jittered[i].x, jittered[i].y);
+    ctx.strokeStyle = `rgba(4,200,10,${0.85 * globalAlpha})`;
+    ctx.lineWidth   = 1.8;
+    ctx.lineCap     = 'round';
+    ctx.lineJoin    = 'round';
+    ctx.shadowColor = 'rgba(4,200,10,0.9)';
+    ctx.shadowBlur  = 10;
+    ctx.stroke();
+
+    // Outer glow pass (wider, dimmer)
+    ctx.beginPath();
+    ctx.moveTo(jittered[0].x, jittered[0].y);
+    for (let i = 1; i < N; i++) ctx.lineTo(jittered[i].x, jittered[i].y);
+    ctx.strokeStyle = `rgba(4,200,10,${0.25 * globalAlpha})`;
+    ctx.lineWidth   = 5;
+    ctx.shadowBlur  = 18;
+    ctx.stroke();
+
+    // Occasional bright white-green spark flashes
+    if (Math.random() < 0.4) {
+      const si = Math.floor(Math.random() * (N - 2));
+      ctx.beginPath();
+      ctx.moveTo(jittered[si].x, jittered[si].y);
+      ctx.lineTo(jittered[si+1].x, jittered[si+1].y);
+      ctx.strokeStyle = `rgba(200,255,200,${0.7 * globalAlpha})`;
+      ctx.lineWidth   = 1;
+      ctx.shadowColor = 'rgba(200,255,200,0.9)';
+      ctx.shadowBlur  = 6;
+      ctx.stroke();
     }
 
-    for (let i = 1; i < points.length; i++) {
-      const p0 = points[i - 1];
-      const p1 = points[i];
-      const t  = dists[i] / len; // 0 = tail end, 1 = tip
-      ctx.shadowBlur = 0;
-      lightningSegment(p0.x, p0.y, p1.x, p1.y, t, 3);
-    }
     ctx.shadowBlur = 0;
     requestAnimationFrame(draw);
   }
