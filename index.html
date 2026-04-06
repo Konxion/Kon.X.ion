@@ -1101,8 +1101,8 @@ function switchTab(name) {
   window.addEventListener('resize', resize);
 
   const points = [];          // { x, y, age }
-  const MAX_AGE  = 80;        // frames a point lives
-  const MAX_PTS  = 120;       // max stored points (longer tail)
+  const MAX_AGE  = 28;        // frames a point lives
+  const MAX_PTS  = 28;        // max stored points (~1.5 inch tail)
   let   mx = -999, my = -999;
 
   document.addEventListener('mousemove', function(e){
