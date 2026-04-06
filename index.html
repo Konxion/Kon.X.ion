@@ -418,7 +418,7 @@
 </style>
 
 <div id="journey" style="position:fixed;inset:0;z-index:20;background:#000;opacity:0;pointer-events:none;transition:opacity 0.4s ease;overflow:hidden;">
-  <canvas id="tunnelCanvas" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-54%);width:min(260px,70vw);height:min(260px,70vw);z-index:0;"></canvas>
+  <canvas id="tunnelCanvas" style="position:absolute;inset:0;z-index:0;"></canvas>
   <div style="position:absolute;inset:0;z-index:1;pointer-events:none;display:flex;align-items:center;justify-content:center;">
     <div class="j-ring"></div>
     <div class="j-ring" style="animation-delay:0.8s"></div>
@@ -542,8 +542,8 @@ function startTunnel() {
   let W, H, cx, cy;
 
   function resize() {
-    W = canvas.width  = canvas.offsetWidth  || 440;
-    H = canvas.height = canvas.offsetHeight || 440;
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
     cx = W / 2; cy = H / 2;
   }
   resize();
