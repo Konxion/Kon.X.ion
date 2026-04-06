@@ -48,7 +48,7 @@
 
   /* ── HERO ── */
   #hero {
-    position: fixed; inset: 0; z-index: 2;
+    position: fixed; inset: 52px 0 0 0; z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -337,11 +337,173 @@
     pointer-events: all;
   }
 
+
+  /* ── TAB BAR ── */
+  #tabBar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 0;
+    height: 52px;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 0.5px solid rgba(4,200,10,0.18);
+  }
+  .tab-btn {
+    flex: 1;
+    max-width: 120px;
+    height: 100%;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.38);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.25s ease;
+    position: relative;
+  }
+  .tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 20%; right: 20%;
+    height: 1.5px;
+    background: rgba(4,200,10,0.85);
+    transform: scaleX(0);
+    transition: transform 0.25s ease;
+    border-radius: 2px;
+  }
+  .tab-btn.active {
+    color: rgba(4,200,10,0.9);
+  }
+  .tab-btn.active::after {
+    transform: scaleX(1);
+  }
+  /* ── TAB PAGES ── */
+  .tab-page {
+    display: none;
+    position: fixed;
+    inset: 52px 0 0 0;
+    z-index: 20;
+    overflow-y: auto;
+    background: #000;
+    padding: 40px 24px 80px;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .tab-page.active { display: block; }
+  .tab-section-title {
+    color: rgba(4,200,10,0.85);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 300;
+    margin-bottom: 24px;
+    border-bottom: 0.5px solid rgba(4,200,10,0.15);
+    padding-bottom: 12px;
+  }
+  .tab-card {
+    background: rgba(255,255,255,0.04);
+    border: 0.5px solid rgba(4,200,10,0.12);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 14px;
+    color: rgba(255,255,255,0.75);
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.6;
+    letter-spacing: 0.03em;
+  }
+  .tab-card-title {
+    color: rgba(255,255,255,0.9);
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 6px;
+  }
+  .tab-card-sub {
+    color: rgba(4,200,10,0.75);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
   /* SVG icons inline */
   .svg-icon { width: 18px; height: 18px; }
 </style>
 </head>
 <body>
+
+
+<!-- ═══ TAB BAR ═══ -->
+<nav id="tabBar">
+  <button class="tab-btn" onclick="switchTab('music')">Music</button>
+  <button class="tab-btn" onclick="switchTab('plan')">Plan</button>
+  <button class="tab-btn active" onclick="switchTab('experience')">Experience</button>
+  <button class="tab-btn" onclick="switchTab('shop')">Shop</button>
+</nav>
+
+<!-- ═══ MUSIC TAB ═══ -->
+<div id="tab-music" class="tab-page">
+  <div class="tab-section-title">Music</div>
+  <div class="tab-card">
+    <div class="tab-card-title">DJ Lineup</div>
+    <div class="tab-card-sub">Saturday, July 18 · 1PM — 5AM</div>
+    <div style="color:rgba(255,255,255,0.45);font-size:12px;">Lineup to be announced. Stay tuned.</div>
+  </div>
+  <div class="tab-card">
+    <div class="tab-card-title">Genres</div>
+    <div style="color:rgba(4,200,10,0.7);font-size:12px;letter-spacing:0.18em;">Minimal &nbsp;·&nbsp; Afro House &nbsp;·&nbsp; Tech House &nbsp;·&nbsp; House</div>
+  </div>
+  <div class="tab-card">
+    <div class="tab-card-title">Follow the Sound</div>
+    <div style="color:rgba(255,255,255,0.45);font-size:12px;">@kon.x.ion on Instagram &amp; TikTok for previews and mixes.</div>
+  </div>
+</div>
+
+<!-- ═══ PLAN TAB ═══ -->
+<div id="tab-plan" class="tab-page">
+  <div class="tab-section-title">Plan Your Visit</div>
+  <div class="tab-card">
+    <div class="tab-card-title">Date &amp; Time</div>
+    <div class="tab-card-sub">Saturday, July 18 · 1PM — 5AM</div>
+  </div>
+  <div class="tab-card">
+    <div class="tab-card-title">Venue</div>
+    <div class="tab-card-sub">Bethel Lozana · Guatapé, Colombia</div>
+    <div style="color:rgba(255,255,255,0.45);font-size:12px;">Directions and transport details coming soon.</div>
+  </div>
+  <div class="tab-card">
+    <div class="tab-card-title">What to Bring</div>
+    <div style="color:rgba(255,255,255,0.55);font-size:12px;line-height:1.8;">
+      · Valid ID<br>· RSVP confirmation<br>· Comfortable footwear<br>· Good energy
+    </div>
+  </div>
+  <div class="tab-card">
+    <div class="tab-card-title">Questions?</div>
+    <div style="color:rgba(255,255,255,0.45);font-size:12px;">Reach us at steve@konxion.us</div>
+  </div>
+</div>
+
+<!-- ═══ EXPERIENCE TAB ═══ -->
+<div id="tab-experience" class="tab-page active" style="padding:0;background:transparent;overflow:hidden;">
+</div>
+
+<!-- ═══ SHOP TAB ═══ -->
+<div id="tab-shop" class="tab-page">
+  <div class="tab-section-title">Shop</div>
+  <div class="tab-card" style="text-align:center;padding:40px 20px;">
+    <div class="tab-card-title">Coming Soon</div>
+    <div style="color:rgba(255,255,255,0.35);font-size:12px;margin-top:8px;">Merch drops with the lineup announcement.</div>
+  </div>
+</div>
+
 
 <!-- Background -->
 <div id="bg"></div>
@@ -871,6 +1033,27 @@ let heartExplodeVels = [];
   buildGeometry();
   tick();
 })();
+
+
+// ── TAB SWITCHING ──
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+    const tabs = ['music','plan','experience','shop'];
+    btn.classList.toggle('active', tabs[i] === name);
+  });
+  document.querySelectorAll('.tab-page').forEach(page => {
+    page.classList.toggle('active', page.id === 'tab-' + name);
+  });
+  // Show hero + bg canvas only on Experience tab
+  const heroEl   = document.getElementById('hero');
+  const bgEl     = document.getElementById('bg');
+  const heartEl  = document.getElementById('heartCanvas');
+  const fadeEl   = document.getElementById('blackFade');
+  const isExp    = name === 'experience';
+  [heroEl, bgEl, heartEl, fadeEl].forEach(el => {
+    if (el) el.style.visibility = isExp ? '' : 'hidden';
+  });
+}
 </script>
 </body>
 </html>
