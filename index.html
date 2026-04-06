@@ -557,10 +557,10 @@ function startTunnel() {
 
   function draw() {
     ctx.clearRect(0, 0, W, H);
-    offset = (offset + SPEED) % (2200 / RINGS);
+    offset = (offset + SPEED) % (1700 / RINGS);
 
     for (let r = RINGS - 1; r >= 0; r--) {
-      const depth = r * (2200 / RINGS) + offset;
+      const depth = r * (1700 / RINGS) + offset;
       if (depth <= 0) continue;
 
       const perspective = FOV / depth;
