@@ -1100,31 +1100,45 @@ function switchTab(name) {
   resize();
   window.addEventListener('resize', resize);
 
-  const points = [];          // { x, y, age }
-  const MAX_AGE  = 28;        // frames a point lives
-  const MAX_PTS  = 28;        // max stored points (~1.5 inch tail)
-  let   mx = -999, my = -999;
+  const points   = [];          // { x, y }
+  const MAX_LEN  = 96;          // ~1 inch in pixels (96dpi standard)
+  let   totalLen = 0;
 
   document.addEventListener('mousemove', function(e){
-    mx = e.clientX; my = e.clientY;
-    points.push({ x: mx, y: my, age: 0 });
-    if (points.length > MAX_PTS) points.shift();
+    const nx = e.clientX, ny = e.clientY;
+    if (points.length > 0) {
+      const last = points[points.length - 1];
+      const dx = nx - last.x, dy = ny - last.y;
+      totalLen += Math.sqrt(dx*dx + dy*dy);
+    }
+    points.push({ x: nx, y: ny });
+    // trim tail so total pixel length stays <= MAX_LEN
+    while (points.length > 1) {
+      const p0 = points[0], p1 = points[1];
+      const dx = p1.x - p0.x, dy = p1.y - p0.y;
+      const seg = Math.sqrt(dx*dx + dy*dy);
+      if (totalLen - seg >= MAX_LEN) { totalLen -= seg; points.shift(); }
+      else break;
+    }
   });
 
   function draw(){
     ctx.clearRect(0, 0, W, H);
-    // age all points
-    for (let i = points.length - 1; i >= 0; i--) {
-      points[i].age++;
-      if (points[i].age > MAX_AGE) { points.splice(i, 1); }
-    }
     if (points.length < 2) { requestAnimationFrame(draw); return; }
+
+    // compute cumulative distances for taper
+    const dists = [0];
+    for (let i = 1; i < points.length; i++) {
+      const dx = points[i].x - points[i-1].x, dy = points[i].y - points[i-1].y;
+      dists.push(dists[i-1] + Math.sqrt(dx*dx + dy*dy));
+    }
+    const len = dists[dists.length - 1] || 1;
 
     // draw smooth continuous stroke
     for (let i = 1; i < points.length; i++) {
       const p0 = points[i - 1];
       const p1 = points[i];
-      const t  = 1 - (p1.age / MAX_AGE);       // 1 = fresh, 0 = old
+      const t  = dists[i] / len;                // 0 = tail, 1 = tip
       const width = t * 3.5 + 0.5;
       const alpha = t * 0.85;
 
