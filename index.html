@@ -1186,7 +1186,7 @@ function switchTab(name) {
     ctx.moveTo(jittered[0].x, jittered[0].y);
     for (let i = 1; i < N; i++) ctx.lineTo(jittered[i].x, jittered[i].y);
     ctx.strokeStyle = `rgba(4,200,10,${0.3 * globalAlpha})`;
-    ctx.lineWidth   = 7;
+    ctx.lineWidth   = 4;
     ctx.lineCap     = 'round';
     ctx.lineJoin    = 'round';
     ctx.shadowColor = 'rgba(4,200,10,1)';
@@ -1198,7 +1198,7 @@ function switchTab(name) {
     ctx.moveTo(jittered[0].x, jittered[0].y);
     for (let i = 1; i < N; i++) ctx.lineTo(jittered[i].x, jittered[i].y);
     ctx.strokeStyle = `rgba(4,220,10,${0.95 * globalAlpha})`;
-    ctx.lineWidth   = 1.8;
+    ctx.lineWidth   = 1.0;
     ctx.shadowColor = 'rgba(4,200,10,1)';
     ctx.shadowBlur  = 12;
     ctx.stroke();
