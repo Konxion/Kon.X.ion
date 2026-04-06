@@ -438,6 +438,29 @@
     text-align: center;
   }
 
+  /* ── INFO CARDS ── */
+  .info-card {
+    background: rgba(4,200,10,0.04);
+    border: 0.5px solid rgba(4,200,10,0.18);
+    border-radius: 16px;
+    padding: 20px 22px;
+    margin-bottom: 14px;
+  }
+  .info-card-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(4,200,10,0.6);
+    margin-bottom: 8px;
+  }
+  .info-card-body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.7;
+  }
+
   /* ── CURSOR TRAIL ── */
   #cursorTrailCanvas { position:fixed;inset:0;pointer-events:none;z-index:2147483647; }
 
@@ -572,7 +595,19 @@
       </button>
     </div>
   </div>
-  <button class="tab-btn" onclick="switchTab('plan')">Plan</button>
+  <div class="tab-dropdown-wrap" id="planDropWrap">
+    <button class="tab-btn" id="planTabBtn" onclick="togglePlanDrop(event)">Plan <span id="planArrow" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;">▼</span></button>
+    <div id="planDropMenu" style="display:none;position:absolute;top:52px;left:50%;transform:translateX(-50%);z-index:200;flex-direction:column;gap:8px;padding:12px;background:rgba(5,10,5,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(4,200,10,0.22);border-radius:14px;min-width:160px;box-shadow:0 8px 32px rgba(0,0,0,0.6);">
+      <button class="music-drop-item" onclick="openFestivalInfo();closePlanDrop();">
+        <span style="font-size:16px;">🎪</span>
+        <span>Festival Info</span>
+      </button>
+      <button class="music-drop-item" onclick="openGettingHere();closePlanDrop();">
+        <span style="font-size:16px;">📍</span>
+        <span>Getting Here</span>
+      </button>
+    </div>
+  </div>
   <button class="tab-btn active" onclick="switchTab('experience')">Experience</button>
   <button class="tab-btn" onclick="switchTab('shop')">Shop</button>
 </nav>
@@ -689,6 +724,67 @@
 
     <div style="text-align:center;margin-top:32px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(4,200,10,0.3);">More artists to be announced</div>
 
+  </div>
+</div>
+
+
+<!-- ═══ FESTIVAL INFO PAGE ═══ -->
+<div id="festivalInfoPage" style="position:fixed;inset:0;z-index:40;background:#000;opacity:0;pointer-events:none;transition:opacity 0.4s ease;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+  <button onclick="closeFestivalInfo()" style="position:fixed;top:68px;left:24px;z-index:50;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:12px 24px;min-height:44px;color:rgba(4,200,10,0.8);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;opacity:0;transition:opacity 0.4s ease;" id="festivalInfoBack">← Back</button>
+  <div style="padding:120px 24px 60px;max-width:520px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:40px;">
+      <div style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(4,200,10,0.6);margin-bottom:10px;">Kon.X.ion · July 18</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:32px;color:#fff;letter-spacing:0.04em;">Festival Info</div>
+      <div style="width:40px;height:0.5px;background:rgba(4,200,10,0.4);margin:14px auto 0;"></div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title">Date &amp; Time</div>
+      <div class="info-card-body">Saturday, July 18<br>1PM — 5AM</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title">Venue</div>
+      <div class="info-card-body">Bethel Lozana<br>Guatapé, Colombia</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title">Music</div>
+      <div class="info-card-body" style="color:rgba(4,200,10,0.7);">Minimal &nbsp;·&nbsp; Afro House &nbsp;·&nbsp; Tech House &nbsp;·&nbsp; House</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title">What to Bring</div>
+      <div class="info-card-body">· Valid ID<br>· RSVP confirmation<br>· Comfortable footwear<br>· Good energy</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title">Contact</div>
+      <div class="info-card-body">steve@konxion.us</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ GETTING HERE PAGE ═══ -->
+<div id="gettingHerePage" style="position:fixed;inset:0;z-index:40;background:#000;opacity:0;pointer-events:none;transition:opacity 0.4s ease;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+  <button onclick="closeGettingHere()" style="position:fixed;top:68px;left:24px;z-index:50;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:12px 24px;min-height:44px;color:rgba(4,200,10,0.8);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;opacity:0;transition:opacity 0.4s ease;" id="gettingHereBack">← Back</button>
+  <div style="padding:120px 24px 60px;max-width:520px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:40px;">
+      <div style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(4,200,10,0.6);margin-bottom:10px;">Kon.X.ion · July 18</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:32px;color:#fff;letter-spacing:0.04em;">Getting Here</div>
+      <div style="width:40px;height:0.5px;background:rgba(4,200,10,0.4);margin:14px auto 0;"></div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title">Location</div>
+      <div class="info-card-body">Bethel Lozana<br>Guatapé, Antioquia, Colombia</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title">From Medellín</div>
+      <div class="info-card-body">Approximately 2 hours by car.<br>Take the highway toward El Peñol / Guatapé.</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title">Parking</div>
+      <div class="info-card-body">Details to be announced. Check back closer to the event.</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title">Questions?</div>
+      <div class="info-card-body">steve@konxion.us</div>
+    </div>
   </div>
 </div>
 
@@ -1388,6 +1484,55 @@ function switchTab(name) {
   }
   draw();
 })();
+
+// ── Plan dropdown ──
+let planDropOpen = false;
+function togglePlanDrop(e) {
+  e.stopPropagation();
+  planDropOpen = !planDropOpen;
+  const menu = document.getElementById('planDropMenu');
+  const arrow = document.getElementById('planArrow');
+  if (planDropOpen) { menu.style.display = 'flex'; arrow.style.transform = 'rotate(180deg)'; }
+  else { closePlanDrop(); }
+}
+function closePlanDrop() {
+  planDropOpen = false;
+  const menu = document.getElementById('planDropMenu');
+  const arrow = document.getElementById('planArrow');
+  if (menu) menu.style.display = 'none';
+  if (arrow) arrow.style.transform = 'rotate(0deg)';
+}
+document.addEventListener('click', function(e) {
+  if (document.getElementById('planDropWrap') && !document.getElementById('planDropWrap').contains(e.target)) closePlanDrop();
+});
+
+// ── Festival Info page ──
+function openFestivalInfo() {
+  const page = document.getElementById('festivalInfoPage');
+  const back = document.getElementById('festivalInfoBack');
+  page.style.opacity = '1'; page.style.pointerEvents = 'all';
+  setTimeout(() => { back.style.opacity = '1'; }, 300);
+}
+function closeFestivalInfo() {
+  const page = document.getElementById('festivalInfoPage');
+  const back = document.getElementById('festivalInfoBack');
+  back.style.opacity = '0'; page.style.opacity = '0';
+  setTimeout(() => { page.style.pointerEvents = 'none'; }, 400);
+}
+
+// ── Getting Here page ──
+function openGettingHere() {
+  const page = document.getElementById('gettingHerePage');
+  const back = document.getElementById('gettingHereBack');
+  page.style.opacity = '1'; page.style.pointerEvents = 'all';
+  setTimeout(() => { back.style.opacity = '1'; }, 300);
+}
+function closeGettingHere() {
+  const page = document.getElementById('gettingHerePage');
+  const back = document.getElementById('gettingHereBack');
+  back.style.opacity = '0'; page.style.opacity = '0';
+  setTimeout(() => { page.style.pointerEvents = 'none'; }, 400);
+}
 
 // ── Lineup page ──
 function openLineup() {
