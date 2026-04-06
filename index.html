@@ -418,7 +418,7 @@
 </style>
 
 <div id="journey" style="position:fixed;inset:0;z-index:20;background:#000;opacity:0;pointer-events:none;transition:opacity 0.4s ease;overflow:hidden;">
-  <canvas id="tunnelCanvas" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-54%);width:min(440px,92vw);height:min(440px,92vw);z-index:0;"></canvas>
+  <canvas id="tunnelCanvas" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-54%);width:min(260px,70vw);height:min(260px,70vw);z-index:0;"></canvas>
   <div style="position:absolute;inset:0;z-index:1;pointer-events:none;display:flex;align-items:center;justify-content:center;">
     <div class="j-ring"></div>
     <div class="j-ring" style="animation-delay:0.8s"></div>
@@ -557,10 +557,10 @@ function startTunnel() {
 
   function draw() {
     ctx.clearRect(0, 0, W, H);
-    offset = (offset + SPEED) % (1500 / RINGS);
+    offset = (offset + SPEED) % (2200 / RINGS);
 
     for (let r = RINGS - 1; r >= 0; r--) {
-      const depth = r * (1500 / RINGS) + offset;
+      const depth = r * (2200 / RINGS) + offset;
       if (depth <= 0) continue;
 
       const perspective = FOV / depth;
