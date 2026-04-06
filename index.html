@@ -442,7 +442,7 @@
 
 
 <!-- ═══ TAB BAR ═══ -->
-<nav id="tabBar">
+<nav id="tabBar" style="opacity:0;pointer-events:none;transition:opacity 0.5s ease;">
   <button class="tab-btn" onclick="switchTab('music')">Music</button>
   <button class="tab-btn" onclick="switchTab('plan')">Plan</button>
   <button class="tab-btn active" onclick="switchTab('experience')">Experience</button>
@@ -694,7 +694,7 @@ function openJourney() {
     blackFade.style.pointerEvents = 'none';
   }, 1500);
 
-  // Step 4: Show event content + back button
+  // Step 4: Show event content + back button + tab bar
   setTimeout(() => {
     content.style.opacity = '1';
     back.style.opacity    = '1';
@@ -702,6 +702,8 @@ function openJourney() {
     if (touchBtn) touchBtn.style.opacity = '1';
     const rsvpBtn = document.getElementById('rsvpBtn');
     if (rsvpBtn) rsvpBtn.style.opacity = '1';
+    const tabBar = document.getElementById('tabBar');
+    if (tabBar) { tabBar.style.opacity = '1'; tabBar.style.pointerEvents = 'all'; }
   }, 2200);
 }
 
@@ -719,6 +721,8 @@ function closeJourney() {
   if (touchBtn) touchBtn.style.opacity = '0';
   const rsvpBtn = document.getElementById('rsvpBtn');
   if (rsvpBtn) rsvpBtn.style.opacity = '0';
+  const tabBar = document.getElementById('tabBar');
+  if (tabBar) { tabBar.style.opacity = '0'; tabBar.style.pointerEvents = 'none'; }
 
   // Fade to black
   blackFade.style.transition = 'opacity 0.8s ease';
