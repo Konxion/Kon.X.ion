@@ -639,34 +639,17 @@ sheet.addEventListener('touchend', e => { if (e.changedTouches[0].clientY - touc
 // Replace FORMSPREE_ID below with your form ID from https://formspree.io
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/FORMSPREE_ID';
 
-async function handleSend() {
+function handleSend() {
   const name  = document.getElementById('fname').value.trim();
   const email = document.getElementById('femail').value.trim();
   const msg   = document.getElementById('fmsg').value.trim();
   const conf  = document.getElementById('sendConfirm');
-  const btn   = document.querySelector('.send-btn');
   if (!name || !email || !msg) { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Please fill in all fields.'; return; }
-  btn.disabled = true;
-  btn.textContent = 'Sending…';
-  conf.textContent = '';
-  try {
-    const res = await fetch(FORMSPREE_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ name, email, message: msg })
-    });
-    if (res.ok) {
-      conf.style.color='rgba(4,99,7,0.8)'; conf.textContent='Message sent ✓';
-      document.getElementById('fname').value=''; document.getElementById('femail').value=''; document.getElementById('fmsg').value='';
-    } else {
-      throw new Error('Server error');
-    }
-  } catch(e) {
-    conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Could not send — email konxion@icloud.com directly.';
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'Send';
-  }
+  const subject = encodeURIComponent('Message from ' + name + ' (' + email + ')');
+  const body    = encodeURIComponent(msg);
+  window.location.href = 'mailto:steve@konxion.us?subject=' + subject + '&body=' + body;
+  conf.style.color='rgba(4,99,7,0.8)';
+  conf.textContent='Opening your email app…';
 }
 
 // ── 3D HEART PARTICLE SYSTEM ──
