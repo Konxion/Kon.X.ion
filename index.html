@@ -1152,25 +1152,50 @@ function switchTab(name) {
     }
     const len = dists[dists.length - 1] || 1;
 
-    // draw smooth continuous stroke
+    // ── Lightning bolt: subdivide each segment with random jitter ──
+    function lightningSegment(x0, y0, x1, y1, t, passes) {
+      const dx = x1 - x0, dy = y1 - y0;
+      const segLen = Math.sqrt(dx*dx + dy*dy);
+      if (segLen < 2 || passes === 0) {
+        // draw final sub-segment
+        const alpha = t * 0.9 * globalAlpha;
+        const width = t * 2.5 + 0.4;
+        ctx.beginPath();
+        ctx.moveTo(x0, y0);
+        ctx.lineTo(x1, y1);
+        ctx.strokeStyle = `rgba(4,200,10,${alpha})`;
+        ctx.lineWidth = width;
+        ctx.lineCap  = 'round';
+        ctx.shadowColor = 'rgba(4,200,10,0.8)';
+        ctx.shadowBlur  = t * 12;
+        ctx.stroke();
+        // occasional bright white-green spark
+        if (Math.random() < 0.08) {
+          ctx.beginPath();
+          ctx.moveTo(x0, y0);
+          ctx.lineTo(x1, y1);
+          ctx.strokeStyle = `rgba(180,255,180,${alpha * 0.6})`;
+          ctx.lineWidth = 0.8;
+          ctx.shadowBlur = 0;
+          ctx.stroke();
+        }
+        return;
+      }
+      // midpoint with perpendicular jitter — more jitter near tail
+      const jitter = (1 - t) * segLen * 0.55 * (Math.random() - 0.5);
+      const nx = -dy / segLen, ny = dx / segLen; // perpendicular unit
+      const mx = (x0 + x1) / 2 + nx * jitter;
+      const my = (y0 + y1) / 2 + ny * jitter;
+      lightningSegment(x0, y0, mx, my, t, passes - 1);
+      lightningSegment(mx, my, x1, y1, t, passes - 1);
+    }
+
     for (let i = 1; i < points.length; i++) {
       const p0 = points[i - 1];
       const p1 = points[i];
-      const t  = dists[i] / len;                // 0 = tail, 1 = tip
-      const width = t * 3.5 + 0.5;
-      const alpha = t * 0.85 * globalAlpha;
-
-      ctx.beginPath();
-      ctx.moveTo(p0.x, p0.y);
-      ctx.lineTo(p1.x, p1.y);
-      ctx.strokeStyle = `rgba(4,200,10,${alpha})`;
-      ctx.lineWidth   = width;
-      ctx.lineCap     = 'round';
-      ctx.lineJoin    = 'round';
-      // glow
-      ctx.shadowColor = 'rgba(4,200,10,0.6)';
-      ctx.shadowBlur  = 8;
-      ctx.stroke();
+      const t  = dists[i] / len; // 0 = tail end, 1 = tip
+      ctx.shadowBlur = 0;
+      lightningSegment(p0.x, p0.y, p1.x, p1.y, t, 3);
     }
     ctx.shadowBlur = 0;
     requestAnimationFrame(draw);
