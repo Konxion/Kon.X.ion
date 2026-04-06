@@ -339,18 +339,7 @@
 
 
   /* ── CURSOR TRAIL ── */
-  #cursorTrail { position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden; }
-  .trail-dot {
-    position:absolute;
-    border-radius:50%;
-    transform:translate(-50%,-50%);
-    pointer-events:none;
-    animation:trailFade 0.6s ease-out forwards;
-  }
-  @keyframes trailFade {
-    0%   { opacity:0.8; transform:translate(-50%,-50%) scale(1); }
-    100% { opacity:0;   transform:translate(-50%,-50%) scale(0.2); }
-  }
+  #cursorTrailCanvas { position:fixed;inset:0;pointer-events:none;z-index:9999; }
 
   /* ── MUSIC DROPDOWN ── */
   .tab-dropdown-wrap { position:relative;display:flex;align-items:center;height:100%;flex:1;max-width:120px; }
@@ -1099,24 +1088,62 @@ function switchTab(name) {
 }
 </script>
 <!-- CURSOR TRAIL -->
-<div id="cursorTrail"></div>
+<canvas id="cursorTrailCanvas"></canvas>
 
 <script>
-// ── Cursor trail ──
+// ── Cursor trail (canvas) ──
 (function(){
-  const trail = document.getElementById('cursorTrail');
-  let lastX = -999, lastY = -999;
+  const canvas = document.getElementById('cursorTrailCanvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H;
+  function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const points = [];          // { x, y, age }
+  const MAX_AGE  = 80;        // frames a point lives
+  const MAX_PTS  = 120;       // max stored points (longer tail)
+  let   mx = -999, my = -999;
+
   document.addEventListener('mousemove', function(e){
-    const dx = e.clientX - lastX, dy = e.clientY - lastY;
-    if (Math.sqrt(dx*dx+dy*dy) < 4) return;
-    lastX = e.clientX; lastY = e.clientY;
-    const dot = document.createElement('div');
-    dot.className = 'trail-dot';
-    const size = Math.random()*6+3;
-    dot.style.cssText = 'left:'+e.clientX+'px;top:'+e.clientY+'px;width:'+size+'px;height:'+size+'px;background:rgba(4,200,10,'+(Math.random()*0.5+0.3)+');box-shadow:0 0 6px rgba(4,200,10,0.5);';
-    trail.appendChild(dot);
-    setTimeout(()=>{ if(dot.parentNode) dot.parentNode.removeChild(dot); }, 650);
+    mx = e.clientX; my = e.clientY;
+    points.push({ x: mx, y: my, age: 0 });
+    if (points.length > MAX_PTS) points.shift();
   });
+
+  function draw(){
+    ctx.clearRect(0, 0, W, H);
+    // age all points
+    for (let i = points.length - 1; i >= 0; i--) {
+      points[i].age++;
+      if (points[i].age > MAX_AGE) { points.splice(i, 1); }
+    }
+    if (points.length < 2) { requestAnimationFrame(draw); return; }
+
+    // draw smooth continuous stroke
+    for (let i = 1; i < points.length; i++) {
+      const p0 = points[i - 1];
+      const p1 = points[i];
+      const t  = 1 - (p1.age / MAX_AGE);       // 1 = fresh, 0 = old
+      const width = t * 3.5 + 0.5;
+      const alpha = t * 0.85;
+
+      ctx.beginPath();
+      ctx.moveTo(p0.x, p0.y);
+      ctx.lineTo(p1.x, p1.y);
+      ctx.strokeStyle = `rgba(4,200,10,${alpha})`;
+      ctx.lineWidth   = width;
+      ctx.lineCap     = 'round';
+      ctx.lineJoin    = 'round';
+      // glow
+      ctx.shadowColor = 'rgba(4,200,10,0.6)';
+      ctx.shadowBlur  = 8;
+      ctx.stroke();
+    }
+    ctx.shadowBlur = 0;
+    requestAnimationFrame(draw);
+  }
+  draw();
 })();
 
 // ── Music dropdown ──
