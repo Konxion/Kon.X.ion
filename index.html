@@ -708,8 +708,8 @@
 <!-- ═══ LINEUP PAGE ═══ -->
 <div id="lineupPage" style="position:fixed;inset:0;z-index:40;background:#000;opacity:0;pointer-events:none;transition:opacity 0.4s ease;overflow-y:auto;-webkit-overflow-scrolling:touch;">
   <!-- bg glow layer -->
-  <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 90% 55% at 50% 25%, rgba(4,120,10,0.3) 0%, rgba(4,60,8,0.12) 55%, transparent 100%);"></div>
-  <canvas id="lineupGridCanvas" style="position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.18;"></canvas>
+  <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 90% 55% at 50% 22%, rgba(4,160,12,0.45) 0%, rgba(4,80,8,0.18) 50%, transparent 100%);"></div>
+  <canvas id="lineupGridCanvas" style="position:fixed;inset:0;z-index:0;pointer-events:none;"></canvas>
 
   <!-- back button -->
   <button onclick="closeLineup()" style="position:fixed;top:68px;left:24px;z-index:50;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:12px 24px;min-height:44px;color:rgba(4,200,10,0.8);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;opacity:0;transition:opacity 0.4s ease;" id="lineupBack">← Back</button>
@@ -1598,25 +1598,78 @@ function startLineupGrid() {
   if (!canvas || canvas._running) return;
   canvas._running = true;
   const ctx = canvas.getContext('2d');
-  let offset = 0;
+  let offset = 0, t = 0;
+
+  // particles
+  const particles = Array.from({length: 38}, () => ({
+    x: Math.random(), y: Math.random(),
+    vx: (Math.random() - 0.5) * 0.0003,
+    vy: (Math.random() - 0.5) * 0.0003,
+    r: Math.random() * 1.8 + 0.6,
+    a: Math.random() * 0.6 + 0.2,
+    phase: Math.random() * Math.PI * 2
+  }));
+
   function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
   resize();
   window.addEventListener('resize', resize);
+
   function draw() {
     if (!canvas._running) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const spacing = 48;
-    ctx.strokeStyle = 'rgba(4,200,10,0.55)';
-    ctx.lineWidth = 0.5;
-    // horizontal lines scrolling down slowly
-    for (let y = (offset % spacing) - spacing; y < canvas.height + spacing; y += spacing) {
-      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+    const W = canvas.width, H = canvas.height;
+    const spacing = 52;
+
+    // scrolling grid
+    for (let y = (offset % spacing) - spacing; y < H + spacing; y += spacing) {
+      const bright = 0.12 + 0.08 * Math.sin(t * 0.04 + y * 0.01);
+      ctx.strokeStyle = `rgba(4,220,10,${bright})`;
+      ctx.lineWidth = 0.5;
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
     }
-    // vertical lines
-    for (let x = 0; x < canvas.width + spacing; x += spacing) {
-      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+    for (let x = 0; x < W + spacing; x += spacing) {
+      const bright = 0.10 + 0.06 * Math.sin(t * 0.03 + x * 0.01);
+      ctx.strokeStyle = `rgba(4,220,10,${bright})`;
+      ctx.lineWidth = 0.5;
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
     }
-    offset += 0.3;
+
+    // intersection node flashes at grid crossings
+    for (let y = (offset % spacing) - spacing; y < H + spacing; y += spacing) {
+      for (let x = 0; x < W + spacing; x += spacing) {
+        const pulse = 0.5 + 0.5 * Math.sin(t * 0.07 + x * 0.08 + y * 0.06);
+        if (pulse > 0.85) {
+          ctx.beginPath();
+          ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(4,255,10,${(pulse - 0.85) * 4})`;
+          ctx.fill();
+        }
+      }
+    }
+
+    // floating particles
+    for (const p of particles) {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = 1; if (p.x > 1) p.x = 0;
+      if (p.y < 0) p.y = 1; if (p.y > 1) p.y = 0;
+      const alpha = p.a * (0.5 + 0.5 * Math.sin(t * 0.05 + p.phase));
+      ctx.beginPath();
+      ctx.arc(p.x * W, p.y * H, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(4,220,10,${alpha})`;
+      ctx.fill();
+    }
+
+    // scan line sweep
+    const scanY = ((t * 1.2) % (H + 60)) - 30;
+    const scanGrad = ctx.createLinearGradient(0, scanY - 18, 0, scanY + 18);
+    scanGrad.addColorStop(0, 'rgba(4,255,10,0)');
+    scanGrad.addColorStop(0.5, 'rgba(4,255,10,0.07)');
+    scanGrad.addColorStop(1, 'rgba(4,255,10,0)');
+    ctx.fillStyle = scanGrad;
+    ctx.fillRect(0, scanY - 18, W, 36);
+
+    offset += 0.7;
+    t++;
     requestAnimationFrame(draw);
   }
   draw();
