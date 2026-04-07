@@ -454,10 +454,16 @@
     border: 0.5px solid rgba(4,200,10,0.2);
   }
   .dj-name-v {
-    font-family: 'DM Serif Display', serif;
-    font-size: 20px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 0.12em;
     color: #fff;
     text-align: center;
+    text-shadow: 0 0 14px rgba(4,220,10,0.55), 0 0 40px rgba(4,200,10,0.2);
+    transition: text-shadow 0.3s ease;
+  }
+  .dj-card-v:hover .dj-name-v {
+    text-shadow: 0 0 20px rgba(4,255,10,0.9), 0 0 60px rgba(4,220,10,0.4), 0 0 120px rgba(4,200,10,0.15);
   }
   .dj-genres-v { display: none !important;
     font-family: 'DM Sans', sans-serif;
@@ -1593,6 +1599,106 @@ function closeAllDropdowns() {
 }
 
 // ── Plan dropdown ──
+function startFestivalBg() {
+  var canvas = document.getElementById('festivalBgCanvas');
+  if (!canvas || canvas._running) return;
+  canvas._running = true;
+  var ctx = canvas.getContext('2d');
+  var t = 0;
+
+  // Bokeh orbs — soft glowing dots of varying sizes
+  var orbs = Array.from({length: 55}, function() {
+    return {
+      x: Math.random(),
+      y: Math.random(),
+      r: Math.random() * 3.5 + 0.4,
+      a: Math.random() * 0.55 + 0.08,
+      vx: (Math.random() - 0.5) * 0.00018,
+      vy: (Math.random() - 0.5) * 0.00022,
+      phase: Math.random() * Math.PI * 2,
+      speed: Math.random() * 0.03 + 0.015
+    };
+  });
+
+  // Larger soft glows
+  var glows = Array.from({length: 6}, function() {
+    return {
+      x: Math.random(),
+      y: Math.random() * 0.7,
+      r: Math.random() * 60 + 30,
+      a: Math.random() * 0.06 + 0.02,
+      phase: Math.random() * Math.PI * 2
+    };
+  });
+
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function draw() {
+    if (!canvas._running) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    var W = canvas.width, H = canvas.height;
+
+    // Large soft background glows
+    for (var g of glows) {
+      var ga = g.a * (0.6 + 0.4 * Math.sin(t * 0.008 + g.phase));
+      var grad = ctx.createRadialGradient(g.x * W, g.y * H, 0, g.x * W, g.y * H, g.r);
+      grad.addColorStop(0, 'rgba(4,200,10,' + ga + ')');
+      grad.addColorStop(1, 'rgba(4,200,10,0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(g.x * W, g.y * H, g.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Bokeh particles
+    for (var p of orbs) {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < -0.05) p.x = 1.05;
+      if (p.x > 1.05) p.x = -0.05;
+      if (p.y < -0.05) p.y = 1.05;
+      if (p.y > 1.05) p.y = -0.05;
+
+      var alpha = p.a * (0.45 + 0.55 * Math.sin(t * p.speed + p.phase));
+      var px = p.x * W, py = p.y * H;
+
+      // Soft glow around each dot
+      var gr = ctx.createRadialGradient(px, py, 0, px, py, p.r * 3.5);
+      gr.addColorStop(0, 'rgba(4,220,10,' + (alpha * 0.6) + ')');
+      gr.addColorStop(1, 'rgba(4,220,10,0)');
+      ctx.fillStyle = gr;
+      ctx.beginPath();
+      ctx.arc(px, py, p.r * 3.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Crisp center dot
+      ctx.beginPath();
+      ctx.arc(px, py, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(4,240,10,' + alpha + ')';
+      ctx.fill();
+    }
+
+    // Slow horizontal shimmer bands
+    var bandY = ((t * 0.25) % (H + 80)) - 40;
+    var band = ctx.createLinearGradient(0, bandY - 25, 0, bandY + 25);
+    band.addColorStop(0, 'rgba(4,255,10,0)');
+    band.addColorStop(0.5, 'rgba(4,255,10,0.03)');
+    band.addColorStop(1, 'rgba(4,255,10,0)');
+    ctx.fillStyle = band;
+    ctx.fillRect(0, bandY - 25, W, 50);
+
+    t++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+function stopFestivalBg() {
+  var canvas = document.getElementById('festivalBgCanvas');
+  if (canvas) canvas._running = false;
+}
+
 function closeAllPages() {
   closeFestivalInfo();
   closeGettingHere();
@@ -1624,12 +1730,14 @@ document.addEventListener('click', function(e) {
 
 // ── Festival Info page ──
 function openFestivalInfo() {
+  startFestivalBg();
   const page = document.getElementById('festivalInfoPage');
   const back = document.getElementById('festivalInfoBack');
   page.style.opacity = '1'; page.style.pointerEvents = 'all';
   setTimeout(() => { back.style.opacity = '1'; }, 300);
 }
 function closeFestivalInfo() {
+  stopFestivalBg();
   const page = document.getElementById('festivalInfoPage');
   const back = document.getElementById('festivalInfoBack');
   back.style.opacity = '0'; page.style.opacity = '0';
