@@ -429,7 +429,7 @@
     color: #fff;
     text-align: center;
   }
-  .dj-genres-v {
+  .dj-genres-v { display: none !important;
     font-family: 'DM Sans', sans-serif;
     font-size: 9px;
     letter-spacing: 0.14em;
@@ -582,19 +582,6 @@
 
 <!-- ═══ TAB BAR ═══ -->
 <nav id="tabBar" style="opacity:0;pointer-events:none;transition:opacity 0.5s ease;">
-  <div class="tab-dropdown-wrap" id="musicDropWrap">
-    <button class="tab-btn" id="musicTabBtn" onclick="toggleMusicDrop(event)">Music <span id="musicArrow" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;">▼</span></button>
-    <div id="musicDropMenu" style="display:none;position:absolute;top:52px;left:50%;transform:translateX(-50%);z-index:200;display:none;flex-direction:column;gap:8px;padding:12px;background:rgba(5,10,5,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(4,200,10,0.22);border-radius:14px;min-width:160px;box-shadow:0 8px 32px rgba(0,0,0,0.6);">
-      <button class="music-drop-item" onclick="openLineup();closeMusicDrop();">
-        <span style="font-size:16px;">🎧</span>
-        <span>Lineup</span>
-      </button>
-      <button class="music-drop-item" onclick="(function(){ var app='youtube://www.youtube.com/@OFCkonxion'; var web='https://www.youtube.com/@OFCkonxion'; var start=Date.now(); var t=setTimeout(function(){ if(Date.now()-start<2000) window.location=web; },500); window.location=app; })();closeMusicDrop();">
-        <span style="font-size:16px;">▶</span>
-        <span>YouTube Channel</span>
-      </button>
-    </div>
-  </div>
   <div class="tab-dropdown-wrap" id="planDropWrap">
     <button class="tab-btn" id="planTabBtn" onclick="togglePlanDrop(event)">Plan <span id="planArrow" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;">▼</span></button>
     <div id="planDropMenu" style="display:none;position:absolute;top:52px;left:50%;transform:translateX(-50%);z-index:200;flex-direction:column;gap:8px;padding:12px;background:rgba(5,10,5,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(4,200,10,0.22);border-radius:14px;min-width:160px;box-shadow:0 8px 32px rgba(0,0,0,0.6);">
@@ -610,6 +597,19 @@
   </div>
   <button class="tab-btn active" onclick="switchTab('experience')">Experience</button>
   <button class="tab-btn" onclick="switchTab('shop')">Shop</button>
+  <div class="tab-dropdown-wrap" id="musicDropWrap">
+    <button class="tab-btn" id="musicTabBtn" onclick="toggleMusicDrop(event)">Music <span id="musicArrow" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;">▼</span></button>
+    <div id="musicDropMenu" style="display:none;position:absolute;top:52px;left:50%;transform:translateX(-50%);z-index:200;display:none;flex-direction:column;gap:8px;padding:12px;background:rgba(5,10,5,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(4,200,10,0.22);border-radius:14px;min-width:160px;box-shadow:0 8px 32px rgba(0,0,0,0.6);">
+      <button class="music-drop-item" onclick="openLineup();closeMusicDrop();">
+        <span style="font-size:16px;">🎧</span>
+        <span>Lineup</span>
+      </button>
+      <button class="music-drop-item" onclick="(function(){ var app='youtube://www.youtube.com/@OFCkonxion'; var web='https://www.youtube.com/@OFCkonxion'; var start=Date.now(); var t=setTimeout(function(){ if(Date.now()-start<2000) window.location=web; },500); window.location=app; })();closeMusicDrop();">
+        <span style="font-size:16px;">▶</span>
+        <span>YouTube Channel</span>
+      </button>
+    </div>
+  </div>
 </nav>
 
 <!-- ═══ MUSIC TAB ═══ -->
@@ -694,7 +694,6 @@
           <div id="aguPlaceholder" style="width:100%;height:100%;display:none;align-items:center;justify-content:center;border-radius:12px;background:rgba(4,200,10,0.06);"><span style="font-size:32px;">🎧</span></div>
         </div>
         <div class="dj-name-v">AGU</div>
-        <div class="dj-genres-v">Tech House · Minimal Deep Tech · Afro House</div>
         <div style="display:flex;gap:8px;justify-content:center;margin-top:auto;"><a class="dj-icon-btn" href="https://instagram.com/Agu.aiff" target="_blank" title="Instagram"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></a><a class="dj-icon-btn" href="https://soundcloud.com/agudj" target="_blank" title="SoundCloud"><svg width="30" height="30" viewBox="0 0 100 48" fill="currentColor"><rect x="0" y="30" width="8" height="18" rx="4"/><rect x="12" y="23" width="8" height="25" rx="4"/><rect x="24" y="16" width="8" height="32" rx="4"/><rect x="36" y="9" width="8" height="39" rx="4"/><rect x="48" y="4" width="8" height="44" rx="4"/><path d="M60 48 H80 C91 48 100 39 100 28 C100 18 93 10 83 9 C82 4 77 0 70 0 C63 0 57 5 56 12 C54 10 51 9 48 10 L48 48 Z"/></svg></a><a class="dj-icon-btn" href="#" target="_blank" title="Spotify"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg></a></div>
       </div>
 
@@ -705,7 +704,6 @@
           <div id="ladoBPlaceholder" style="display:none;"><span style="font-size:32px;">🎧</span></div>
         </div>
         <div class="dj-name-v" style="line-height:1.2;">P.I.N.E.A.L<br>Live</div>
-        <div class="dj-genres-v">House · Progressive</div>
         <div style="display:flex;gap:8px;justify-content:center;margin-top:auto;"><a class="dj-icon-btn" href="https://instagram.com/Pineal.live_" target="_blank" title="Instagram"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></a><a class="dj-icon-btn" href="https://soundcloud.com/pineal_live" target="_blank" title="SoundCloud"><svg width="30" height="30" viewBox="0 0 100 48" fill="currentColor"><rect x="0" y="30" width="8" height="18" rx="4"/><rect x="12" y="23" width="8" height="25" rx="4"/><rect x="24" y="16" width="8" height="32" rx="4"/><rect x="36" y="9" width="8" height="39" rx="4"/><rect x="48" y="4" width="8" height="44" rx="4"/><path d="M60 48 H80 C91 48 100 39 100 28 C100 18 93 10 83 9 C82 4 77 0 70 0 C63 0 57 5 56 12 C54 10 51 9 48 10 L48 48 Z"/></svg></a><a class="dj-icon-btn" href="https://open.spotify.com/artist/7vDLDGXOxvwPrQfuizyiTr" target="_blank" title="Spotify"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg></a></div>
       </div>
 
@@ -716,7 +714,6 @@
           <div id="duquePlaceholder" style="display:none;"  style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;border-radius:12px;background:rgba(4,200,10,0.06);"><span style="font-size:32px;">🎧</span></div>
         </div>
         <div class="dj-name-v">Matheo Duque</div>
-        <div class="dj-genres-v">Tech House · House · Minimal</div>
         <div style="display:flex;gap:8px;justify-content:center;margin-top:auto;"><a class="dj-icon-btn" href="https://instagram.com/matheo_duque09" target="_blank" title="Instagram"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></a></div>
       </div>
 
@@ -933,7 +930,6 @@
   </div>
   <button id="journeyBack" onclick="closeJourney()" style="position:absolute;top:68px;left:24px;z-index:10;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:12px 24px;min-height:44px;color:rgba(4,200,10,0.8);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;transition:all 0.2s ease, opacity 0.5s ease;opacity:0;">← Back</button>
   <button id="rsvpBtn" onclick="openRsvpSheet()" style="position:absolute;bottom:112px;left:50%;transform:translateX(-50%);z-index:10;background:rgba(4,200,10,0.9);border:none;border-radius:999px;padding:14px 48px;min-height:44px;color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;transition:opacity 0.5s ease;opacity:0;">RSVP</button>
-  <button id="touchBtn" onclick="openSheet()" style="position:absolute;bottom:56px;left:50%;transform:translateX(-50%);z-index:10;background:none;border:0.5px solid rgba(4,200,10,0.35);border-radius:999px;padding:14px 36px;min-height:44px;color:rgba(4,200,10,0.85);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:300;cursor:pointer;white-space:nowrap;transition:opacity 0.5s ease;opacity:0;">Get in Touch</button>
   <div style="position:absolute;bottom:0;left:0;right:0;z-index:5;height:36px;border-top:0.5px solid rgba(4,200,10,0.2);overflow:hidden;background:rgba(0,0,0,0.5);">
     <div style="display:inline-block;white-space:nowrap;line-height:36px;animation:jTicker 100s linear infinite;will-change:transform;font-size:12px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(4,200,10,0.7);font-weight:200;font-family:DM Sans,sans-serif;">Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · </div>
   </div>
@@ -981,8 +977,6 @@ function openJourney() {
   setTimeout(() => {
     content.style.opacity = '1';
     back.style.opacity    = '1';
-    const touchBtn = document.getElementById('touchBtn');
-    if (touchBtn) touchBtn.style.opacity = '1';
     const rsvpBtn = document.getElementById('rsvpBtn');
     if (rsvpBtn) rsvpBtn.style.opacity = '1';
     const tabBar = document.getElementById('tabBar');
@@ -1000,8 +994,6 @@ function closeJourney() {
 
   content.style.opacity = '0';
   back.style.opacity    = '0';
-  const touchBtn = document.getElementById('touchBtn');
-  if (touchBtn) touchBtn.style.opacity = '0';
   const rsvpBtn = document.getElementById('rsvpBtn');
   if (rsvpBtn) rsvpBtn.style.opacity = '0';
   const tabBar = document.getElementById('tabBar');
@@ -1324,8 +1316,10 @@ let heartExplodeVels = [];
 
 // ── TAB SWITCHING ──
 function switchTab(name) {
+  closeMusicDrop();
+  closePlanDrop();
   document.querySelectorAll('.tab-btn').forEach((btn, i) => {
-    const tabs = ['music','plan','experience','shop'];
+    const tabs = ['plan','experience','shop','music'];
     btn.classList.toggle('active', tabs[i] === name);
   });
   document.querySelectorAll('.tab-page').forEach(page => {
@@ -1485,25 +1479,27 @@ function switchTab(name) {
   draw();
 })();
 
+// ── Dropdown helpers ──
+function closeAllDropdowns() {
+  var pm = document.getElementById('planDropMenu');
+  var mm = document.getElementById('musicDropMenu');
+  if (pm) pm.style.display = 'none';
+  if (mm) mm.style.display = 'none';
+}
+
 // ── Plan dropdown ──
-let planDropOpen = false;
 function togglePlanDrop(e) {
   e.stopPropagation();
-  planDropOpen = !planDropOpen;
-  const menu = document.getElementById('planDropMenu');
-  const arrow = document.getElementById('planArrow');
-  if (planDropOpen) { menu.style.display = 'flex'; arrow.style.transform = 'rotate(180deg)'; }
-  else { closePlanDrop(); }
+  var menu = document.getElementById('planDropMenu');
+  var isOpen = menu && menu.style.display === 'flex';
+  closeAllDropdowns();
+  if (!isOpen && menu) menu.style.display = 'flex';
 }
-function closePlanDrop() {
-  planDropOpen = false;
-  const menu = document.getElementById('planDropMenu');
-  const arrow = document.getElementById('planArrow');
-  if (menu) menu.style.display = 'none';
-  if (arrow) arrow.style.transform = 'rotate(0deg)';
-}
+function closePlanDrop() { closeAllDropdowns(); }
 document.addEventListener('click', function(e) {
-  if (document.getElementById('planDropWrap') && !document.getElementById('planDropWrap').contains(e.target)) closePlanDrop();
+  var pw = document.getElementById('planDropWrap');
+  var mw = document.getElementById('musicDropWrap');
+  if ((!pw || !pw.contains(e.target)) && (!mw || !mw.contains(e.target))) closeAllDropdowns();
 });
 
 // ── Festival Info page ──
@@ -1551,29 +1547,14 @@ function closeLineup() {
 }
 
 // ── Music dropdown ──
-let musicDropOpen = false;
 function toggleMusicDrop(e) {
   e.stopPropagation();
-  musicDropOpen = !musicDropOpen;
-  const menu = document.getElementById('musicDropMenu');
-  const arrow = document.getElementById('musicArrow');
-  if (musicDropOpen) {
-    menu.style.display = 'flex';
-    arrow.style.transform = 'rotate(180deg)';
-  } else {
-    closeMusicDrop();
-  }
+  var menu = document.getElementById('musicDropMenu');
+  var isOpen = menu && menu.style.display === 'flex';
+  closeAllDropdowns();
+  if (!isOpen && menu) menu.style.display = 'flex';
 }
-function closeMusicDrop() {
-  musicDropOpen = false;
-  const menu = document.getElementById('musicDropMenu');
-  const arrow = document.getElementById('musicArrow');
-  if (menu) menu.style.display = 'none';
-  if (arrow) arrow.style.transform = 'rotate(0deg)';
-}
-document.addEventListener('click', function(e){
-  if (!document.getElementById('musicDropWrap').contains(e.target)) closeMusicDrop();
-});
+function closeMusicDrop() { closeAllDropdowns(); }
 </script>
 </body>
 </html>
