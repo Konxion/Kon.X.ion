@@ -455,15 +455,17 @@
   }
   .dj-name-v {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    letter-spacing: 0.12em;
+    font-size: 34px;
+    letter-spacing: 0.16em;
     color: #fff;
     text-align: center;
-    text-shadow: 0 0 14px rgba(4,220,10,0.55), 0 0 40px rgba(4,200,10,0.2);
-    transition: text-shadow 0.3s ease;
+    -webkit-text-stroke: 0.5px rgba(4,220,10,0.4);
+    text-shadow: 0 0 18px rgba(4,230,10,0.7), 0 0 50px rgba(4,200,10,0.25), 0 2px 8px rgba(0,0,0,0.6);
+    transition: text-shadow 0.3s ease, letter-spacing 0.3s ease;
   }
   .dj-card-v:hover .dj-name-v {
-    text-shadow: 0 0 20px rgba(4,255,10,0.9), 0 0 60px rgba(4,220,10,0.4), 0 0 120px rgba(4,200,10,0.15);
+    letter-spacing: 0.2em;
+    text-shadow: 0 0 24px rgba(4,255,10,1), 0 0 70px rgba(4,220,10,0.5), 0 0 140px rgba(4,200,10,0.2), 0 2px 8px rgba(0,0,0,0.6);
   }
   .dj-genres-v { display: none !important;
     font-family: 'DM Sans', sans-serif;
@@ -822,8 +824,8 @@
 <!-- ═══ FESTIVAL INFO PAGE ═══ -->
 <div id="festivalInfoPage" style="position:fixed;inset:0;z-index:40;background:#000;opacity:0;pointer-events:none;transition:opacity 0.4s ease;overflow-y:auto;-webkit-overflow-scrolling:touch;">
   <canvas id="festivalBgCanvas" style="position:fixed;inset:0;z-index:0;pointer-events:none;"></canvas>
-  <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 80% 50% at 50% 30%, rgba(4,120,10,0.28) 0%, rgba(4,50,8,0.12) 55%, transparent 100%);"></div>
-  <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 100% 100% at 50% 50%, transparent 40%, rgba(0,0,0,0.7) 100%);"></div>
+  <!-- deep vignette -->
+  <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 100% 100% at 50% 50%, transparent 30%, rgba(0,0,0,0.82) 100%);"></div>
   <button onclick="closeFestivalInfo()" style="position:fixed;top:68px;left:24px;z-index:50;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:12px 24px;min-height:44px;color:rgba(4,200,10,0.8);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;opacity:0;transition:opacity 0.4s ease;" id="festivalInfoBack">← Back</button>
   <div style="padding:120px 24px 60px;max-width:520px;margin:0 auto;position:relative;z-index:1;">
     <div style="text-align:center;margin-bottom:40px;">
@@ -839,10 +841,7 @@
       <div class="info-card-title">Venue</div>
       <div class="info-card-body">Bethel Lozana<br>Guatapé, Colombia</div>
     </div>
-    <div class="info-card">
-      <div class="info-card-title">Music</div>
-      <div class="info-card-body" style="color:rgba(4,200,10,0.7);">Minimal &nbsp;·&nbsp; Afro House &nbsp;·&nbsp; Tech House &nbsp;·&nbsp; House</div>
-    </div>
+
     <div class="info-card">
       <div class="info-card-title">What to Bring</div>
       <div class="info-card-body">· Valid ID<br>· RSVP confirmation<br>· Comfortable footwear<br>· Good energy</div>
@@ -1605,88 +1604,103 @@ function startFestivalBg() {
   canvas._running = true;
   var ctx = canvas.getContext('2d');
   var t = 0;
+  var W, H;
 
-  // Bokeh orbs — soft glowing dots of varying sizes
-  var orbs = Array.from({length: 55}, function() {
+  // Spotlight beams — 3 sweeping cones from top
+  var beams = [
+    { angle: -0.45, speed: 0.0008, width: 0.13, a: 0.07 },
+    { angle: 0.1,   speed: -0.0006, width: 0.10, a: 0.055 },
+    { angle: 0.55,  speed: 0.0010, width: 0.09, a: 0.065 }
+  ];
+
+  // Floating particles
+  var particles = Array.from({length: 70}, function() {
     return {
-      x: Math.random(),
-      y: Math.random(),
-      r: Math.random() * 3.5 + 0.4,
-      a: Math.random() * 0.55 + 0.08,
-      vx: (Math.random() - 0.5) * 0.00018,
-      vy: (Math.random() - 0.5) * 0.00022,
+      x: Math.random(), y: Math.random(),
+      r: Math.random() * 2.2 + 0.3,
+      a: Math.random() * 0.7 + 0.15,
+      vx: (Math.random() - 0.5) * 0.00015,
+      vy: -Math.random() * 0.00025 - 0.00008, // mostly drift upward
       phase: Math.random() * Math.PI * 2,
-      speed: Math.random() * 0.03 + 0.015
+      speed: Math.random() * 0.025 + 0.012
     };
   });
 
-  // Larger soft glows
-  var glows = Array.from({length: 6}, function() {
-    return {
-      x: Math.random(),
-      y: Math.random() * 0.7,
-      r: Math.random() * 60 + 30,
-      a: Math.random() * 0.06 + 0.02,
-      phase: Math.random() * Math.PI * 2
-    };
+  // Pulsing rings from center-bottom
+  var rings = Array.from({length: 5}, function(_, i) {
+    return { offset: i * 0.2 };
   });
 
-  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
   resize();
   window.addEventListener('resize', resize);
 
   function draw() {
     if (!canvas._running) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    var W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
 
-    // Large soft background glows
-    for (var g of glows) {
-      var ga = g.a * (0.6 + 0.4 * Math.sin(t * 0.008 + g.phase));
-      var grad = ctx.createRadialGradient(g.x * W, g.y * H, 0, g.x * W, g.y * H, g.r);
-      grad.addColorStop(0, 'rgba(4,200,10,' + ga + ')');
-      grad.addColorStop(1, 'rgba(4,200,10,0)');
+    // — Spotlight beams —
+    for (var b of beams) {
+      b.angle += b.speed;
+      var bx = W * 0.5 + Math.sin(b.angle) * W * 0.6;
+      var halfW = Math.tan(b.width) * H;
+      var grad = ctx.createLinearGradient(W * 0.5, 0, bx, H);
+      var pulse = 0.7 + 0.3 * Math.sin(t * 0.018 + b.angle);
+      grad.addColorStop(0, 'rgba(4,200,10,' + (b.a * pulse * 1.4) + ')');
+      grad.addColorStop(0.4, 'rgba(4,180,10,' + (b.a * pulse * 0.5) + ')');
+      grad.addColorStop(1, 'rgba(4,160,10,0)');
+      ctx.beginPath();
+      ctx.moveTo(W * 0.5, 0);
+      ctx.lineTo(bx - halfW, H);
+      ctx.lineTo(bx + halfW, H);
+      ctx.closePath();
       ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(g.x * W, g.y * H, g.r, 0, Math.PI * 2);
       ctx.fill();
     }
 
-    // Bokeh particles
-    for (var p of orbs) {
+    // — Pulsing concentric rings —
+    var cx = W * 0.5, cy = H * 0.88;
+    var maxR = W * 0.75;
+    for (var ring of rings) {
+      var progress = ((t * 0.004 + ring.offset) % 1);
+      var r = progress * maxR;
+      var alpha = (1 - progress) * 0.18;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(4,220,10,' + alpha + ')';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+
+    // — Floating particles drifting upward —
+    for (var p of particles) {
       p.x += p.vx; p.y += p.vy;
-      if (p.x < -0.05) p.x = 1.05;
-      if (p.x > 1.05) p.x = -0.05;
-      if (p.y < -0.05) p.y = 1.05;
-      if (p.y > 1.05) p.y = -0.05;
-
-      var alpha = p.a * (0.45 + 0.55 * Math.sin(t * p.speed + p.phase));
+      if (p.y < -0.02) { p.y = 1.02; p.x = Math.random(); }
+      if (p.x < 0) p.x = 1; if (p.x > 1) p.x = 0;
+      var alpha = p.a * (0.4 + 0.6 * Math.sin(t * p.speed + p.phase));
       var px = p.x * W, py = p.y * H;
-
-      // Soft glow around each dot
-      var gr = ctx.createRadialGradient(px, py, 0, px, py, p.r * 3.5);
-      gr.addColorStop(0, 'rgba(4,220,10,' + (alpha * 0.6) + ')');
-      gr.addColorStop(1, 'rgba(4,220,10,0)');
+      // glow halo
+      var gr = ctx.createRadialGradient(px, py, 0, px, py, p.r * 4);
+      gr.addColorStop(0, 'rgba(4,230,10,' + (alpha * 0.5) + ')');
+      gr.addColorStop(1, 'rgba(4,230,10,0)');
       ctx.fillStyle = gr;
-      ctx.beginPath();
-      ctx.arc(px, py, p.r * 3.5, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Crisp center dot
-      ctx.beginPath();
-      ctx.arc(px, py, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(4,240,10,' + alpha + ')';
+      ctx.beginPath(); ctx.arc(px, py, p.r * 4, 0, Math.PI * 2); ctx.fill();
+      // core dot
+      ctx.beginPath(); ctx.arc(px, py, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(4,255,10,' + alpha + ')';
       ctx.fill();
     }
 
-    // Slow horizontal shimmer bands
-    var bandY = ((t * 0.25) % (H + 80)) - 40;
-    var band = ctx.createLinearGradient(0, bandY - 25, 0, bandY + 25);
-    band.addColorStop(0, 'rgba(4,255,10,0)');
-    band.addColorStop(0.5, 'rgba(4,255,10,0.03)');
-    band.addColorStop(1, 'rgba(4,255,10,0)');
-    ctx.fillStyle = band;
-    ctx.fillRect(0, bandY - 25, W, 50);
+    // — Top source glow (stage light origin) —
+    var topGlow = ctx.createRadialGradient(W*0.5, -20, 0, W*0.5, -20, W*0.55);
+    topGlow.addColorStop(0, 'rgba(4,200,10,0.22)');
+    topGlow.addColorStop(0.5, 'rgba(4,150,10,0.07)');
+    topGlow.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = topGlow;
+    ctx.fillRect(0, 0, W, H);
 
     t++;
     requestAnimationFrame(draw);
