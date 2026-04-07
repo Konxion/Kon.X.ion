@@ -753,8 +753,6 @@
         <div style="position:absolute;top:0;bottom:0;width:28%;background:linear-gradient(to right,transparent,rgba(4,255,10,0.22),transparent);pointer-events:none;z-index:3;animation:lineupScan 4s ease-in-out infinite 1s;"></div>
       </div>
 
-      <!-- sub label -->
-      <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,210,10,0.65);margin-top:12px;">July 18 &nbsp;·&nbsp; Guatapé, Colombia</div>
 
       <!-- bottom deco -->
       <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:18px;">
@@ -999,7 +997,9 @@
   @keyframes lineupScan { 0%{left:-30%;opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{left:130%;opacity:0} }
   @keyframes prismFlow { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
   @keyframes neonBreathe { 0%,100%{text-shadow:0 0 18px rgba(4,220,10,0.5),0 0 60px rgba(4,200,10,0.2),0 0 120px rgba(4,200,10,0.05)} 50%{text-shadow:0 0 40px rgba(4,255,10,1),0 0 100px rgba(4,220,10,0.5),0 0 200px rgba(4,200,10,0.15)} }
-  .lineup-letter { display:inline-block; transition:opacity 0.05s; -webkit-text-stroke:1.5px rgba(4,210,10,0.5); }
+  .lineup-letter { display:inline-block; transition:opacity 0.35s ease, filter 0.35s ease; -webkit-text-stroke:1.5px rgba(4,210,10,0.5); }
+  .nature-particle { position:absolute; pointer-events:none; color:rgba(4,220,10,0.85); font-size:28px; animation:natureDrift 1.4s ease-out forwards; z-index:10; }
+  @keyframes natureDrift { 0%{opacity:0;transform:translateY(10px) scale(0.6)} 25%{opacity:1;transform:translateY(-8px) scale(1)} 70%{opacity:0.8;transform:translateY(-28px) scale(0.9)} 100%{opacity:0;transform:translateY(-55px) scale(0.7)} }
   #lineupTitle.prism { background:linear-gradient(90deg,#04e80c,#ffffff,#00ffb0,#b4ff8a,#04e80c); background-size:300% 100%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; -webkit-text-stroke:1px rgba(80,255,120,0.25); animation:prismFlow 5s ease infinite, neonBreathe 3s ease-in-out infinite; }
   @keyframes diamondPulse { 0%,100%{opacity:0.6;transform:rotate(45deg) scale(1)} 50%{opacity:1;transform:rotate(45deg) scale(1.3)} }
   @keyframes lineFade { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
@@ -1771,56 +1771,65 @@ function openLineup() {
 
 function animateLineupTitle() {
   const container = document.getElementById('lineupTitle');
-  if (!container) return;
+  const wrap = document.getElementById('lineupTitleWrap');
+  if (!container || !wrap) return;
   const word = 'LINEUP';
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@%$&!?';
+  const nature = ['✦','✧','❋','✿','❀','☽','★','✴','✻','❁','✾','❃','✱','❇','⁂'];
   container.innerHTML = '';
   container.classList.remove('prism');
 
-  const spans = word.split('').map((finalChar) => {
+  // Remove old particles
+  wrap.querySelectorAll('.nature-particle').forEach(p => p.remove());
+
+  // Build letter spans — hidden initially
+  const spans = word.split('').map((ch) => {
     const span = document.createElement('span');
     span.className = 'lineup-letter';
-    span.dataset.final = finalChar;
-    span.textContent = chars[Math.floor(Math.random() * chars.length)];
-    span.style.color = 'rgba(4,220,10,0.9)';
+    span.textContent = ch;
+    span.style.opacity = '0';
+    span.style.filter = 'blur(8px)';
     container.appendChild(span);
     return span;
   });
 
-  let resolved = 0;
-  spans.forEach((span, i) => {
-    const startDelay = i * 80;
-    const scrambleDuration = 320 + i * 55 + Math.random() * 120;
+  // Scatter nature particles around the title
+  const positions = [
+    {top:'-30px',left:'5%'},{top:'-20px',left:'25%'},{top:'-35px',left:'50%'},
+    {top:'-25px',left:'72%'},{top:'-30px',left:'90%'},
+    {top:'60%',left:'10%'},{top:'70%',left:'45%'},{top:'65%',left:'82%'}
+  ];
+  positions.forEach((pos, i) => {
     setTimeout(() => {
-      let elapsed = 0;
-      const tick = setInterval(() => {
-        elapsed += 40;
-        if (elapsed < scrambleDuration) {
-          span.textContent = chars[Math.floor(Math.random() * chars.length)];
-          const p = elapsed / scrambleDuration;
-          span.style.color = `rgba(${Math.floor(p*255)},${Math.floor(200+p*55)},${Math.floor(p*120)},1)`;
-        } else {
-          span.textContent = span.dataset.final;
-          span.style.color = '#fff';
-          clearInterval(tick);
-          resolved++;
-          if (resolved === word.length) {
-            setTimeout(() => {
-              container.classList.add('prism');
-              spans.forEach(s => { s.style.color = ''; s.style.webkitTextFillColor = ''; });
-              startLetterFlicker(spans);
-            }, 120);
-          }
-        }
-      }, 40);
-    }, startDelay);
+      const p = document.createElement('div');
+      p.className = 'nature-particle';
+      p.textContent = nature[Math.floor(Math.random() * nature.length)];
+      p.style.top = pos.top;
+      p.style.left = pos.left;
+      p.style.animationDelay = `${Math.random() * 0.2}s`;
+      wrap.appendChild(p);
+      setTimeout(() => p.remove(), 1600);
+    }, i * 80);
+  });
+
+  // Stagger-fade letters in after brief particle moment
+  spans.forEach((span, i) => {
+    setTimeout(() => {
+      span.style.opacity = '1';
+      span.style.filter = 'blur(0)';
+      if (i === word.length - 1) {
+        setTimeout(() => {
+          container.classList.add('prism');
+          startLetterFlicker(spans);
+        }, 200);
+      }
+    }, 300 + i * 80);
   });
 
   // Chromatic glitch loop
   const r = document.getElementById('lineupTitleR');
   const b = document.getElementById('lineupTitleB');
   if (r && b) {
-    clearInterval(window._lineupGlitchTimer);
+    clearTimeout(window._lineupGlitchTimer);
     const fireGlitch = () => {
       r.style.opacity = '1'; b.style.opacity = '1';
       setTimeout(() => { r.style.opacity = '0'; b.style.opacity = '0'; }, 60);
