@@ -550,7 +550,7 @@
     border-radius: 2px;
   }
   .tab-btn.active {
-    color: rgba(4,200,10,0.9);
+    color: rgba(255,255,255,0.68);
   }
   .tab-btn:focus-visible {
     outline: 2px solid rgba(4,200,10,0.85);
@@ -558,7 +558,7 @@
     border-radius: 4px;
   }
   .tab-btn.active::after {
-    transform: scaleX(1);
+    transform: scaleX(0);
   }
   /* ── TAB PAGES ── */
   .tab-page {
@@ -651,7 +651,7 @@
       </button>
     </div>
   </div>
-  <button class="tab-btn active" onclick="switchTab('experience')">Experience <span aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;">▼</span></button>
+  <button class="tab-btn" onclick="switchTab('experience')">Experience <span aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;">▼</span></button>
   <button class="tab-btn" onclick="switchTab('shop')">Shop <span aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;">▼</span></button>
 </nav>
 
