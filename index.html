@@ -552,6 +552,7 @@
   .tab-btn.active {
     color: rgba(255,255,255,0.68);
   }
+  .tab-btn-pop { animation: vibrate 0.32s ease; }
   .tab-btn:focus-visible {
     outline: 2px solid rgba(4,200,10,0.85);
     outline-offset: 3px;
@@ -651,8 +652,8 @@
       </button>
     </div>
   </div>
-  <button class="tab-btn" onclick="switchTab('experience')">Experience <span aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;">▼</span></button>
-  <button class="tab-btn" onclick="switchTab('shop')">Shop <span aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;">▼</span></button>
+  <button class="tab-btn" onclick="vibrateBtn(this);switchTab('experience')">Experience <span aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;">▼</span></button>
+  <button class="tab-btn" onclick="vibrateBtn(this);switchTab('shop')">Shop <span aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;">▼</span></button>
 </nav>
 
 <main id="mainContent">
@@ -1593,8 +1594,15 @@ function closeAllDropdowns() {
 }
 
 // ── Plan dropdown ──
+function vibrateBtn(el) {
+  el.classList.remove('tab-btn-pop');
+  void el.offsetWidth; // reflow to restart animation
+  el.classList.add('tab-btn-pop');
+  setTimeout(function() { el.classList.remove('tab-btn-pop'); }, 350);
+}
 function togglePlanDrop(e) {
   e.stopPropagation();
+  vibrateBtn(e.currentTarget);
   var menu = document.getElementById('planDropMenu');
   var btn = document.getElementById('planTabBtn');
   var isOpen = menu && menu.style.display === 'flex';
@@ -1770,6 +1778,7 @@ function closeLineup() {
 // ── Music dropdown ──
 function toggleMusicDrop(e) {
   e.stopPropagation();
+  vibrateBtn(e.currentTarget);
   var menu = document.getElementById('musicDropMenu');
   var btn = document.getElementById('musicTabBtn');
   var isOpen = menu && menu.style.display === 'flex';
