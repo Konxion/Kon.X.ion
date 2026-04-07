@@ -717,9 +717,33 @@
   <div style="padding:120px 16px 60px;max-width:600px;margin:0 auto;position:relative;z-index:1;">
 
     <!-- header -->
-    <div style="text-align:center;margin-bottom:40px;">
-      <div style="font-family:'DM Serif Display',serif;font-size:32px;color:#fff;letter-spacing:0.04em;">Lineup</div>
-      <div style="width:40px;height:0.5px;background:rgba(4,200,10,0.4);margin:14px auto 0;"></div>
+    <div style="text-align:center;margin-bottom:52px;position:relative;">
+
+      <!-- top deco row -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:22px;">
+        <div style="height:1px;width:70px;background:linear-gradient(to right,transparent,rgba(4,200,10,0.55));animation:lineFade 3s ease-in-out infinite;"></div>
+        <div style="width:6px;height:6px;background:rgba(4,220,10,0.9);transform:rotate(45deg);box-shadow:0 0 10px rgba(4,220,10,0.7),0 0 20px rgba(4,200,10,0.3);animation:diamondPulse 2.5s ease-in-out infinite;"></div>
+        <div style="height:1px;width:70px;background:linear-gradient(to left,transparent,rgba(4,200,10,0.55));animation:lineFade 3s ease-in-out infinite;"></div>
+      </div>
+
+      <!-- title with scan shimmer -->
+      <div style="position:relative;display:inline-block;overflow:visible;">
+        <div style="font-family:'DM Serif Display',serif;font-size:52px;color:#fff;letter-spacing:0.14em;text-transform:uppercase;animation:lineupGlow 3.5s ease-in-out infinite;position:relative;z-index:1;">Lineup</div>
+        <!-- scan line -->
+        <div style="position:absolute;top:0;bottom:0;width:28%;background:linear-gradient(to right,transparent,rgba(4,255,10,0.18),transparent);pointer-events:none;z-index:2;animation:lineupScan 4s ease-in-out infinite 1s;"></div>
+      </div>
+
+      <!-- sub label -->
+      <div style="font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,200,10,0.45);margin-top:12px;">July 18 &nbsp;·&nbsp; Guatapé, Colombia</div>
+
+      <!-- bottom deco -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:18px;">
+        <div style="height:0.5px;width:50px;background:linear-gradient(to right,transparent,rgba(4,200,10,0.4));"></div>
+        <div style="width:3px;height:3px;border-radius:50%;background:rgba(4,200,10,0.7);box-shadow:0 0 6px rgba(4,200,10,0.6);"></div>
+        <div style="width:40px;height:0.5px;background:rgba(4,200,10,0.25);"></div>
+        <div style="width:3px;height:3px;border-radius:50%;background:rgba(4,200,10,0.7);box-shadow:0 0 6px rgba(4,200,10,0.6);"></div>
+        <div style="height:0.5px;width:50px;background:linear-gradient(to left,transparent,rgba(4,200,10,0.4));"></div>
+      </div>
     </div>
 
     <!-- DJ ROW: 2x2 grid -->
@@ -951,6 +975,10 @@
 <style>
   @keyframes jPulseRing { 0%{width:60px;height:60px;opacity:0.8} 100%{width:520px;height:520px;opacity:0} }
   @keyframes jTicker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  @keyframes lineupGlow { 0%,100%{text-shadow:0 0 24px rgba(4,200,10,0.35),0 0 60px rgba(4,200,10,0.1),0 2px 4px rgba(0,0,0,0.6)} 50%{text-shadow:0 0 40px rgba(4,220,10,0.6),0 0 90px rgba(4,200,10,0.2),0 2px 4px rgba(0,0,0,0.6)} }
+  @keyframes lineupScan { 0%{left:-30%;opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{left:130%;opacity:0} }
+  @keyframes diamondPulse { 0%,100%{opacity:0.6;transform:rotate(45deg) scale(1)} 50%{opacity:1;transform:rotate(45deg) scale(1.3)} }
+  @keyframes lineFade { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
   .j-ring { position:absolute;border-radius:50%;border:1px solid rgba(4,200,10,0.14);animation:jPulseRing 2.4s ease-out infinite; }
   .j-ticker { display:flex;align-items:center;height:36px;white-space:nowrap;animation:jTicker 28s linear infinite; }
   .j-tick { font-size:12px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(4,200,10,0.7);font-weight:200;font-family:'DM Sans',sans-serif;padding:0 32px; }
