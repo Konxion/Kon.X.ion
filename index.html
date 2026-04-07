@@ -1418,8 +1418,7 @@ let heartExplodeVels = [];
 
 // ── TAB SWITCHING ──
 function switchTab(name) {
-  closeMusicDrop();
-  closePlanDrop();
+  closeAllPages();
   document.querySelectorAll('.tab-btn').forEach((btn, i) => {
     const tabs = ['music','plan','experience','shop'];
     btn.classList.toggle('active', tabs[i] === name);
@@ -1594,6 +1593,12 @@ function closeAllDropdowns() {
 }
 
 // ── Plan dropdown ──
+function closeAllPages() {
+  closeFestivalInfo();
+  closeGettingHere();
+  closeLineup();
+  closeAllDropdowns();
+}
 function vibrateBtn(el) {
   el.classList.remove('tab-btn-pop');
   void el.offsetWidth; // reflow to restart animation
@@ -1603,6 +1608,7 @@ function vibrateBtn(el) {
 function togglePlanDrop(e) {
   e.stopPropagation();
   vibrateBtn(e.currentTarget);
+  closeAllPages();
   var menu = document.getElementById('planDropMenu');
   var btn = document.getElementById('planTabBtn');
   var isOpen = menu && menu.style.display === 'flex';
@@ -1779,6 +1785,7 @@ function closeLineup() {
 function toggleMusicDrop(e) {
   e.stopPropagation();
   vibrateBtn(e.currentTarget);
+  closeAllPages();
   var menu = document.getElementById('musicDropMenu');
   var btn = document.getElementById('musicTabBtn');
   var isOpen = menu && menu.style.display === 'flex';
