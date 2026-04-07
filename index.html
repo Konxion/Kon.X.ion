@@ -706,12 +706,13 @@
 
 
 <!-- ═══ LINEUP PAGE ═══ -->
-<div id="lineupPage" style="position:fixed;inset:0;z-index:40;background:#000;opacity:0;pointer-events:none;transition:opacity 0.4s ease;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+<div id="lineupPage" style="position:fixed;inset:0;z-index:40;background:radial-gradient(ellipse 80% 60% at 50% 30%, rgba(4,80,8,0.45) 0%, rgba(4,40,6,0.18) 50%, #000 100%);opacity:0;pointer-events:none;transition:opacity 0.4s ease;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+  <canvas id="lineupGridCanvas" style="position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.18;"></canvas>
 
   <!-- back button -->
   <button onclick="closeLineup()" style="position:fixed;top:68px;left:24px;z-index:50;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:12px 24px;min-height:44px;color:rgba(4,200,10,0.8);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;opacity:0;transition:opacity 0.4s ease;" id="lineupBack">← Back</button>
 
-  <div style="padding:120px 16px 60px;max-width:600px;margin:0 auto;">
+  <div style="padding:120px 16px 60px;max-width:600px;margin:0 auto;position:relative;z-index:1;">
 
     <!-- header -->
     <div style="text-align:center;margin-bottom:40px;">
@@ -1587,6 +1588,41 @@ function openLineup() {
   page.style.opacity = '1';
   page.style.pointerEvents = 'all';
   setTimeout(() => { back.style.opacity = '1'; }, 300);
+  startLineupGrid();
+}
+
+function startLineupGrid() {
+  const canvas = document.getElementById('lineupGridCanvas');
+  if (!canvas || canvas._running) return;
+  canvas._running = true;
+  const ctx = canvas.getContext('2d');
+  let offset = 0;
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  function draw() {
+    if (!canvas._running) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const spacing = 48;
+    ctx.strokeStyle = 'rgba(4,200,10,0.55)';
+    ctx.lineWidth = 0.5;
+    // horizontal lines scrolling down slowly
+    for (let y = (offset % spacing) - spacing; y < canvas.height + spacing; y += spacing) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+    }
+    // vertical lines
+    for (let x = 0; x < canvas.width + spacing; x += spacing) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+    }
+    offset += 0.3;
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+function stopLineupGrid() {
+  const canvas = document.getElementById('lineupGridCanvas');
+  if (canvas) canvas._running = false;
 }
 function closeLineup() {
   const page = document.getElementById('lineupPage');
@@ -1594,6 +1630,7 @@ function closeLineup() {
   back.style.opacity = '0';
   page.style.opacity = '0';
   setTimeout(() => { page.style.pointerEvents = 'none'; }, 400);
+  stopLineupGrid();
 }
 
 // ── Music dropdown ──
