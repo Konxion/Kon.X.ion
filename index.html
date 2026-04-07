@@ -6,7 +6,7 @@
 <title>KON.X.ION</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;1,9..40,200&family=DM+Serif+Display:ital@0;1&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;1,9..40,200&family=DM+Serif+Display:ital@0;1&family=Bebas+Neue&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -737,12 +737,12 @@
 
       <!-- title with magic effects -->
       <div style="position:relative;display:inline-block;overflow:visible;" id="lineupTitleWrap">
-        <div id="lineupTitle" style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:58px;color:#fff;letter-spacing:0.22em;text-transform:uppercase;position:relative;z-index:1;display:flex;gap:0;">
+        <div id="lineupTitle" style="font-family:'Bebas Neue',sans-serif;font-size:92px;letter-spacing:0.18em;text-transform:uppercase;position:relative;z-index:1;display:flex;gap:0;line-height:1;">
           <!-- letters injected by JS -->
         </div>
         <!-- chromatic shift layers -->
-        <div id="lineupTitleR" aria-hidden="true" style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:58px;letter-spacing:0.22em;text-transform:uppercase;position:absolute;inset:0;color:rgba(255,30,30,0.55);mix-blend-mode:screen;pointer-events:none;z-index:2;transform:translate(-2px,0);filter:blur(0.5px);opacity:0;transition:opacity 0.1s;">LINEUP</div>
-        <div id="lineupTitleB" aria-hidden="true" style="font-family:'Orbitron',sans-serif;font-weight:900;font-size:58px;letter-spacing:0.22em;text-transform:uppercase;position:absolute;inset:0;color:rgba(0,255,180,0.55);mix-blend-mode:screen;pointer-events:none;z-index:2;transform:translate(2px,0);filter:blur(0.5px);opacity:0;transition:opacity 0.1s;">LINEUP</div>
+        <div id="lineupTitleR" aria-hidden="true" style="font-family:'Bebas Neue',sans-serif;font-size:92px;letter-spacing:0.18em;text-transform:uppercase;line-height:1;position:absolute;inset:0;color:rgba(255,30,30,0.6);mix-blend-mode:screen;pointer-events:none;z-index:2;transform:translate(-3px,0);filter:blur(1px);opacity:0;transition:opacity 0.08s;">LINEUP</div>
+        <div id="lineupTitleB" aria-hidden="true" style="font-family:'Bebas Neue',sans-serif;font-size:92px;letter-spacing:0.18em;text-transform:uppercase;line-height:1;position:absolute;inset:0;color:rgba(0,255,180,0.6);mix-blend-mode:screen;pointer-events:none;z-index:2;transform:translate(3px,0);filter:blur(1px);opacity:0;transition:opacity 0.08s;">LINEUP</div>
         <!-- scan line -->
         <div style="position:absolute;top:0;bottom:0;width:28%;background:linear-gradient(to right,transparent,rgba(4,255,10,0.22),transparent);pointer-events:none;z-index:3;animation:lineupScan 4s ease-in-out infinite 1s;"></div>
       </div>
@@ -991,10 +991,10 @@
   @keyframes jTicker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
   @keyframes lineupGlow { 0%,100%{text-shadow:0 0 24px rgba(4,200,10,0.35),0 0 60px rgba(4,200,10,0.1),0 2px 4px rgba(0,0,0,0.6)} 50%{text-shadow:0 0 40px rgba(4,220,10,0.6),0 0 90px rgba(4,200,10,0.2),0 2px 4px rgba(0,0,0,0.6)} }
   @keyframes lineupScan { 0%{left:-30%;opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{left:130%;opacity:0} }
-  @keyframes letterIn { 0%{opacity:0;transform:translateY(18px) scaleX(0.7);filter:blur(6px)} 60%{opacity:1;filter:blur(0)} 100%{opacity:1;transform:translateY(0) scaleX(1);filter:blur(0)} }
-  @keyframes letterPulse { 0%,100%{text-shadow:0 0 12px rgba(4,200,10,0.3),0 0 40px rgba(4,200,10,0.08)} 50%{text-shadow:0 0 28px rgba(4,230,10,0.7),0 0 70px rgba(4,200,10,0.25),0 0 120px rgba(4,200,10,0.08)} }
-  @keyframes glitchShift { 0%,90%,100%{transform:translate(0)} 91%{transform:translate(-3px,1px)} 93%{transform:translate(3px,-1px)} 95%{transform:translate(-2px,2px)} 97%{transform:translate(2px,-2px)} }
-  .lineup-letter { display:inline-block; opacity:0; animation:letterIn 0.55s cubic-bezier(0.22,1,0.36,1) forwards, letterPulse 3.5s ease-in-out infinite; }
+  @keyframes prismFlow { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+  @keyframes neonBreathe { 0%,100%{text-shadow:0 0 18px rgba(4,220,10,0.5),0 0 60px rgba(4,200,10,0.2),0 0 120px rgba(4,200,10,0.05)} 50%{text-shadow:0 0 40px rgba(4,255,10,1),0 0 100px rgba(4,220,10,0.5),0 0 200px rgba(4,200,10,0.15)} }
+  .lineup-letter { display:inline-block; transition:opacity 0.05s; }
+  #lineupTitle.prism { background:linear-gradient(90deg,#04e80c,#ffffff,#00ffb0,#b4ff8a,#04e80c); background-size:300% 100%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; animation:prismFlow 5s ease infinite, neonBreathe 3s ease-in-out infinite; }
   @keyframes diamondPulse { 0%,100%{opacity:0.6;transform:rotate(45deg) scale(1)} 50%{opacity:1;transform:rotate(45deg) scale(1.3)} }
   @keyframes lineFade { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
   .j-ring { position:absolute;border-radius:50%;border:1px solid rgba(4,200,10,0.14);animation:jPulseRing 2.4s ease-out infinite; }
@@ -1665,25 +1665,76 @@ function animateLineupTitle() {
   const container = document.getElementById('lineupTitle');
   if (!container) return;
   const word = 'LINEUP';
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#@%$&!?';
   container.innerHTML = '';
-  word.split('').forEach((ch, i) => {
+  container.classList.remove('prism');
+
+  const spans = word.split('').map((finalChar) => {
     const span = document.createElement('span');
     span.className = 'lineup-letter';
-    span.textContent = ch;
-    span.style.animationDelay = `${i * 0.07}s, ${i * 0.07 + 0.55 + (i * 0.4)}s`;
+    span.dataset.final = finalChar;
+    span.textContent = chars[Math.floor(Math.random() * chars.length)];
+    span.style.color = 'rgba(4,220,10,0.9)';
     container.appendChild(span);
+    return span;
   });
+
+  let resolved = 0;
+  spans.forEach((span, i) => {
+    const startDelay = i * 80;
+    const scrambleDuration = 320 + i * 55 + Math.random() * 120;
+    setTimeout(() => {
+      let elapsed = 0;
+      const tick = setInterval(() => {
+        elapsed += 40;
+        if (elapsed < scrambleDuration) {
+          span.textContent = chars[Math.floor(Math.random() * chars.length)];
+          const p = elapsed / scrambleDuration;
+          span.style.color = `rgba(${Math.floor(p*255)},${Math.floor(200+p*55)},${Math.floor(p*120)},1)`;
+        } else {
+          span.textContent = span.dataset.final;
+          span.style.color = '#fff';
+          clearInterval(tick);
+          resolved++;
+          if (resolved === word.length) {
+            setTimeout(() => {
+              container.classList.add('prism');
+              spans.forEach(s => { s.style.color = ''; s.style.webkitTextFillColor = ''; });
+              startLetterFlicker(spans);
+            }, 120);
+          }
+        }
+      }, 40);
+    }, startDelay);
+  });
+
   // Chromatic glitch loop
   const r = document.getElementById('lineupTitleR');
   const b = document.getElementById('lineupTitleB');
-  if (!r || !b) return;
-  clearInterval(window._lineupGlitchTimer);
-  window._lineupGlitchTimer = setInterval(() => {
-    r.style.opacity = '1'; b.style.opacity = '1';
-    setTimeout(() => { r.style.opacity = '0'; b.style.opacity = '0'; }, 80);
-    setTimeout(() => { r.style.opacity = '1'; b.style.opacity = '1'; }, 120);
-    setTimeout(() => { r.style.opacity = '0'; b.style.opacity = '0'; }, 200);
-  }, Math.random() * 3000 + 2500);
+  if (r && b) {
+    clearInterval(window._lineupGlitchTimer);
+    const fireGlitch = () => {
+      r.style.opacity = '1'; b.style.opacity = '1';
+      setTimeout(() => { r.style.opacity = '0'; b.style.opacity = '0'; }, 60);
+      setTimeout(() => { r.style.opacity = '1'; b.style.opacity = '1'; }, 100);
+      setTimeout(() => { r.style.opacity = '0'; b.style.opacity = '0'; }, 150);
+      window._lineupGlitchTimer = setTimeout(fireGlitch, Math.random() * 3000 + 1800);
+    };
+    window._lineupGlitchTimer = setTimeout(fireGlitch, 1200);
+  }
+}
+
+function startLetterFlicker(spans) {
+  clearInterval(window._lineupFlickerTimer);
+  const flick = () => {
+    const s = spans[Math.floor(Math.random() * spans.length)];
+    s.style.opacity = '0.05';
+    setTimeout(() => { s.style.opacity = '1'; }, 50);
+    setTimeout(() => { s.style.opacity = '0.1'; }, 90);
+    setTimeout(() => { s.style.opacity = '1'; }, 140);
+    window._lineupFlickerTimer = setTimeout(flick, 700 + Math.random() * 2000);
+  };
+  window._lineupFlickerTimer = setTimeout(flick, 500);
 }
 
 function startLineupGrid() {
