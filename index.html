@@ -627,7 +627,7 @@
 <!-- ═══ TAB BAR ═══ -->
 <nav id="tabBar" style="opacity:0;pointer-events:none;transition:opacity 0.5s ease;">
   <div class="tab-dropdown-wrap" id="musicDropWrap">
-    <button class="tab-btn" id="musicTabBtn" onclick="toggleMusicDrop(event)" aria-expanded="false" aria-haspopup="true">Music <span id="musicArrow" aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;">▼</span></button>
+    <button class="tab-btn" id="musicTabBtn" onclick="toggleMusicDrop(event)" aria-expanded="false" aria-haspopup="true">Music <span id="musicArrow" aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;color:rgba(4,200,10,0.75);">▼</span></button>
     <div id="musicDropMenu" style="display:none;position:absolute;top:52px;left:0;z-index:200;display:none;flex-direction:column;gap:8px;padding:12px;background:rgba(5,10,5,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(4,200,10,0.22);border-radius:14px;min-width:160px;box-shadow:0 8px 32px rgba(0,0,0,0.6);">
       <button class="music-drop-item" onclick="openLineup();closeMusicDrop();">
         <span style="font-size:16px;">🎧</span>
@@ -648,7 +648,7 @@
     </div>
   </div>
   <div class="tab-dropdown-wrap" id="planDropWrap">
-    <button class="tab-btn" id="planTabBtn" onclick="togglePlanDrop(event)" aria-expanded="false" aria-haspopup="true">Plan <span id="planArrow" aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;">▼</span></button>
+    <button class="tab-btn" id="planTabBtn" onclick="togglePlanDrop(event)" aria-expanded="false" aria-haspopup="true">Plan <span id="planArrow" aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;color:rgba(4,200,10,0.75);">▼</span></button>
     <div id="planDropMenu" style="display:none;position:absolute;top:52px;left:50%;transform:translateX(-50%);z-index:200;flex-direction:column;gap:8px;padding:12px;background:rgba(5,10,5,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(4,200,10,0.22);border-radius:14px;min-width:160px;box-shadow:0 8px 32px rgba(0,0,0,0.6);">
       <button class="music-drop-item" onclick="openFestivalInfo();closePlanDrop();">
         <span style="font-size:16px;">🎪</span>
@@ -660,8 +660,8 @@
       </button>
     </div>
   </div>
-  <button class="tab-btn" onclick="vibrateBtn(this);switchTab('experience')">Experience <span aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;">▼</span></button>
-  <button class="tab-btn" onclick="vibrateBtn(this);switchTab('shop')">Shop <span aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;">▼</span></button>
+  <button class="tab-btn" onclick="vibrateBtn(this);switchTab('experience')">Experience <span aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;color:rgba(4,200,10,0.75);">▼</span></button>
+  <button class="tab-btn" onclick="vibrateBtn(this);switchTab('shop')">Shop <span aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;color:rgba(4,200,10,0.75);">▼</span></button>
 </nav>
 
 <main id="mainContent">
