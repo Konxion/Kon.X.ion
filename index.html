@@ -160,18 +160,64 @@
     bottom: 0;
     z-index: 30;
     border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
-    background: var(--sheet-bg);
-    backdrop-filter: var(--sheet-blur);
-    -webkit-backdrop-filter: var(--sheet-blur);
+    background: linear-gradient(175deg, #080d18 0%, #060c1a 50%, #04091a 100%);
     box-shadow:
-      0 -1px 0 rgba(255,255,255,0.8),
-      0 -8px 40px rgba(0,0,0,0.12);
+      0 -1px 0 rgba(60,120,255,0.18),
+      0 -8px 40px rgba(0,0,0,0.4);
     padding: 0 0 calc(24px + var(--safe-bottom)) 0;
     transform: translateY(110%);
     transition: transform 0.48s cubic-bezier(0.32,0.72,0,1);
     max-height: 90dvh;
-    overflow-y: auto;
+    overflow: hidden;
     -webkit-overflow-scrolling: touch;
+  }
+  #contactAuroraCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  #sheet .sheet-handle,
+  #sheet .sheet-header,
+  #sheet .sheet-row,
+  #sheet .form-section {
+    position: relative;
+    z-index: 1;
+  }
+  #sheet .sheet-handle {
+    background: rgba(80,140,255,0.25);
+  }
+  #sheet .sheet-title {
+    color: rgba(160,200,255,1) !important;
+    text-shadow: 0 0 18px rgba(80,160,255,0.6), 0 0 40px rgba(80,160,255,0.3) !important;
+  }
+  #sheet .sheet-sub {
+    color: rgba(140,180,255,0.5) !important;
+  }
+  #sheet .sheet-row {
+    border-color: rgba(80,140,255,0.12) !important;
+  }
+  #sheet .row-label {
+    color: rgba(200,220,255,0.85) !important;
+  }
+  #sheet .row-sub {
+    color: rgba(140,180,255,0.5) !important;
+  }
+  #sheet .row-chevron {
+    color: rgba(100,160,255,0.4) !important;
+  }
+  #sheet .form-label {
+    color: rgba(140,180,255,0.55) !important;
+  }
+  #sheet .form-field {
+    background: rgba(255,255,255,0.05) !important;
+    border-color: rgba(80,140,255,0.18) !important;
+    color: rgba(210,225,255,0.9) !important;
+  }
+  #sheet .form-field::placeholder {
+    color: rgba(140,180,255,0.3) !important;
   }
   #sheet.open {
     transform: translateY(0);
@@ -978,6 +1024,7 @@
 
 <!-- Bottom Sheet -->
 <div id="sheet" role="dialog" aria-modal="true" aria-label="Contact & Links">
+  <canvas id="contactAuroraCanvas"></canvas>
   <div class="sheet-handle"></div>
 
   <div class="sheet-header">
@@ -1332,6 +1379,86 @@ function handleRsvp() {
   conf.style.color='rgba(4,99,7,0.8)';
   conf.textContent='RSVP sent! We\'ll be in touch soon.';
 }
+
+// ── CONTACT AURORA BACKGROUND ──
+(function(){
+  const canvas = document.getElementById('contactAuroraCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, raf, t = 0;
+  const BANDS = 4;
+  const STARS = 55;
+  const stars = [];
+
+  function resize() {
+    const sheet = document.getElementById('sheet');
+    W = canvas.width  = sheet.offsetWidth  || window.innerWidth;
+    H = canvas.height = sheet.offsetHeight || 600;
+    stars.length = 0;
+    for (let i = 0; i < STARS; i++) {
+      stars.push({ x: Math.random()*W, y: Math.random()*H, r: Math.random()*1.1+0.3, a: Math.random(), sp: Math.random()*0.008+0.003 });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    t += 0.006;
+
+    // aurora bands
+    const bandDefs = [
+      { hue: 210, sat: 80, lit: 55, amp: 0.18, freq: 0.9, phase: 0,    yBase: 0.22 },
+      { hue: 175, sat: 70, lit: 50, amp: 0.14, freq: 1.2, phase: 1.5,  yBase: 0.32 },
+      { hue: 260, sat: 60, lit: 50, amp: 0.12, freq: 0.7, phase: 3.1,  yBase: 0.18 },
+      { hue: 195, sat: 75, lit: 58, amp: 0.10, freq: 1.5, phase: 4.7,  yBase: 0.28 },
+    ];
+
+    for (const b of bandDefs) {
+      const yCenter = H * (b.yBase + Math.sin(t * b.freq + b.phase) * b.amp);
+      const spread = H * 0.22;
+      const grad = ctx.createLinearGradient(0, yCenter - spread, 0, yCenter + spread);
+      grad.addColorStop(0,   `hsla(${b.hue},${b.sat}%,${b.lit}%,0)`);
+      grad.addColorStop(0.4, `hsla(${b.hue},${b.sat}%,${b.lit}%,0.13)`);
+      grad.addColorStop(0.5, `hsla(${b.hue},${b.sat}%,${b.lit}%,0.22)`);
+      grad.addColorStop(0.6, `hsla(${b.hue},${b.sat}%,${b.lit}%,0.13)`);
+      grad.addColorStop(1,   `hsla(${b.hue},${b.sat}%,${b.lit}%,0)`);
+      ctx.fillStyle = grad;
+      // wavy horizontal mask via bezier path
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(W, 0);
+      ctx.lineTo(W, H);
+      ctx.lineTo(0, H);
+      ctx.closePath();
+      ctx.fillStyle = grad;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // stars
+    for (const s of stars) {
+      s.a += s.sp * (Math.random() > 0.5 ? 1 : -1);
+      s.a = Math.max(0.05, Math.min(0.7, s.a));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(200,220,255,${s.a})`;
+      ctx.fill();
+    }
+
+    raf = requestAnimationFrame(draw);
+  }
+
+  const sheet = document.getElementById('sheet');
+  const obs = new MutationObserver(() => {
+    if (sheet.classList.contains('open')) {
+      resize(); cancelAnimationFrame(raf); draw();
+    } else {
+      cancelAnimationFrame(raf);
+    }
+  });
+  obs.observe(sheet, { attributes: true, attributeFilter: ['class'] });
+  window.addEventListener('resize', () => { if (sheet.classList.contains('open')) resize(); });
+})();
 
 // ── RSVP NATURE BACKGROUND ──
 (function(){
