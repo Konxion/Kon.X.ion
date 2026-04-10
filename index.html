@@ -1904,12 +1904,18 @@ function switchTab(name) {
 function closeAllDropdowns() {
   var pm = document.getElementById('planDropMenu');
   var mm = document.getElementById('musicDropMenu');
+  var sm = document.getElementById('shopDropMenu');
   if (pm) pm.style.display = 'none';
   if (mm) mm.style.display = 'none';
+  if (sm) sm.style.display = 'none';
   var pb = document.getElementById('planTabBtn');
   var mb = document.getElementById('musicTabBtn');
+  var sb = document.getElementById('shopTabBtn');
   if (pb) pb.setAttribute('aria-expanded', 'false');
   if (mb) mb.setAttribute('aria-expanded', 'false');
+  if (sb) sb.setAttribute('aria-expanded', 'false');
+  var sa = document.getElementById('shopArrow');
+  if (sa) sa.style.transform = '';
 }
 
 // ── Plan dropdown ──
@@ -2199,6 +2205,7 @@ function closeAllPages() {
   closeFestivalInfo();
   closeGettingHere();
   closeLineup();
+  closeShop();
   closeAllDropdowns();
 }
 function vibrateBtn(el) {
@@ -2224,6 +2231,45 @@ document.addEventListener('click', function(e) {
 });
 
 // ── Festival Info page ──
+function openShop() {
+  closeFestivalInfo();
+  closeGettingHere();
+  closeLineup();
+  closeAllDropdowns();
+  const page = document.getElementById('shopPage');
+  const back = document.getElementById('shopBack');
+  page.style.opacity = '1'; page.style.pointerEvents = 'all';
+  setTimeout(() => { back.style.opacity = '1'; }, 300);
+}
+function closeShop() {
+  const page = document.getElementById('shopPage');
+  const back = document.getElementById('shopBack');
+  if (!page) return;
+  back.style.opacity = '0'; page.style.opacity = '0';
+  setTimeout(() => { page.style.pointerEvents = 'none'; }, 400);
+}
+function toggleShopDrop(e) {
+  e.stopPropagation();
+  vibrateBtn(e.currentTarget);
+  closeAllPages();
+  var menu = document.getElementById('shopDropMenu');
+  var btn = document.getElementById('shopTabBtn');
+  var isOpen = menu && menu.style.display === 'flex';
+  closeAllDropdowns();
+  if (!isOpen) {
+    menu.style.display = 'flex';
+    btn.setAttribute('aria-expanded', 'true');
+    document.getElementById('shopArrow').style.transform = 'rotate(180deg)';
+  }
+}
+function closeShopDrop() {
+  var menu = document.getElementById('shopDropMenu');
+  var btn = document.getElementById('shopTabBtn');
+  if (menu) menu.style.display = 'none';
+  if (btn) btn.setAttribute('aria-expanded', 'false');
+  var arrow = document.getElementById('shopArrow');
+  if (arrow) arrow.style.transform = '';
+}
 function openFestivalInfo() {
   closeLineup();
   closeGettingHere();
