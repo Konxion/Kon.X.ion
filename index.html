@@ -182,18 +182,52 @@
     bottom: 0;
     z-index: 30;
     border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
-    background: var(--sheet-bg);
-    backdrop-filter: var(--sheet-blur);
-    -webkit-backdrop-filter: var(--sheet-blur);
+    background: linear-gradient(175deg, #0a1a0c 0%, #071209 40%, #050e07 100%);
     box-shadow:
-      0 -1px 0 rgba(255,255,255,0.8),
-      0 -8px 40px rgba(0,0,0,0.12);
+      0 -1px 0 rgba(4,200,10,0.2),
+      0 -8px 40px rgba(0,0,0,0.4);
     padding: 0 0 calc(24px + var(--safe-bottom)) 0;
     transform: translateY(110%);
     transition: transform 0.48s cubic-bezier(0.32,0.72,0,1);
     max-height: 90dvh;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    overflow: hidden;
+  }
+  #rsvpNatureCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  #rsvpSheet .sheet-handle,
+  #rsvpSheet .sheet-header,
+  #rsvpSheet .form-section {
+    position: relative;
+    z-index: 1;
+  }
+  #rsvpSheet .sheet-handle {
+    background: rgba(4,200,10,0.3);
+  }
+  #rsvpSheet .sheet-sub {
+    color: rgba(180,220,180,0.6) !important;
+  }
+  #rsvpSheet .form-label {
+    color: rgba(180,220,180,0.55) !important;
+  }
+  #rsvpSheet .form-field {
+    background: rgba(255,255,255,0.07) !important;
+    border-color: rgba(4,200,10,0.2) !important;
+    color: rgba(230,255,230,0.9) !important;
+  }
+  #rsvpSheet .form-field::placeholder {
+    color: rgba(180,220,180,0.35) !important;
+  }
+  #rsvpSheet .form-field option {
+    background: #0a1a0c;
+    color: rgba(230,255,230,0.9);
   }
   #rsvpSheet.open {
     transform: translateY(0);
@@ -995,6 +1029,7 @@
 
 <!-- ═══ RSVP SHEET ═══ -->
 <div id="rsvpSheet" role="dialog" aria-modal="true" aria-label="RSVP">
+  <canvas id="rsvpNatureCanvas"></canvas>
   <div class="sheet-handle"></div>
   <div class="sheet-header">
     <div class="sheet-title" style="color:rgba(4,200,10,1);text-shadow:0 0 18px rgba(4,200,10,0.7),0 0 40px rgba(4,200,10,0.35);">Reserve Your Spot</div>
@@ -1297,6 +1332,111 @@ function handleRsvp() {
   conf.style.color='rgba(4,99,7,0.8)';
   conf.textContent='RSVP sent! We\'ll be in touch soon.';
 }
+
+// ── RSVP NATURE BACKGROUND ──
+(function(){
+  const canvas = document.getElementById('rsvpNatureCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, raf;
+  const FIREFLIES = 38;
+  const SPORES = 22;
+  const particles = [];
+
+  function resize() {
+    const sheet = document.getElementById('rsvpSheet');
+    W = canvas.width  = sheet.offsetWidth  || window.innerWidth;
+    H = canvas.height = sheet.offsetHeight || 500;
+  }
+
+  function rand(a, b) { return a + Math.random() * (b - a); }
+
+  function mkFirefly() {
+    return {
+      type: 'fly',
+      x: rand(0, W), y: rand(0, H),
+      r: rand(1.2, 2.8),
+      vx: rand(-0.18, 0.18), vy: rand(-0.35, -0.08),
+      life: rand(0, 1), speed: rand(0.004, 0.009),
+      hue: rand(90, 140), pulse: rand(0, Math.PI * 2)
+    };
+  }
+
+  function mkSpore() {
+    return {
+      type: 'spore',
+      x: rand(0, W), y: H + rand(0, 40),
+      r: rand(0.7, 1.6),
+      vx: rand(-0.12, 0.12), vy: rand(-0.5, -0.2),
+      alpha: rand(0.3, 0.7), drift: rand(-0.002, 0.002),
+      life: rand(0, 1), speed: rand(0.003, 0.007)
+    };
+  }
+
+  function init() {
+    particles.length = 0;
+    for (let i = 0; i < FIREFLIES; i++) particles.push(mkFirefly());
+    for (let i = 0; i < SPORES; i++) particles.push(mkSpore());
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // subtle green mist at bottom
+    const mist = ctx.createLinearGradient(0, H * 0.6, 0, H);
+    mist.addColorStop(0, 'rgba(4,80,10,0)');
+    mist.addColorStop(1, 'rgba(4,60,8,0.18)');
+    ctx.fillStyle = mist;
+    ctx.fillRect(0, H * 0.6, W, H);
+
+    for (const p of particles) {
+      if (p.type === 'fly') {
+        p.life += p.speed;
+        p.pulse += 0.04;
+        p.x += p.vx + Math.sin(p.life * 3) * 0.15;
+        p.y += p.vy;
+        const brightness = 0.4 + 0.6 * Math.abs(Math.sin(p.pulse));
+        const alpha = brightness * (p.life < 0.15 ? p.life / 0.15 : p.life > 0.85 ? (1 - p.life) / 0.15 : 1);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${p.hue},90%,70%,${Math.min(alpha, 1)})`;
+        ctx.fill();
+        // glow
+        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 6);
+        g.addColorStop(0, `hsla(${p.hue},90%,70%,${alpha * 0.4})`);
+        g.addColorStop(1, 'hsla(120,90%,60%,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r * 6, 0, Math.PI * 2);
+        ctx.fill();
+        if (p.life >= 1 || p.y < -20) Object.assign(p, mkFirefly(), { x: rand(0, W), y: H + 10, life: 0 });
+      } else {
+        p.life += p.speed;
+        p.x += p.vx + Math.sin(p.life * 5) * p.drift * 30;
+        p.y += p.vy;
+        const alpha = p.alpha * (p.life < 0.2 ? p.life / 0.2 : p.life > 0.8 ? (1 - p.life) / 0.2 : 1);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(180,255,180,${Math.min(alpha, 1)})`;
+        ctx.fill();
+        if (p.life >= 1 || p.y < -10) Object.assign(p, mkSpore(), { x: rand(0, W), y: H + 10, life: 0 });
+      }
+    }
+    raf = requestAnimationFrame(draw);
+  }
+
+  // start when sheet opens, pause when closed
+  const sheet = document.getElementById('rsvpSheet');
+  const obs = new MutationObserver(() => {
+    if (sheet.classList.contains('open')) {
+      resize(); init(); cancelAnimationFrame(raf); draw();
+    } else {
+      cancelAnimationFrame(raf);
+    }
+  });
+  obs.observe(sheet, { attributes: true, attributeFilter: ['class'] });
+  window.addEventListener('resize', () => { if (sheet.classList.contains('open')) { resize(); init(); } });
+})();
 
 // ── 3D HEART PARTICLE SYSTEM ──
 // Globals so openJourney can trigger explosion
