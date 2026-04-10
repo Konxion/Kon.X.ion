@@ -2206,6 +2206,7 @@ document.addEventListener('click', function(e) {
 
 // ── Festival Info page ──
 function openFestivalInfo() {
+  closeAllPages();
   startFestivalBg();
   const page = document.getElementById('festivalInfoPage');
   const back = document.getElementById('festivalInfoBack');
@@ -2222,6 +2223,7 @@ function closeFestivalInfo() {
 
 // ── Getting Here page ──
 function openGettingHere() {
+  closeAllPages();
   startGettingHereBg();
   const page = document.getElementById('gettingHerePage');
   const back = document.getElementById('gettingHereBack');
@@ -2238,6 +2240,7 @@ function closeGettingHere() {
 
 // ── Lineup page ──
 function openLineup() {
+  closeAllPages();
   const page = document.getElementById('lineupPage');
   const back = document.getElementById('lineupBack');
   page.style.opacity = '1';
