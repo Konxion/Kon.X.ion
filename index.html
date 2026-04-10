@@ -754,7 +754,15 @@
     </div>
   </div>
   <button class="tab-btn" onclick="vibrateBtn(this);switchTab('experience')">Experience <span aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;color:rgba(4,200,10,0.75);">▼</span></button>
-  <button class="tab-btn" onclick="vibrateBtn(this);switchTab('shop')">Shop <span aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;color:rgba(4,200,10,0.75);">▼</span></button>
+  <div class="tab-dropdown-wrap" id="shopDropWrap">
+    <button class="tab-btn" id="shopTabBtn" onclick="toggleShopDrop(event)" aria-expanded="false" aria-haspopup="true">Shop <span id="shopArrow" aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;color:rgba(4,200,10,0.75);">▼</span></button>
+    <div id="shopDropMenu" style="display:none;position:absolute;top:52px;right:0;z-index:200;flex-direction:column;gap:8px;padding:12px;background:rgba(5,10,5,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(4,200,10,0.22);border-radius:14px;min-width:160px;box-shadow:0 8px 32px rgba(0,0,0,0.6);">
+      <button class="music-drop-item" onclick="openShop();closeShopDrop();">
+        <span style="font-size:16px;">🛍️</span>
+        <span>Shop</span>
+      </button>
+    </div>
+  </div>
 </nav>
 
 <main id="mainContent">
@@ -813,6 +821,17 @@
 </div>
 
 
+
+<!-- ═══ SHOP PAGE ═══ -->
+<div id="shopPage" style="position:fixed;inset:0;z-index:40;background:#000;opacity:0;pointer-events:none;transition:opacity 0.4s ease;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+  <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 90% 55% at 50% 30%, rgba(4,160,12,0.3) 0%, rgba(4,80,8,0.12) 55%, transparent 100%);"></div>
+  <button onclick="closeShop()" style="position:fixed;top:68px;left:24px;z-index:50;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:12px 24px;min-height:44px;color:rgba(4,200,10,0.8);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;opacity:0;transition:opacity 0.4s ease;" id="shopBack">← Back</button>
+  <div style="padding:140px 24px 80px;max-width:520px;margin:0 auto;position:relative;z-index:1;text-align:center;">
+    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:56px;color:#fff;letter-spacing:0.06em;margin-bottom:16px;">Merch</div>
+    <div style="font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(4,200,10,0.8);margin-bottom:48px;">Coming Soon</div>
+    <div style="color:rgba(255,255,255,0.3);font-size:13px;font-family:'DM Sans',sans-serif;letter-spacing:0.05em;">Drops with the lineup announcement.</div>
+  </div>
+</div>
 
 <!-- ═══ LINEUP PAGE ═══ -->
 <div id="lineupPage" style="position:fixed;inset:0;z-index:40;background:#000;opacity:0;pointer-events:none;transition:opacity 0.4s ease;overflow-y:auto;-webkit-overflow-scrolling:touch;">
@@ -2206,7 +2225,9 @@ document.addEventListener('click', function(e) {
 
 // ── Festival Info page ──
 function openFestivalInfo() {
-  closeAllPages();
+  closeLineup();
+  closeGettingHere();
+  closeAllDropdowns();
   startFestivalBg();
   const page = document.getElementById('festivalInfoPage');
   const back = document.getElementById('festivalInfoBack');
@@ -2223,7 +2244,9 @@ function closeFestivalInfo() {
 
 // ── Getting Here page ──
 function openGettingHere() {
-  closeAllPages();
+  closeFestivalInfo();
+  closeLineup();
+  closeAllDropdowns();
   startGettingHereBg();
   const page = document.getElementById('gettingHerePage');
   const back = document.getElementById('gettingHereBack');
@@ -2240,7 +2263,9 @@ function closeGettingHere() {
 
 // ── Lineup page ──
 function openLineup() {
-  closeAllPages();
+  closeFestivalInfo();
+  closeGettingHere();
+  closeAllDropdowns();
   const page = document.getElementById('lineupPage');
   const back = document.getElementById('lineupBack');
   page.style.opacity = '1';
