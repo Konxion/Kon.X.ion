@@ -1761,86 +1761,154 @@ function startGettingHereBg() {
   var t = 0;
   var W, H;
 
-  var beams = [
-    { angle: -0.45, speed: 0.0008, width: 0.13, a: 0.07 },
-    { angle: 0.1,   speed: -0.0006, width: 0.10, a: 0.055 },
-    { angle: 0.55,  speed: 0.0010, width: 0.09, a: 0.065 }
-  ];
+  // Drifting map grid offset
+  var gridOffX = 0, gridOffY = 0;
 
-  var particles = Array.from({length: 70}, function() {
-    return {
-      x: Math.random(), y: Math.random(),
-      r: Math.random() * 2.2 + 0.3,
-      a: Math.random() * 0.7 + 0.15,
-      vx: (Math.random() - 0.5) * 0.00015,
-      vy: -Math.random() * 0.00025 - 0.00008,
-      phase: Math.random() * Math.PI * 2,
-      speed: Math.random() * 0.025 + 0.012
-    };
+  // Radar sweep from center
+  var radarAngle = 0;
+
+  // Route dots travelling along a curved path
+  var routeDots = Array.from({length: 8}, function(_, i) {
+    return { progress: i / 8, speed: 0.0018 + Math.random() * 0.0008 };
   });
 
-  var rings = Array.from({length: 5}, function(_, i) { return { offset: i * 0.2 }; });
+  // Ping ripples at the destination point
+  var pings = Array.from({length: 3}, function(_, i) {
+    return { offset: i / 3 };
+  });
 
   function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
   resize();
   window.addEventListener('resize', resize);
 
+  // Bezier route: from top-left area down to center (Medellín → Guatapé feel)
+  function routePoint(prog) {
+    var p = prog;
+    var x0 = W * 0.15, y0 = H * 0.1;
+    var x1 = W * 0.35, y1 = H * 0.38;
+    var x2 = W * 0.55, y2 = H * 0.58;
+    var x3 = W * 0.62, y3 = H * 0.72;
+    var mt = 1 - p;
+    return {
+      x: mt*mt*mt*x0 + 3*mt*mt*p*x1 + 3*mt*p*p*x2 + p*p*p*x3,
+      y: mt*mt*mt*y0 + 3*mt*mt*p*y1 + 3*mt*p*p*y2 + p*p*p*y3
+    };
+  }
+
   function draw() {
     if (!canvas._running) return;
     ctx.clearRect(0, 0, W, H);
 
-    for (var b of beams) {
-      b.angle += b.speed;
-      var bx = W * 0.5 + Math.sin(b.angle) * W * 0.6;
-      var halfW = Math.tan(b.width) * H;
-      var grad = ctx.createLinearGradient(W * 0.5, 0, bx, H);
-      var pulse = 0.7 + 0.3 * Math.sin(t * 0.018 + b.angle);
-      grad.addColorStop(0, 'rgba(4,200,10,' + (b.a * pulse * 1.4) + ')');
-      grad.addColorStop(0.4, 'rgba(4,180,10,' + (b.a * pulse * 0.5) + ')');
-      grad.addColorStop(1, 'rgba(4,160,10,0)');
-      ctx.beginPath();
-      ctx.moveTo(W * 0.5, 0);
-      ctx.lineTo(bx - halfW, H);
-      ctx.lineTo(bx + halfW, H);
-      ctx.closePath();
-      ctx.fillStyle = grad;
-      ctx.fill();
+    // — Drifting map grid —
+    gridOffX = (t * 0.12) % 60;
+    gridOffY = (t * 0.07) % 60;
+    ctx.strokeStyle = 'rgba(4,200,10,0.07)';
+    ctx.lineWidth = 0.5;
+    for (var gx = -60 + gridOffX; gx < W + 60; gx += 60) {
+      ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke();
+    }
+    for (var gy = -60 + gridOffY; gy < H + 60; gy += 60) {
+      ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke();
     }
 
-    var cx = W * 0.5, cy = H * 0.88;
-    var maxR = W * 0.75;
-    for (var ring of rings) {
-      var progress = ((t * 0.004 + ring.offset) % 1);
-      var r = progress * maxR;
-      var alpha = (1 - progress) * 0.18;
+    // — Route path (dashed line) —
+    var destPt = routePoint(1);
+    ctx.save();
+    ctx.setLineDash([6, 10]);
+    ctx.strokeStyle = 'rgba(4,210,10,0.22)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    var rp0 = routePoint(0);
+    ctx.moveTo(rp0.x, rp0.y);
+    for (var s = 0.02; s <= 1.01; s += 0.02) {
+      var rp = routePoint(Math.min(s, 1));
+      ctx.lineTo(rp.x, rp.y);
+    }
+    ctx.stroke();
+    ctx.restore();
+
+    // — Dots travelling along the route —
+    for (var d of routeDots) {
+      d.progress = (d.progress + d.speed) % 1;
+      var dp = routePoint(d.progress);
+      var trail = routePoint(Math.max(0, d.progress - 0.04));
+      var fade = Math.sin(d.progress * Math.PI);
       ctx.beginPath();
-      ctx.arc(cx, cy, r, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(4,220,10,' + alpha + ')';
-      ctx.lineWidth = 1.5;
+      ctx.arc(dp.x, dp.y, 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(4,240,10,' + (fade * 0.9) + ')';
+      ctx.fill();
+      // glow
+      var dg = ctx.createRadialGradient(dp.x, dp.y, 0, dp.x, dp.y, 10);
+      dg.addColorStop(0, 'rgba(4,240,10,' + (fade * 0.35) + ')');
+      dg.addColorStop(1, 'rgba(4,240,10,0)');
+      ctx.fillStyle = dg;
+      ctx.beginPath(); ctx.arc(dp.x, dp.y, 10, 0, Math.PI * 2); ctx.fill();
+    }
+
+    // — Radar sweep from destination point —
+    var rcx = destPt.x, rcy = destPt.y;
+    var radarR = Math.min(W, H) * 0.38;
+    radarAngle += 0.012;
+    var sweepGrad = ctx.createConicalGradient ? null : null;
+    // Manual sweep arc
+    ctx.save();
+    ctx.translate(rcx, rcy);
+    ctx.rotate(radarAngle);
+    var sweepArc = ctx.createLinearGradient(0, 0, radarR, 0);
+    sweepArc.addColorStop(0, 'rgba(4,220,10,0.18)');
+    sweepArc.addColorStop(1, 'rgba(4,220,10,0)');
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.arc(0, 0, radarR, -0.55, 0);
+    ctx.closePath();
+    ctx.fillStyle = sweepArc;
+    ctx.fill();
+    ctx.restore();
+
+    // — Radar concentric circles —
+    for (var ri = 1; ri <= 3; ri++) {
+      ctx.beginPath();
+      ctx.arc(rcx, rcy, radarR * (ri / 3), 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(4,200,10,0.1)';
+      ctx.lineWidth = 0.5;
       ctx.stroke();
     }
 
-    for (var p of particles) {
-      p.x += p.vx; p.y += p.vy;
-      if (p.y < -0.02) { p.y = 1.02; p.x = Math.random(); }
-      if (p.x < 0) p.x = 1; if (p.x > 1) p.x = 0;
-      var alpha = p.a * (0.4 + 0.6 * Math.sin(t * p.speed + p.phase));
-      var px = p.x * W, py = p.y * H;
-      var gr = ctx.createRadialGradient(px, py, 0, px, py, p.r * 4);
-      gr.addColorStop(0, 'rgba(4,230,10,' + (alpha * 0.5) + ')');
-      gr.addColorStop(1, 'rgba(4,230,10,0)');
-      ctx.fillStyle = gr;
-      ctx.beginPath(); ctx.arc(px, py, p.r * 4, 0, Math.PI * 2); ctx.fill();
-      ctx.beginPath(); ctx.arc(px, py, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(4,255,10,' + alpha + ')';
-      ctx.fill();
+    // — Ping ripples at destination —
+    for (var pg of pings) {
+      var pp = ((t * 0.005 + pg.offset) % 1);
+      var pr = pp * 48;
+      var pa = (1 - pp) * 0.55;
+      ctx.beginPath();
+      ctx.arc(rcx, rcy, pr, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(4,240,10,' + pa + ')';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
     }
 
-    var topGlow = ctx.createRadialGradient(W*0.5, -20, 0, W*0.5, -20, W*0.55);
-    topGlow.addColorStop(0, 'rgba(4,200,10,0.22)');
-    topGlow.addColorStop(0.5, 'rgba(4,150,10,0.07)');
-    topGlow.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = topGlow;
+    // — Destination pin dot —
+    ctx.beginPath();
+    ctx.arc(rcx, rcy, 4, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(4,255,10,1)';
+    ctx.fill();
+    var pinGlow = ctx.createRadialGradient(rcx, rcy, 0, rcx, rcy, 18);
+    pinGlow.addColorStop(0, 'rgba(4,255,10,0.45)');
+    pinGlow.addColorStop(1, 'rgba(4,255,10,0)');
+    ctx.fillStyle = pinGlow;
+    ctx.beginPath(); ctx.arc(rcx, rcy, 18, 0, Math.PI * 2); ctx.fill();
+
+    // — Origin dot (start of route) —
+    var origPt = routePoint(0);
+    ctx.beginPath();
+    ctx.arc(origPt.x, origPt.y, 3, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(4,200,10,0.6)';
+    ctx.fill();
+
+    // — Subtle bottom ambient glow —
+    var bottomGlow = ctx.createRadialGradient(W*0.5, H, 0, W*0.5, H, H*0.6);
+    bottomGlow.addColorStop(0, 'rgba(4,120,10,0.08)');
+    bottomGlow.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = bottomGlow;
     ctx.fillRect(0, 0, W, H);
 
     t++;
