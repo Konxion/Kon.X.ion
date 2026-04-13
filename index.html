@@ -2252,7 +2252,6 @@ function closeShop() {
 function toggleShopDrop(e) {
   e.stopPropagation();
   vibrateBtn(e.currentTarget);
-  closeAllPages();
   var menu = document.getElementById('shopDropMenu');
   var btn = document.getElementById('shopTabBtn');
   var isOpen = menu && menu.style.display === 'flex';
