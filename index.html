@@ -775,7 +775,13 @@
   @media (max-width: 767px) { #langBtn { display:none !important; } }
   @media (min-width: 768px) { #langBtnMobile { display:none !important; } }
 </style>
-<button id="langBtn" onclick="toggleLang()" style="position:fixed;top:12px;right:14px;z-index:350;background:none;border:0.5px solid rgba(4,200,10,0.4);border-radius:999px;padding:6px 14px;min-height:32px;color:rgba(4,200,10,0.85);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;opacity:0;pointer-events:none;transition:opacity 0.4s ease,border-color 0.2s,color 0.2s;" onmouseover="this.style.borderColor='rgba(4,200,10,0.8)';this.style.color='rgba(4,200,10,1)'" onmouseout="this.style.borderColor='rgba(4,200,10,0.4)';this.style.color='rgba(4,200,10,0.85)'">ES</button>
+<div id="langBtn" style="position:fixed;top:10px;right:12px;z-index:350;display:flex;align-items:center;gap:7px;opacity:0;pointer-events:none;transition:opacity 0.4s ease;">
+  <span class="lang-opt-en" style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.1em;font-weight:400;color:rgba(255,255,255,0.92);transition:color 0.3s;display:flex;align-items:center;gap:4px;white-space:nowrap;">🇺🇸 EN</span>
+  <div onclick="toggleLang()" style="width:36px;height:20px;border-radius:999px;background:rgba(4,200,10,0.12);border:0.5px solid rgba(4,200,10,0.45);position:relative;cursor:pointer;flex-shrink:0;">
+    <div class="lang-pill" style="position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:rgba(4,220,10,0.95);box-shadow:0 0 8px rgba(4,200,10,0.55);transition:transform 0.28s ease;"></div>
+  </div>
+  <span class="lang-opt-es" style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.1em;font-weight:400;color:rgba(255,255,255,0.32);transition:color 0.3s;display:flex;align-items:center;gap:4px;white-space:nowrap;">ES 🇪🇸</span>
+</div>
 
 <main id="mainContent">
 <!-- ═══ MUSIC TAB ═══ -->
@@ -1226,7 +1232,13 @@
     </div>
   </div>
   <button id="journeyBack" onclick="closeJourney()" style="position:absolute;top:68px;left:24px;z-index:10;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:12px 24px;min-height:44px;color:rgba(4,200,10,0.8);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;transition:all 0.2s ease, opacity 0.5s ease;opacity:0;">← Back</button>
-  <button id="rsvpBtn" onclick="openRsvpSheet()" style="position:absolute;bottom:260px;left:50%;transform:translateX(-50%);z-index:10;background:rgba(4,200,10,0.9);border:none;border-radius:999px;padding:14px 48px;min-height:44px;color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;transition:opacity 0.5s ease;opacity:0;">RSVP</button><button id="contactBtn" onclick="openSheet()" style="position:absolute;bottom:200px;left:50%;transform:translateX(-50%);z-index:10;background:transparent;border:1px solid rgba(4,200,10,0.7);border-radius:999px;padding:14px 48px;min-height:44px;color:rgba(4,200,10,0.9);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;transition:opacity 0.5s ease;opacity:0;">Contact Us</button><button id="langBtnMobile" onclick="toggleLang()" style="position:absolute;bottom:148px;left:50%;transform:translateX(-50%);z-index:10;background:none;border:0.5px solid rgba(4,200,10,0.4);border-radius:999px;padding:8px 24px;min-height:36px;color:rgba(4,200,10,0.85);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.5s ease;">ES</button>
+  <button id="rsvpBtn" onclick="openRsvpSheet()" style="position:absolute;bottom:260px;left:50%;transform:translateX(-50%);z-index:10;background:rgba(4,200,10,0.9);border:none;border-radius:999px;padding:14px 48px;min-height:44px;color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;transition:opacity 0.5s ease;opacity:0;">RSVP</button><button id="contactBtn" onclick="openSheet()" style="position:absolute;bottom:200px;left:50%;transform:translateX(-50%);z-index:10;background:transparent;border:1px solid rgba(4,200,10,0.7);border-radius:999px;padding:14px 48px;min-height:44px;color:rgba(4,200,10,0.9);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;transition:opacity 0.5s ease;opacity:0;">Contact Us</button><div id="langBtnMobile" style="position:absolute;bottom:148px;left:50%;transform:translateX(-50%);z-index:10;display:flex;align-items:center;gap:7px;opacity:0;pointer-events:none;transition:opacity 0.5s ease;">
+    <span class="lang-opt-en" style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.1em;font-weight:400;color:rgba(255,255,255,0.92);transition:color 0.3s;display:flex;align-items:center;gap:4px;white-space:nowrap;">🇺🇸 EN</span>
+    <div onclick="toggleLang()" style="width:36px;height:20px;border-radius:999px;background:rgba(4,200,10,0.12);border:0.5px solid rgba(4,200,10,0.45);position:relative;cursor:pointer;flex-shrink:0;">
+      <div class="lang-pill" style="position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:rgba(4,220,10,0.95);box-shadow:0 0 8px rgba(4,200,10,0.55);transition:transform 0.28s ease;"></div>
+    </div>
+    <span class="lang-opt-es" style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.1em;font-weight:400;color:rgba(255,255,255,0.32);transition:color 0.3s;display:flex;align-items:center;gap:4px;white-space:nowrap;">ES 🇪🇸</span>
+  </div>
   <div style="position:absolute;bottom:0;left:0;right:0;z-index:5;height:36px;border-top:0.5px solid rgba(4,200,10,0.2);overflow:hidden;background:rgba(0,0,0,0.5);">
     <div style="display:inline-block;white-space:nowrap;line-height:36px;animation:jTicker 100s linear infinite;will-change:transform;font-size:12px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(4,200,10,0.7);font-weight:200;font-family:DM Sans,sans-serif;">Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · </div>
   </div>
@@ -2687,11 +2699,16 @@ function applyLanguage(lang) {
     var key = el.dataset.i18n;
     if (t[key] !== undefined) el.innerHTML = t[key];
   });
-  var label = lang === 'en' ? 'ES' : 'EN';
-  var lb = document.getElementById('langBtn');
-  if (lb) lb.textContent = label;
-  var lbm = document.getElementById('langBtnMobile');
-  if (lbm) lbm.textContent = label;
+  var isEN = lang === 'en';
+  document.querySelectorAll('.lang-opt-en').forEach(function(el) {
+    el.style.color = isEN ? 'rgba(255,255,255,0.92)' : 'rgba(255,255,255,0.32)';
+  });
+  document.querySelectorAll('.lang-opt-es').forEach(function(el) {
+    el.style.color = isEN ? 'rgba(255,255,255,0.32)' : 'rgba(255,255,255,0.92)';
+  });
+  document.querySelectorAll('.lang-pill').forEach(function(el) {
+    el.style.transform = isEN ? 'translateX(0)' : 'translateX(16px)';
+  });
 }
 
 function toggleLang() {
