@@ -1220,6 +1220,8 @@ function openJourney() {
     if (contactBtn) contactBtn.style.opacity = '1';
     const tabBar = document.getElementById('tabBar');
     if (tabBar) { tabBar.style.opacity = '1'; tabBar.style.pointerEvents = 'all'; }
+    const lb = document.getElementById('langBtn');
+    if (lb) { lb.style.opacity = '1'; lb.style.pointerEvents = ''; }
   }, 2200);
 }
 
@@ -1239,6 +1241,8 @@ function closeJourney() {
   if (contactBtn) contactBtn.style.opacity = '0';
   const tabBar = document.getElementById('tabBar');
   if (tabBar) { tabBar.style.opacity = '0'; tabBar.style.pointerEvents = 'none'; }
+  const lb = document.getElementById('langBtn');
+  if (lb) { lb.style.opacity = '0'; lb.style.pointerEvents = 'none'; }
 
   // Fade to black
   blackFade.style.transition = 'opacity 0.8s ease';
