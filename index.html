@@ -640,6 +640,10 @@
     cursor: pointer;
     transition: color 0.25s ease;
     position: relative;
+    white-space: nowrap;
+  }
+  @media (max-width: 480px) {
+    .tab-btn { font-size: 9.5px; letter-spacing: 0.11em; }
   }
   .tab-btn::after {
     content: '';
@@ -753,7 +757,7 @@
         <span data-i18n="nav-getting">Getting Here</span>
       </button>
       <button class="music-drop-item" onclick="openStay();closePlanDrop();">
-        <span style="font-size:16px;">🏕️</span>
+        <span style="font-size:16px;">🛖</span>
         <span>Stay</span>
       </button>
     </div>
