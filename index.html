@@ -1112,7 +1112,7 @@
   <div class="sheet-handle"></div>
 
   <div class="sheet-header">
-    <div class="sheet-title" style="font-family:'Orbitron',sans-serif;">Get in Touch</div>
+    <div class="sheet-title" style="font-family:'Orbitron',sans-serif;" data-i18n="contact-title">Get in Touch</div>
   </div>
 
   <!-- Instagram row -->
@@ -1148,11 +1148,11 @@
 
   <!-- Contact Form -->
   <div class="form-section">
-    <label class="form-label" id="contactFormLabel" style="color:rgba(4,200,10,1)!important;text-shadow:0 0 18px rgba(4,200,10,0.7),0 0 40px rgba(4,200,10,0.35);font-size:inherit;">Email us</label>
-    <input class="form-field" type="text" id="fname" placeholder="Name" autocomplete="name" aria-label="Name">
+    <label class="form-label" id="contactFormLabel" style="color:rgba(4,200,10,1)!important;text-shadow:0 0 18px rgba(4,200,10,0.7),0 0 40px rgba(4,200,10,0.35);font-size:inherit;" data-i18n="contact-email-label">Email us</label>
+    <input class="form-field" type="text" id="fname" placeholder="Name" autocomplete="name" aria-label="Name" data-i18n-placeholder="contact-name">
     <input class="form-field" type="email" id="femail" placeholder="Email" autocomplete="email" aria-label="Email">
-    <textarea class="form-field" id="fmsg" placeholder="Your message…" aria-label="Your message"></textarea>
-    <button class="send-btn" onclick="handleSend()">Send</button>
+    <textarea class="form-field" id="fmsg" placeholder="Your message…" aria-label="Your message" data-i18n-placeholder="contact-msg"></textarea>
+    <button class="send-btn" onclick="handleSend()" data-i18n="contact-send">Send</button>
     <div class="send-confirm" id="sendConfirm"></div>
   </div>
 </div>
@@ -1226,7 +1226,7 @@
     </div>
   </div>
   <button id="journeyBack" onclick="closeJourney()" style="position:absolute;top:68px;left:24px;z-index:10;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:12px 24px;min-height:44px;color:rgba(4,200,10,0.8);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;transition:all 0.2s ease, opacity 0.5s ease;opacity:0;">← Back</button>
-  <button id="rsvpBtn" onclick="openRsvpSheet()" style="position:absolute;bottom:260px;left:50%;transform:translateX(-50%);z-index:10;background:rgba(4,200,10,0.9);border:none;border-radius:999px;padding:14px 48px;min-height:44px;color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;transition:opacity 0.5s ease;opacity:0;">RSVP</button><button id="contactBtn" onclick="openSheet()" style="position:absolute;bottom:200px;left:50%;transform:translateX(-50%);z-index:10;background:transparent;border:1px solid rgba(4,200,10,0.7);border-radius:999px;padding:14px 48px;min-height:44px;color:rgba(4,200,10,0.9);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;transition:opacity 0.5s ease;opacity:0;">Contact Us</button><div id="langBtnMobile" style="position:absolute;bottom:148px;left:50%;transform:translateX(-50%);z-index:10;display:flex;align-items:center;gap:7px;opacity:0;pointer-events:none;transition:opacity 0.5s ease;">
+  <button id="rsvpBtn" onclick="openRsvpSheet()" style="position:absolute;bottom:260px;left:50%;transform:translateX(-50%);z-index:10;background:rgba(4,200,10,0.9);border:none;border-radius:999px;padding:14px 48px;min-height:44px;color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;transition:opacity 0.5s ease;opacity:0;">RSVP</button><button id="contactBtn" onclick="openSheet()" style="position:absolute;bottom:200px;left:50%;transform:translateX(-50%);z-index:10;background:transparent;border:1px solid rgba(4,200,10,0.7);border-radius:999px;padding:14px 48px;min-height:44px;color:rgba(4,200,10,0.9);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;transition:opacity 0.5s ease;opacity:0;" data-i18n="contact-btn">Contact Us</button><div id="langBtnMobile" style="position:absolute;bottom:148px;left:50%;transform:translateX(-50%);z-index:10;display:flex;align-items:center;gap:7px;opacity:0;pointer-events:none;transition:opacity 0.5s ease;">
     <span class="lang-opt-en" style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.1em;font-weight:400;color:rgba(255,255,255,0.92);transition:color 0.3s;display:flex;align-items:center;gap:4px;white-space:nowrap;">🇺🇸 EN</span>
     <div onclick="toggleLang()" style="width:36px;height:20px;border-radius:999px;background:rgba(4,200,10,0.12);border:0.5px solid rgba(4,200,10,0.45);position:relative;cursor:pointer;flex-shrink:0;">
       <div class="lang-pill" style="position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:rgba(4,220,10,0.95);box-shadow:0 0 8px rgba(4,200,10,0.55);transition:transform 0.28s ease;"></div>
@@ -2668,7 +2668,10 @@ const translations = {
     'stay-included-label':"What's Included",'stay-included-note':'With cabin rental','stay-included-body':'· Welcome drink when arrived at Bethel Lozana<br>· Free breakfast<br>· Electric meditation class (1.5 hours)<br>· Free padel class at <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 people)<br>· Mystery gift box<br>· Kayak',
     'stay-details-label':'Cabin Details','stay-details-body':'· 4 cabins — sleeps 4 · 2 double beds<br>· 5 cabins — sleeps 2 · 1 California queen bed<br>· Availability limited',
     'stay-reserve-label':'Reserve a Cabin','stay-reserve-body':'Spots are extremely limited. Email us to reserve your cabin alongside your RSVP.',
-    'stay-cta':'Inquire Now'
+    'stay-cta':'Inquire Now',
+    'contact-btn':'Contact Us','contact-title':'Get in Touch',
+    'contact-email-label':'Email us','contact-name':'Name',
+    'contact-msg':'Your message…','contact-send':'Send'
   },
   es: {
     'music-nav':'Música','plan-nav':'Plan','exp-nav':'Experiencia','shop-nav':'Tienda',
@@ -2697,7 +2700,10 @@ const translations = {
     'stay-included-label':'Qué Incluye','stay-included-note':'Con renta de cabaña','stay-included-body':'· Bebida de bienvenida al llegar a Bethel Lozana<br>· Desayuno gratis<br>· Clase de meditación eléctrica (1.5 horas)<br>· Clase gratuita de pádel en <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 personas)<br>· Caja sorpresa<br>· Kayak',
     'stay-details-label':'Detalles de la Cabaña','stay-details-body':'· 4 cabañas — 4 personas · 2 camas dobles<br>· 5 cabañas — 2 personas · 1 cama California queen<br>· Disponibilidad limitada',
     'stay-reserve-label':'Reserva una Cabaña','stay-reserve-body':'Los cupos son muy limitados. Escríbenos para reservar tu cabaña junto con tu RSVP.',
-    'stay-cta':'Consultar Ahora'
+    'stay-cta':'Consultar Ahora',
+    'contact-btn':'Contáctanos','contact-title':'Contáctanos',
+    'contact-email-label':'Escríbenos','contact-name':'Nombre',
+    'contact-msg':'Tu mensaje…','contact-send':'Enviar'
   }
 };
 
@@ -2709,6 +2715,10 @@ function applyLanguage(lang) {
   document.querySelectorAll('[data-i18n]').forEach(function(el) {
     var key = el.dataset.i18n;
     if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+    var key = el.dataset.i18nPlaceholder;
+    if (t[key] !== undefined) el.placeholder = t[key];
   });
   var isEN = lang === 'en';
   document.querySelectorAll('.lang-opt-en').forEach(function(el) {
