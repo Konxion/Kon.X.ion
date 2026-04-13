@@ -1172,8 +1172,8 @@
   <canvas id="rsvpNatureCanvas"></canvas>
   <div class="sheet-handle"></div>
   <div class="sheet-header">
-    <div class="sheet-title" style="color:rgba(4,200,10,1);text-shadow:0 0 18px rgba(4,200,10,0.7),0 0 40px rgba(4,200,10,0.35);">Reserve Your Spot</div>
-    <div class="sheet-sub">Saturday, July 18 &nbsp;·&nbsp; 1PM — 5AM</div>
+    <div class="sheet-title" style="color:rgba(4,200,10,1);text-shadow:0 0 18px rgba(4,200,10,0.7),0 0 40px rgba(4,200,10,0.35);" data-i18n="rsvp-title">Reserve Your Spot</div>
+    <div class="sheet-sub" data-i18n="rsvp-date">Saturday, July 18 &nbsp;·&nbsp; 1PM — 5AM</div>
   </div>
   <div class="form-section">
     <label class="form-label">Your details</label>
@@ -1223,11 +1223,11 @@
   <div style="position:absolute;inset:0;z-index:3;pointer-events:none;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);"></div>
   <div id="journeyContent" style="position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px 220px;gap:0;pointer-events:none;opacity:0;transition:opacity 0.8s ease;">
     <div style="font-family:'DM Sans',sans-serif;font-size:clamp(42px,11vw,96px);font-weight:200;line-height:0.9;color:#fff;text-align:center;letter-spacing:0.12em;text-shadow:0 0 40px rgba(4,180,10,0.4),0 0 120px rgba(4,180,10,0.15);">KON<span style="color:rgba(4,220,10,1);text-shadow:0 0 20px rgba(4,220,10,0.8),0 0 60px rgba(4,220,10,0.4);">.</span>X<span style="color:rgba(4,220,10,1);text-shadow:0 0 20px rgba(4,220,10,0.8),0 0 60px rgba(4,220,10,0.4);">.</span>ION</div>
-    <div style="font-size:14px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(4,210,10,0.7);margin-top:14px;margin-bottom:0;font-family:'DM Sans',sans-serif;font-weight:300;">Next Event</div>
+    <div style="font-size:14px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(4,210,10,0.7);margin-top:14px;margin-bottom:0;font-family:'DM Sans',sans-serif;font-weight:300;" data-i18n="next-event">Next Event</div>
     <div style="margin-top:32px;display:flex;flex-direction:column;align-items:center;gap:14px;">
       <div style="width:40px;height:0.5px;background:rgba(4,210,10,0.4);"></div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
-        <div style="font-size:18px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.9);font-weight:300;font-family:'DM Sans',sans-serif;">Saturday, July 18</div>
+        <div style="font-size:18px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.9);font-weight:300;font-family:'DM Sans',sans-serif;" data-i18n="journey-date">Saturday, July 18</div>
         <div style="font-size:18px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.9);font-weight:300;font-family:'DM Sans',sans-serif;">1PM — 5AM</div>
         <div style="font-size:16px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(4,210,10,0.65);font-weight:200;font-family:'DM Sans',sans-serif;">Bethel Lozana</div>
         <div style="font-size:16px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(4,210,10,0.65);font-weight:200;font-family:'DM Sans',sans-serif;">Guatapé, Colombia</div>
@@ -2669,7 +2669,9 @@ const translations = {
     'gh-medellin-body':'Approximately 2 hours by car.<br>Take the highway toward El Peñol / Guatapé.',
     'gh-parking-title':'Parking','gh-parking-body':'Details to be announced. Check back closer to the event.',
     'gh-q-title':'Questions?','shop-merch':'Merch','shop-soon':'Coming Soon',
-    'shop-drops':'Drops with the lineup announcement.','back-btn':'← Back'
+    'shop-drops':'Drops with the lineup announcement.','back-btn':'← Back',
+    'next-event':'Next Event','journey-date':'Saturday, July 18',
+    'rsvp-title':'Reserve Your Spot','rsvp-date':'Saturday, July 18 &nbsp;·&nbsp; 1PM — 5AM'
   },
   es: {
     'music-nav':'Música','plan-nav':'Plan','exp-nav':'Experiencia','shop-nav':'Tienda',
@@ -2690,7 +2692,9 @@ const translations = {
     'gh-medellin-body':'Aproximadamente 2 horas en carro.<br>Toma la vía hacia El Peñol / Guatapé.',
     'gh-parking-title':'Parqueadero','gh-parking-body':'Detalles por anunciar. Revisa más cerca del evento.',
     'gh-q-title':'¿Preguntas?','shop-merch':'Merch','shop-soon':'Próximamente',
-    'shop-drops':'Disponible con el anuncio del lineup.','back-btn':'← Volver'
+    'shop-drops':'Disponible con el anuncio del lineup.','back-btn':'← Volver',
+    'next-event':'Próximo Evento','journey-date':'Sábado, 18 de julio',
+    'rsvp-title':'Reserva tu Lugar','rsvp-date':'Sábado, 18 de julio &nbsp;·&nbsp; 1PM — 5AM'
   }
 };
 
