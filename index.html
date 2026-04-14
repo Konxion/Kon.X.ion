@@ -846,7 +846,7 @@
 
 
 <!-- ═══ STAY PAGE ═══ -->
-<div id="stayPage" style="position:fixed;inset:0;z-index:40;background:#000;opacity:0;pointer-events:none;transition:opacity 0.4s ease;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+<div id="stayPage" style="position:fixed;inset:0;z-index:40;background:#000;opacity:0;pointer-events:none;transition:opacity 0.4s ease;overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;overscroll-behavior:contain;">
   <canvas id="stayBgCanvas" style="position:fixed;inset:0;z-index:0;pointer-events:none;"></canvas>
   <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 100% 100% at 50% 50%, transparent 30%, rgba(0,0,0,0.85) 100%);"></div>
   <button onclick="closeStay()" style="position:fixed;top:68px;left:24px;z-index:50;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:12px 24px;min-height:44px;color:rgba(4,200,10,0.8);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;opacity:0;transition:opacity 0.4s ease;" id="stayBack" data-i18n="back-btn">← Back</button>
@@ -2434,8 +2434,8 @@ function openStay() {
   closeAllDropdowns();
   const page = document.getElementById('stayPage');
   const back = document.getElementById('stayBack');
-  page.scrollTop = 0;
   page.style.opacity = '1'; page.style.pointerEvents = 'all';
+  requestAnimationFrame(() => { page.scrollTop = 0; });
   setTimeout(() => { back.style.opacity = '1'; }, 300);
   startStayBg();
 }
