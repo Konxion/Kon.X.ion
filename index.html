@@ -859,14 +859,17 @@
   <style>
     .stay-slide {
       position:absolute;inset:0;
-      background-size:cover;background-position:center;
-      opacity:0;transition:opacity 1.8s ease;
-      animation:stayKenBurns 12s ease-in-out infinite alternate;
+      background-size:cover;
+      background-position:center 30%;
+      opacity:0;
+      transition:opacity 2.2s ease;
+      animation:stayKenBurns 18s ease-in-out infinite alternate;
+      will-change:transform;
     }
     .stay-slide.active { opacity:1; }
     @keyframes stayKenBurns {
-      from { transform:scale(1.0) translate(0%,0%); }
-      to   { transform:scale(1.10) translate(-2%,-1.5%); }
+      from { transform:scale(1.0); }
+      to   { transform:scale(1.04); }
     }
   </style>
   <!-- Dark overlay for readability -->
