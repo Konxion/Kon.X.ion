@@ -2610,7 +2610,7 @@ function closeStay() {
   stopStayBg();
 }
 function startStayBg() {
-  const slides = document.querySelectorAll('#stayBgSlides .stay-slide');
+  const slides = document.getElementById('stayBgSlides').querySelectorAll('.stay-slide');
   if (!slides.length || slides[0]._running) return;
   let current = 0;
   slides[current].classList.add('active');
@@ -2846,7 +2846,7 @@ function _startStayBgOLD() {
   draw();
 }
 function stopStayBg() {
-  const slides = document.querySelectorAll('#stayBgSlides .stay-slide');
+  const slides = document.getElementById('stayBgSlides').querySelectorAll('.stay-slide');
   if (!slides.length) return;
   clearInterval(slides[0]._timer);
   slides[0]._running = false;
