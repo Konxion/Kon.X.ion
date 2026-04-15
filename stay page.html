@@ -41,7 +41,7 @@
     background-position: center 30%;
     background-size: cover;
     opacity: 0;
-    transition: opacity 2.2s ease;
+    transition: opacity 0.8s ease;
     animation: stayKenBurns 18s ease-in-out infinite alternate;
     will-change: transform;
   }
@@ -222,7 +222,7 @@ function startStayBg() {
     slides[current].classList.remove('active');
     current = (current + 1) % slides.length;
     slides[current].classList.add('active');
-  }, 5000);
+  }, 1000);
 }
 
 // ── Cabin 4 photo modal ──
