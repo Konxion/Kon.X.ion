@@ -1126,7 +1126,7 @@
   <div style="padding:120px 24px 60px;max-width:520px;margin:0 auto;position:relative;z-index:1;">
     <div style="text-align:center;margin-bottom:40px;">
       <div style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(4,200,10,0.6);margin-bottom:10px;">Kon.X.ion · July 18</div>
-      <div style="font-family:'DM Serif Display',serif;font-size:32px;color:#fff;letter-spacing:0.04em;" data-i18n="gh-title">Getting Here</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:60px;color:#fff;letter-spacing:0.06em;" data-i18n="gh-title">Getting Here</div>
       <div style="width:40px;height:0.5px;background:rgba(4,200,10,0.4);margin:14px auto 0;"></div>
     </div>
     <div class="info-card">
@@ -2597,92 +2597,216 @@ function startStayBg() {
   let H = canvas.height = window.innerHeight;
   let t = 0;
 
-  // Stars — fixed twinkle points
-  const stars = Array.from({length: 120}, () => ({
+  window.addEventListener('resize', () => {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  });
+
+  // Stars
+  const stars = Array.from({length: 90}, () => ({
     x: Math.random() * W,
-    y: Math.random() * H * 0.65,
-    r: Math.random() * 1.1 + 0.2,
+    y: Math.random() * H * 0.55,
+    r: Math.random() * 1.0 + 0.15,
     phase: Math.random() * Math.PI * 2,
-    speed: Math.random() * 0.008 + 0.003
+    speed: Math.random() * 0.006 + 0.002
   }));
 
-  // Mist layers — wide, slow horizontal drifters
-  function mkMist(init) {
+  // Cabin definitions — small silhouettes with glowing windows
+  const cabins = [
+    { rx: 0.13, ry: 0.78, scale: 0.80, flip: false },
+    { rx: 0.32, ry: 0.80, scale: 0.95, flip: true  },
+    { rx: 0.62, ry: 0.79, scale: 0.85, flip: false },
+    { rx: 0.82, ry: 0.77, scale: 0.72, flip: true  },
+  ];
+
+  // Fireflies
+  function mkFirefly(init) {
     return {
-      x: init ? Math.random() * W * 1.5 - W * 0.25 : -W * 0.4,
-      y: H * (0.45 + Math.random() * 0.45),
-      w: W * (0.5 + Math.random() * 0.7),
-      h: 60 + Math.random() * 100,
-      vx: 0.12 + Math.random() * 0.18,
-      alpha: 0.04 + Math.random() * 0.07,
-      greenTint: Math.random() > 0.6
+      x: Math.random() * W,
+      y: init ? H * 0.45 + Math.random() * H * 0.45 : H * 0.75 + Math.random() * H * 0.2,
+      vy: -(0.15 + Math.random() * 0.25),
+      vx: (Math.random() - 0.5) * 0.18,
+      phase: Math.random() * Math.PI * 2,
+      blinkSpeed: 0.025 + Math.random() * 0.04,
+      r: 1.0 + Math.random() * 1.2,
+      green: Math.random() > 0.45  // mix warm gold and green
     };
   }
-  const mists = Array.from({length: 7}, () => mkMist(true));
+  const fireflies = Array.from({length: 55}, () => mkFirefly(true));
+
+  // Ground mist
+  function mkMist(init) {
+    return {
+      x: init ? Math.random() * W * 1.5 - W * 0.25 : -W * 0.5,
+      y: H * (0.72 + Math.random() * 0.2),
+      w: W * (0.4 + Math.random() * 0.5),
+      h: 50 + Math.random() * 70,
+      vx: 0.08 + Math.random() * 0.14,
+      alpha: 0.03 + Math.random() * 0.055
+    };
+  }
+  const mists = Array.from({length: 8}, () => mkMist(true));
+
+  // Draw a single cabin silhouette at (cx, groundY) with given scale
+  function drawCabin(cx, groundY, scale, flip) {
+    ctx.save();
+    ctx.translate(cx, groundY);
+    if (flip) ctx.scale(-1, 1);
+    const s = scale;
+    const bw = 52 * s, bh = 32 * s;
+    const rw = 64 * s, rh = 30 * s;
+    const chimH = 18 * s, chimW = 7 * s;
+    const porchW = 18 * s, porchH = 8 * s;
+
+    // Body
+    ctx.beginPath();
+    ctx.rect(-bw/2, -bh, bw, bh);
+    ctx.fillStyle = 'rgba(4,12,6,1)'; ctx.fill();
+
+    // Roof
+    ctx.beginPath();
+    ctx.moveTo(-rw/2, -bh);
+    ctx.lineTo(0, -bh - rh);
+    ctx.lineTo(rw/2, -bh);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(3,10,5,1)'; ctx.fill();
+
+    // Chimney
+    ctx.beginPath();
+    ctx.rect(bw * 0.18, -bh - rh * 0.65 - chimH, chimW, chimH + 4 * s);
+    ctx.fillStyle = 'rgba(5,14,8,1)'; ctx.fill();
+
+    // Porch
+    ctx.beginPath();
+    ctx.rect(-bw/2 - porchW, -porchH, porchW, porchH);
+    ctx.fillStyle = 'rgba(3,10,5,1)'; ctx.fill();
+
+    // Warm window glow — pulse softly
+    const wPulse = 0.55 + 0.45 * Math.sin(t * 0.018 + cx * 0.002);
+    const wx = -bw * 0.18, wy = -bh * 0.62, ww = 14 * s, wh = 12 * s;
+    // Outer halo
+    const wg = ctx.createRadialGradient(wx, wy, 0, wx, wy, ww * 2.8);
+    wg.addColorStop(0, `rgba(255,180,60,${0.22 * wPulse})`);
+    wg.addColorStop(1, 'rgba(255,140,30,0)');
+    ctx.fillStyle = wg;
+    ctx.beginPath(); ctx.arc(wx, wy, ww * 2.8, 0, Math.PI * 2); ctx.fill();
+    // Window pane
+    ctx.fillStyle = `rgba(255,200,80,${0.70 * wPulse})`;
+    ctx.fillRect(wx - ww/2, wy - wh/2, ww, wh);
+
+    // Door
+    ctx.fillStyle = 'rgba(2,8,4,1)';
+    ctx.fillRect(-6 * s, -bh * 0.55, 10 * s, bh * 0.55);
+
+    // Chimney smoke wisps
+    const smokeX = bw * 0.18 + chimW * 0.5;
+    for (let i = 0; i < 3; i++) {
+      const sOff = (t * 0.005 + i * 0.33) % 1;
+      const sy = -bh - rh * 0.65 - chimH - sOff * 28 * s;
+      const sa = (1 - sOff) * 0.13;
+      const sw = (3 + sOff * 8) * s;
+      const sg = ctx.createRadialGradient(smokeX, sy, 0, smokeX, sy, sw);
+      sg.addColorStop(0, `rgba(180,200,190,${sa})`);
+      sg.addColorStop(1, 'rgba(180,200,190,0)');
+      ctx.fillStyle = sg;
+      ctx.beginPath(); ctx.arc(smokeX, sy, sw, 0, Math.PI * 2); ctx.fill();
+    }
+
+    ctx.restore();
+  }
 
   function draw() {
     if (!canvas._running) return;
-    t += 0.012;
+    t += 1;
     ctx.clearRect(0, 0, W, H);
 
-    // Sky gradient — deep midnight blue-black to near-black
+    // Deep forest night sky
     const sky = ctx.createLinearGradient(0, 0, 0, H);
-    sky.addColorStop(0,   'rgba(4,8,18,1)');
-    sky.addColorStop(0.55,'rgba(5,14,22,1)');
-    sky.addColorStop(1,   'rgba(2,10,8,1)');
+    sky.addColorStop(0,    'rgba(2,5,12,1)');
+    sky.addColorStop(0.50, 'rgba(3,10,16,1)');
+    sky.addColorStop(0.80, 'rgba(2,12,8,1)');
+    sky.addColorStop(1,    'rgba(1,8,4,1)');
     ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H);
 
-    // Distant mountain ridge silhouette
+    // Stars
+    for (const s of stars) {
+      const tw = 0.35 + 0.65 * Math.sin(t * s.speed + s.phase);
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(220,235,255,${tw * 0.7})`; ctx.fill();
+    }
+
+    // Distant mountain ridge
     ctx.beginPath();
-    ctx.moveTo(0, H);
-    const ridgePoints = 12;
-    for (let i = 0; i <= ridgePoints; i++) {
-      const px = (i / ridgePoints) * W;
-      const baseY = H * 0.62;
+    const ridgePts = 14;
+    for (let i = 0; i <= ridgePts; i++) {
+      const px = (i / ridgePts) * W;
+      const baseY = H * 0.60;
       const peakY = baseY - (
-        Math.sin(i * 0.7 + 1.2) * H * 0.10 +
-        Math.sin(i * 1.4 + 0.5) * H * 0.06 +
-        Math.sin(i * 0.3 + 2.0) * H * 0.04
+        Math.sin(i * 0.55 + 0.8) * H * 0.11 +
+        Math.sin(i * 1.2 + 0.3) * H * 0.055 +
+        Math.sin(i * 0.25 + 1.7) * H * 0.03
       );
       i === 0 ? ctx.moveTo(px, peakY) : ctx.lineTo(px, peakY);
     }
     ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
-    const ridgeGrad = ctx.createLinearGradient(0, H * 0.52, 0, H);
-    ridgeGrad.addColorStop(0, 'rgba(6,22,14,1)');
-    ridgeGrad.addColorStop(1, 'rgba(3,12,8,1)');
+    const ridgeGrad = ctx.createLinearGradient(0, H * 0.50, 0, H);
+    ridgeGrad.addColorStop(0, 'rgba(5,18,10,1)');
+    ridgeGrad.addColorStop(1, 'rgba(2,10,5,1)');
     ctx.fillStyle = ridgeGrad; ctx.fill();
 
-    // Subtle lake reflection glow at horizon
-    const lakeGlow = ctx.createRadialGradient(W * 0.5, H * 0.63, 0, W * 0.5, H * 0.63, W * 0.45);
-    lakeGlow.addColorStop(0, 'rgba(4,200,10,0.035)');
-    lakeGlow.addColorStop(0.5, 'rgba(4,150,20,0.012)');
-    lakeGlow.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = lakeGlow; ctx.fillRect(0, 0, W, H);
+    // Foreground tree line — jagged fir silhouette
+    ctx.beginPath();
+    const treeY = H * 0.74;
+    ctx.moveTo(0, H);
+    ctx.lineTo(0, treeY);
+    for (let x = 0; x <= W; x += 22) {
+      const h = 18 + Math.sin(x * 0.09 + 0.5) * 10 + Math.sin(x * 0.22) * 6;
+      ctx.lineTo(x + 6,  treeY - h);
+      ctx.lineTo(x + 11, treeY - h * 0.4);
+      ctx.lineTo(x + 16, treeY - h * 1.15);
+      ctx.lineTo(x + 22, treeY);
+    }
+    ctx.lineTo(W, H); ctx.closePath();
+    ctx.fillStyle = 'rgba(1,6,3,1)'; ctx.fill();
 
-    // Stars with slow twinkle
-    for (const s of stars) {
-      const twinkle = 0.45 + 0.55 * Math.sin(t * s.speed * 80 + s.phase);
-      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(210,230,255,${twinkle * 0.75})`; ctx.fill();
+    // Cabins
+    for (const c of cabins) {
+      drawCabin(c.rx * W, c.ry * H, c.scale, c.flip);
     }
 
-    // Drifting mist
+    // Ground mist
     for (const m of mists) {
       m.x += m.vx;
-      const mg = ctx.createRadialGradient(m.x + m.w/2, m.y, 0, m.x + m.w/2, m.y, m.w * 0.55);
-      const col = m.greenTint ? `rgba(4,180,12,${m.alpha})` : `rgba(160,200,190,${m.alpha})`;
-      mg.addColorStop(0, col);
+      const mg = ctx.createRadialGradient(m.x + m.w/2, m.y, 0, m.x + m.w/2, m.y, m.w * 0.5);
+      mg.addColorStop(0, `rgba(140,190,160,${m.alpha})`);
       mg.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = mg;
       ctx.fillRect(m.x, m.y - m.h/2, m.w, m.h);
       if (m.x > W * 1.1) Object.assign(m, mkMist(false));
     }
 
-    // Very faint green ambient from bottom (brand color)
-    const baseGlow = ctx.createLinearGradient(0, H * 0.75, 0, H);
+    // Fireflies
+    for (const f of fireflies) {
+      f.x += f.vx + Math.sin(t * 0.02 + f.phase) * 0.3;
+      f.y += f.vy;
+      if (f.y < H * 0.30) Object.assign(f, mkFirefly(false));
+      const blink = 0.15 + 0.85 * Math.pow(Math.max(0, Math.sin(t * f.blinkSpeed + f.phase)), 2.5);
+      const col = f.green ? `rgba(4,220,10,${blink * 0.85})` : `rgba(255,200,60,${blink * 0.75})`;
+      const glow = f.green ? `rgba(4,200,10,0)` : `rgba(255,180,40,0)`;
+      const fg = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r * 5);
+      fg.addColorStop(0, col);
+      fg.addColorStop(1, glow);
+      ctx.fillStyle = fg;
+      ctx.beginPath(); ctx.arc(f.x, f.y, f.r * 5, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = col;
+      ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2); ctx.fill();
+    }
+
+    // Very faint brand-green ground wash
+    const baseGlow = ctx.createLinearGradient(0, H * 0.78, 0, H);
     baseGlow.addColorStop(0, 'rgba(0,0,0,0)');
-    baseGlow.addColorStop(1, 'rgba(4,200,10,0.04)');
-    ctx.fillStyle = baseGlow; ctx.fillRect(0, H * 0.75, W, H * 0.25);
+    baseGlow.addColorStop(1, 'rgba(4,200,10,0.045)');
+    ctx.fillStyle = baseGlow; ctx.fillRect(0, H * 0.78, W, H * 0.22);
 
     requestAnimationFrame(draw);
   }
