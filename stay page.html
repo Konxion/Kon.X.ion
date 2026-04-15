@@ -41,7 +41,7 @@
     background-position: center 30%;
     background-size: cover;
     opacity: 0;
-    transition: opacity 0.8s ease;
+    transition: opacity 0.25s ease;
     animation: stayKenBurns 18s ease-in-out infinite alternate;
     will-change: transform;
   }
@@ -213,15 +213,14 @@
 <script>
 // ── Slideshow ──
 function startStayBg() {
-  const slides = document.getElementById('stayBgSlides').querySelectorAll('.stay-slide');
-  if (!slides.length || slides[0]._running) return;
+  const slides = Array.from(document.getElementById('stayBgSlides').querySelectorAll('.stay-slide'));
+  if (!slides.length) return;
   let current = 0;
-  slides[current].classList.add('active');
-  slides[0]._running = true;
-  slides[0]._timer = setInterval(() => {
-    slides[current].classList.remove('active');
+  slides[current].style.opacity = '1';
+  setInterval(() => {
+    slides[current].style.opacity = '0';
     current = (current + 1) % slides.length;
-    slides[current].classList.add('active');
+    slides[current].style.opacity = '1';
   }, 1000);
 }
 
