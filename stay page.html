@@ -38,20 +38,12 @@
     position: absolute; inset: 0;
     background-color: #000;
     background-repeat: no-repeat;
-    background-position: center 30%;
+    background-position: center center;
     background-size: cover;
     opacity: 0;
-    transition: opacity 0.25s ease;
-    animation: stayKenBurns 18s ease-in-out infinite alternate;
-    will-change: transform;
   }
   @media (min-width: 600px) {
-    .stay-slide { background-size: contain; background-position: center center; }
-  }
-  .stay-slide.active { opacity: 1; }
-  @keyframes stayKenBurns {
-    from { transform: scale(1.0); }
-    to   { transform: scale(1.04); }
+    .stay-slide { background-size: contain; }
   }
 
   /* ── LANGUAGE TOGGLE ── */
