@@ -1177,7 +1177,7 @@
             <svg width="26" height="26" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><ellipse cx="12" cy="11" rx="9" ry="8.5" fill="#33CCFF"/><circle cx="9.2" cy="10" r="1.3" fill="#1A1A1A"/><circle cx="14.8" cy="10" r="1.3" fill="#1A1A1A"/><path d="M9 13.5c.8 1.2 5.2 1.2 6 0" stroke="#1A1A1A" stroke-width="1.1" stroke-linecap="round" fill="none"/><circle cx="16.5" cy="17.5" r="2" fill="#FFCC00"/><circle cx="9.5" cy="19" r="1.5" fill="#FFCC00"/></svg>
           </a>
         </div>
-        <div style="font-family:'DM Sans',sans-serif;font-size:16px;letter-spacing:0.1em;color:#fff;">Guatapé, Colombia</div>
+        <div onclick="openMapPicker()" style="font-family:'DM Sans',sans-serif;font-size:16px;letter-spacing:0.1em;color:#fff;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.3);display:inline-block;padding-bottom:1px;">Guatapé, Colombia</div>
       </div>
     </div>
     <div class="info-card">
@@ -3205,7 +3205,78 @@ function applyLanguage(lang) {
 function toggleLang() {
   applyLanguage(currentLang === 'en' ? 'es' : 'en');
 }
+
+// ── Map Picker ──
+var MAP_URLS = {
+  apple: 'https://maps.apple.com/?q=Bethel+Lozana+Guatap%C3%A9+Colombia',
+  google: 'https://www.google.com/maps/search/Bethel+Lozana+Guatap%C3%A9+Colombia',
+  waze: 'https://waze.com/ul?q=Bethel+Lozana+Guatap%C3%A9+Colombia'
+};
+function getDefaultMap() {
+  var saved = localStorage.getItem('konxion_preferred_map');
+  if (saved) return saved;
+  var ua = navigator.userAgent;
+  if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) return 'apple';
+  return 'google';
+}
+function openMapPicker() {
+  var saved = localStorage.getItem('konxion_preferred_map');
+  ['apple','google','waze'].forEach(function(m) {
+    var badge = document.getElementById(m + 'MapsBadge');
+    if (badge) badge.style.display = (saved === m) ? 'block' : 'none';
+  });
+  var overlay = document.getElementById('mapPickerOverlay');
+  var sheet = document.getElementById('mapPickerSheet');
+  overlay.style.pointerEvents = 'auto';
+  overlay.style.opacity = '1';
+  sheet.style.transform = 'translateX(-50%) translateY(0)';
+}
+function closeMapPicker() {
+  var overlay = document.getElementById('mapPickerOverlay');
+  var sheet = document.getElementById('mapPickerSheet');
+  overlay.style.opacity = '0';
+  overlay.style.pointerEvents = 'none';
+  sheet.style.transform = 'translateX(-50%) translateY(100%)';
+}
+function pickMap(type) {
+  localStorage.setItem('konxion_preferred_map', type);
+  closeMapPicker();
+  window.open(MAP_URLS[type], '_blank');
+}
+
 </script>
 </main>
+
+<!-- Map Picker Modal -->
+<div id="mapPickerOverlay" onclick="closeMapPicker()" style="position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.6);opacity:0;pointer-events:none;transition:opacity 0.25s ease;display:flex;align-items:flex-end;justify-content:center;"></div>
+<div id="mapPickerSheet" style="position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);z-index:201;width:100%;max-width:480px;background:rgba(10,10,10,0.96);backdrop-filter:blur(40px) saturate(1.8);border-top:0.5px solid rgba(4,200,10,0.3);border-radius:24px 24px 0 0;padding:28px 24px calc(28px + env(safe-area-inset-bottom, 0px));transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);">
+  <div style="width:36px;height:3px;background:rgba(255,255,255,0.2);border-radius:2px;margin:0 auto 24px;"></div>
+  <div style="font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:0.4em;text-transform:uppercase;color:rgba(4,220,10,0.8);margin-bottom:20px;">Open in Maps</div>
+  <!-- Apple Maps -->
+  <button onclick="pickMap('apple')" style="display:flex;align-items:center;gap:14px;width:100%;background:rgba(255,255,255,0.04);border:0.5px solid rgba(4,200,10,0.2);border-radius:14px;padding:14px 18px;cursor:pointer;margin-bottom:10px;transition:background 0.2s;" onmouseover="this.style.background='rgba(4,200,10,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.04)'">
+    <svg width="28" height="28" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="amlg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3FCF6E"/><stop offset="50%" stop-color="#4DC8F0"/><stop offset="100%" stop-color="#3B8BF5"/></linearGradient></defs><rect width="24" height="24" rx="6" fill="url(#amlg2)"/><path d="M12 5.5C9.51 5.5 7.5 7.51 7.5 10c0 3.75 4.5 9 4.5 9s4.5-5.25 4.5-9c0-2.49-2.01-4.5-4.5-4.5zm0 6.25a1.75 1.75 0 110-3.5 1.75 1.75 0 010 3.5z" fill="white"/></svg>
+    <div style="text-align:left;">
+      <div style="font-family:'DM Sans',sans-serif;font-size:15px;font-weight:400;color:#fff;">Apple Maps</div>
+      <div id="appleMapsBadge" style="font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(4,220,10,0.7);margin-top:1px;display:none;">Last used</div>
+    </div>
+  </button>
+  <!-- Google Maps -->
+  <button onclick="pickMap('google')" style="display:flex;align-items:center;gap:14px;width:100%;background:rgba(255,255,255,0.04);border:0.5px solid rgba(4,200,10,0.2);border-radius:14px;padding:14px 18px;cursor:pointer;margin-bottom:10px;transition:background 0.2s;" onmouseover="this.style.background='rgba(4,200,10,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.04)'">
+    <svg width="28" height="28" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#EA4335"/><path d="M12 2v7.5A2.5 2.5 0 0014.5 7C14.5 4.57 13.38 2 12 2z" fill="#FBBC04"/><path d="M12 9.5A2.5 2.5 0 019.5 7C9.5 4.57 10.62 2 12 2v7.5z" fill="#34A853"/><circle cx="12" cy="9" r="2.5" fill="white"/></svg>
+    <div style="text-align:left;">
+      <div style="font-family:'DM Sans',sans-serif;font-size:15px;font-weight:400;color:#fff;">Google Maps</div>
+      <div id="googleMapsBadge" style="font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(4,220,10,0.7);margin-top:1px;display:none;">Last used</div>
+    </div>
+  </button>
+  <!-- Waze -->
+  <button onclick="pickMap('waze')" style="display:flex;align-items:center;gap:14px;width:100%;background:rgba(255,255,255,0.04);border:0.5px solid rgba(4,200,10,0.2);border-radius:14px;padding:14px 18px;cursor:pointer;margin-bottom:6px;transition:background 0.2s;" onmouseover="this.style.background='rgba(4,200,10,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.04)'">
+    <svg width="28" height="28" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><ellipse cx="12" cy="11" rx="9" ry="8.5" fill="#33CCFF"/><circle cx="9.2" cy="10" r="1.3" fill="#1A1A1A"/><circle cx="14.8" cy="10" r="1.3" fill="#1A1A1A"/><path d="M9 13.5c.8 1.2 5.2 1.2 6 0" stroke="#1A1A1A" stroke-width="1.1" stroke-linecap="round" fill="none"/><circle cx="16.5" cy="17.5" r="2" fill="#FFCC00"/><circle cx="9.5" cy="19" r="1.5" fill="#FFCC00"/></svg>
+    <div style="text-align:left;">
+      <div style="font-family:'DM Sans',sans-serif;font-size:15px;font-weight:400;color:#fff;">Waze</div>
+      <div id="wazeMapsBadge" style="font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(4,220,10,0.7);margin-top:1px;display:none;">Last used</div>
+    </div>
+  </button>
+</div>
+
 </body>
 </html>
