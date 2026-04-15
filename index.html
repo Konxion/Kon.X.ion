@@ -849,29 +849,30 @@
 <div id="stayPage" style="position:fixed;inset:0;z-index:40;background:#000;opacity:0;pointer-events:none;transition:opacity 0.4s ease;overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;overscroll-behavior:contain;">
   <!-- Photo slideshow background -->
   <div id="stayBgSlides" style="position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;">
-    <div class="stay-slide"><img src="Screenshot 2026-04-14 at 19.56.56.png" class="stay-slide-img"></div>
-    <div class="stay-slide"><img src="Screenshot 2026-04-14 at 20.02.11.png" class="stay-slide-img"></div>
-    <div class="stay-slide"><img src="Screenshot 2026-04-14 at 19.56.25.png" class="stay-slide-img"></div>
-    <div class="stay-slide"><img src="Screenshot 2026-04-14 at 19.59.55.png" class="stay-slide-img"></div>
-    <div class="stay-slide"><img src="Screenshot 2026-04-14 at 19.57.18.png" class="stay-slide-img"></div>
-    <div class="stay-slide"><img src="Screenshot 2026-04-14 at 20.03.26.jpeg" class="stay-slide-img"></div>
+    <div class="stay-slide" style="background-image:url('Screenshot 2026-04-14 at 19.56.56.png');"></div>
+    <div class="stay-slide" style="background-image:url('Screenshot 2026-04-14 at 20.02.11.png');"></div>
+    <div class="stay-slide" style="background-image:url('Screenshot 2026-04-14 at 19.56.25.png');"></div>
+    <div class="stay-slide" style="background-image:url('Screenshot 2026-04-14 at 19.59.55.png');"></div>
+    <div class="stay-slide" style="background-image:url('Screenshot 2026-04-14 at 19.57.18.png');"></div>
+    <div class="stay-slide" style="background-image:url('Screenshot 2026-04-14 at 20.03.26.jpeg');"></div>
   </div>
   <style>
     .stay-slide {
       position:absolute;inset:0;
+      background-color:#000;
+      background-repeat:no-repeat;
+      background-position:center 30%;
+      background-size:cover;
       opacity:0;
       transition:opacity 2.2s ease;
-      overflow:hidden;
-    }
-    .stay-slide.active { opacity:1; }
-    .stay-slide-img {
-      width:100%;height:100%;
-      object-fit:cover;
-      object-position:center 30%;
-      display:block;
       animation:stayKenBurns 18s ease-in-out infinite alternate;
       will-change:transform;
     }
+    /* On wider screens, contain so portrait images don't stretch */
+    @media (min-width:600px) {
+      .stay-slide { background-size:contain; background-position:center center; }
+    }
+    .stay-slide.active { opacity:1; }
     @keyframes stayKenBurns {
       from { transform:scale(1.0); }
       to   { transform:scale(1.04); }
