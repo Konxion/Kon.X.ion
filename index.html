@@ -1327,7 +1327,7 @@
   </div>
   <div style="position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,0.72) 100%);"></div>
   <div style="position:absolute;inset:0;z-index:3;pointer-events:none;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);"></div>
-  <div id="journeyContent" style="position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px 220px;gap:0;pointer-events:none;opacity:0;transition:opacity 0.8s ease;">
+  <div id="journeyContent" style="position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px 60px;gap:0;pointer-events:none;opacity:0;transition:opacity 0.8s ease;">
     <div style="font-family:'DM Sans',sans-serif;font-size:clamp(42px,11vw,96px);font-weight:200;line-height:0.9;color:#fff;text-align:center;letter-spacing:0.12em;text-shadow:0 0 40px rgba(4,180,10,0.4),0 0 120px rgba(4,180,10,0.15);">KON<span style="color:rgba(4,220,10,1);text-shadow:0 0 20px rgba(4,220,10,0.8),0 0 60px rgba(4,220,10,0.4);">.</span>X<span style="color:rgba(4,220,10,1);text-shadow:0 0 20px rgba(4,220,10,0.8),0 0 60px rgba(4,220,10,0.4);">.</span>ION</div>
     <div style="font-size:14px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(4,210,10,0.7);margin-top:14px;margin-bottom:0;font-family:'DM Sans',sans-serif;font-weight:300;" data-i18n="next-event">Next Event</div>
     <div style="margin-top:32px;display:flex;flex-direction:column;align-items:center;gap:14px;">
@@ -1340,15 +1340,19 @@
       </div>
       <div style="width:40px;height:0.5px;background:rgba(4,210,10,0.4);"></div>
     </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:32px;">
+      <button id="rsvpBtn" onclick="openRsvpSheet()" style="background:rgba(4,200,10,0.9);border:none;border-radius:999px;padding:14px 48px;min-height:44px;color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;">RSVP</button>
+      <button id="contactBtn" onclick="openSheet()" style="background:transparent;border:1px solid rgba(4,200,10,0.7);border-radius:999px;padding:14px 48px;min-height:44px;color:rgba(4,200,10,0.9);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;" data-i18n="contact-btn">Contact Us</button>
+      <div id="langBtnMobile" style="display:flex;align-items:center;gap:7px;margin-top:4px;">
+        <span class="lang-opt-en" style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.1em;font-weight:400;color:rgba(255,255,255,0.92);transition:color 0.3s;display:flex;align-items:center;gap:4px;white-space:nowrap;">🇺🇸 EN</span>
+        <div onclick="toggleLang()" style="width:36px;height:20px;border-radius:999px;background:rgba(4,200,10,0.12);border:0.5px solid rgba(4,200,10,0.45);position:relative;cursor:pointer;flex-shrink:0;">
+          <div class="lang-pill" style="position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:rgba(4,220,10,0.95);box-shadow:0 0 8px rgba(4,200,10,0.55);transition:transform 0.28s ease;"></div>
+        </div>
+        <span class="lang-opt-es" style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.1em;font-weight:400;color:rgba(255,255,255,0.32);transition:color 0.3s;display:flex;align-items:center;gap:4px;white-space:nowrap;">ES 🇪🇸</span>
+      </div>
+    </div>
   </div>
   <button id="journeyBack" onclick="closeJourney()" style="position:absolute;top:68px;left:24px;z-index:10;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:12px 24px;min-height:44px;color:rgba(4,200,10,0.8);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;transition:all 0.2s ease, opacity 0.5s ease;opacity:0;">← Back</button>
-  <button id="rsvpBtn" onclick="openRsvpSheet()" style="position:absolute;bottom:260px;left:50%;transform:translateX(-50%);z-index:10;background:rgba(4,200,10,0.9);border:none;border-radius:999px;padding:14px 48px;min-height:44px;color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;transition:opacity 0.5s ease;opacity:0;">RSVP</button><button id="contactBtn" onclick="openSheet()" style="position:absolute;bottom:200px;left:50%;transform:translateX(-50%);z-index:10;background:transparent;border:1px solid rgba(4,200,10,0.7);border-radius:999px;padding:14px 48px;min-height:44px;color:rgba(4,200,10,0.9);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;transition:opacity 0.5s ease;opacity:0;" data-i18n="contact-btn">Contact Us</button><div id="langBtnMobile" style="position:absolute;bottom:148px;left:50%;transform:translateX(-50%);z-index:10;display:flex;align-items:center;gap:7px;opacity:0;pointer-events:none;transition:opacity 0.5s ease;">
-    <span class="lang-opt-en" style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.1em;font-weight:400;color:rgba(255,255,255,0.92);transition:color 0.3s;display:flex;align-items:center;gap:4px;white-space:nowrap;">🇺🇸 EN</span>
-    <div onclick="toggleLang()" style="width:36px;height:20px;border-radius:999px;background:rgba(4,200,10,0.12);border:0.5px solid rgba(4,200,10,0.45);position:relative;cursor:pointer;flex-shrink:0;">
-      <div class="lang-pill" style="position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:rgba(4,220,10,0.95);box-shadow:0 0 8px rgba(4,200,10,0.55);transition:transform 0.28s ease;"></div>
-    </div>
-    <span class="lang-opt-es" style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.1em;font-weight:400;color:rgba(255,255,255,0.32);transition:color 0.3s;display:flex;align-items:center;gap:4px;white-space:nowrap;">ES 🇪🇸</span>
-  </div>
   <div style="position:absolute;bottom:0;left:0;right:0;z-index:5;height:36px;border-top:0.5px solid rgba(4,200,10,0.2);overflow:hidden;background:rgba(0,0,0,0.5);">
     <div style="display:inline-block;white-space:nowrap;line-height:36px;animation:jTicker 100s linear infinite;will-change:transform;font-size:12px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(4,200,10,0.7);font-weight:200;font-family:DM Sans,sans-serif;">Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · </div>
   </div>
@@ -1395,17 +1399,12 @@ function openJourney() {
   // Step 4: Show event content + back button + tab bar
   setTimeout(() => {
     content.style.opacity = '1';
+    content.style.pointerEvents = 'auto';
     back.style.opacity    = '1';
-    const rsvpBtn = document.getElementById('rsvpBtn');
-    if (rsvpBtn) rsvpBtn.style.opacity = '1';
-    const contactBtn = document.getElementById('contactBtn');
-    if (contactBtn) contactBtn.style.opacity = '1';
     const tabBar = document.getElementById('tabBar');
     if (tabBar) { tabBar.style.opacity = '1'; tabBar.style.pointerEvents = 'all'; }
     const lb = document.getElementById('langBtn');
     if (lb) { lb.style.opacity = '1'; lb.style.pointerEvents = ''; }
-    const lbm = document.getElementById('langBtnMobile');
-    if (lbm) { lbm.style.opacity = '1'; lbm.style.pointerEvents = ''; }
   }, 2200);
 }
 
