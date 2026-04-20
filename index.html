@@ -1327,7 +1327,8 @@
   </div>
   <div style="position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,0.72) 100%);"></div>
   <div style="position:absolute;inset:0;z-index:3;pointer-events:none;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);"></div>
-  <div id="journeyContent" style="position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px 60px;gap:0;pointer-events:none;opacity:0;transition:opacity 0.8s ease;">
+  <div id="journeyContent" style="position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px 60px;gap:0;pointer-events:none;opacity:0;transition:opacity 0.8s ease;overflow:hidden auto;">
+    <div style="width:100%;max-width:480px;display:flex;flex-direction:column;align-items:center;">
     <div style="font-family:'DM Sans',sans-serif;font-size:clamp(42px,11vw,96px);font-weight:200;line-height:0.9;color:#fff;text-align:center;letter-spacing:0.12em;text-shadow:0 0 40px rgba(4,180,10,0.4),0 0 120px rgba(4,180,10,0.15);">KON<span style="color:rgba(4,220,10,1);text-shadow:0 0 20px rgba(4,220,10,0.8),0 0 60px rgba(4,220,10,0.4);">.</span>X<span style="color:rgba(4,220,10,1);text-shadow:0 0 20px rgba(4,220,10,0.8),0 0 60px rgba(4,220,10,0.4);">.</span>ION</div>
     <div style="font-size:14px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(4,210,10,0.7);margin-top:14px;margin-bottom:0;font-family:'DM Sans',sans-serif;font-weight:300;" data-i18n="next-event">Next Event</div>
     <div style="margin-top:32px;display:flex;flex-direction:column;align-items:center;gap:14px;">
@@ -1351,6 +1352,7 @@
         <span class="lang-opt-es" style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.1em;font-weight:400;color:rgba(255,255,255,0.32);transition:color 0.3s;display:flex;align-items:center;gap:4px;white-space:nowrap;">ES 🇪🇸</span>
       </div>
     </div>
+    </div><!-- /max-width wrapper -->
   </div>
   <button id="journeyBack" onclick="closeJourney()" style="position:absolute;top:68px;left:24px;z-index:10;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:12px 24px;min-height:44px;color:rgba(4,200,10,0.8);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;transition:all 0.2s ease, opacity 0.5s ease;opacity:0;">← Back</button>
   <div style="position:absolute;bottom:0;left:0;right:0;z-index:5;height:36px;border-top:0.5px solid rgba(4,200,10,0.2);overflow:hidden;background:rgba(0,0,0,0.5);">
@@ -1464,6 +1466,11 @@ function startTunnel() {
     cx = W / 2; cy = H / 2;
   }
   resize();
+  let _tunnelResizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(_tunnelResizeTimer);
+    _tunnelResizeTimer = setTimeout(resize, 50);
+  });
 
   const RINGS      = 28;
   const RING_SIDES = 8;
