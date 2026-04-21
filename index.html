@@ -914,14 +914,14 @@
             <span data-i18n="stay-cabin-lux" style="flex:1;">· 4 luxury cabins — sleeps 2 or 4<br><span style="padding-left:0.9em;">1 California King bed or 2 double beds</span></span>
             <span style="font-size:10px;letter-spacing:0.15em;color:rgba(4,220,10,1);font-family:'Josefin Sans',sans-serif;text-transform:uppercase;text-shadow:0 0 8px rgba(4,220,10,0.8);white-space:nowrap;">View ›</span>
           </div>
-          <div style="padding-left:0.9em;font-family:'Josefin Sans',sans-serif;font-size:13px;letter-spacing:0.12em;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);margin-top:4px;">$419 <span style="color:rgba(255,255,255,0.4);">·</span> COP 1,500,000 <span style="color:#fff;font-size:13px;text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);">/ night</span></div>
+          <div data-i18n="stay-price-lux" style="padding-left:0.9em;font-family:'Josefin Sans',sans-serif;font-size:13px;letter-spacing:0.12em;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);margin-top:4px;">$419 <span style="color:rgba(255,255,255,0.4);">·</span> COP 1,500,000 <span style="color:#fff;font-size:13px;text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);">/ night</span></div>
         </div>
         <div onclick="openCabin4Modal()" style="cursor:pointer;padding:4px 0 10px;">
           <div style="display:flex;align-items:baseline;gap:8px;">
             <span data-i18n="stay-cabin4" style="flex:1;">· 5 premium cabins — sleeps 2<br><span style="padding-left:0.9em;">2 double beds</span></span>
             <span style="font-size:10px;letter-spacing:0.15em;color:rgba(4,220,10,1);font-family:'Josefin Sans',sans-serif;text-transform:uppercase;text-shadow:0 0 8px rgba(4,220,10,0.8);white-space:nowrap;">View ›</span>
           </div>
-          <div style="padding-left:0.9em;font-family:'Josefin Sans',sans-serif;font-size:13px;letter-spacing:0.12em;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);margin-top:4px;">$249 <span style="color:rgba(255,255,255,0.4);">·</span> COP 900,000 <span style="color:#fff;font-size:13px;text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);">/ night</span></div>
+          <div data-i18n="stay-price-prem" style="padding-left:0.9em;font-family:'Josefin Sans',sans-serif;font-size:13px;letter-spacing:0.12em;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);margin-top:4px;">$249 <span style="color:rgba(255,255,255,0.4);">·</span> COP 900,000 <span style="color:#fff;font-size:13px;text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);">/ night</span></div>
         </div>
         <div data-i18n="stay-avail">· Availability limited</div>
       </div>
@@ -3159,6 +3159,8 @@ const translations = {
     'stay-about-label':'About','stay-about':"We've reserved all the cabins in the resort for Kon.X.ion attendees. Wake up in the mountains of Guatape, steps from the festival.",
     'stay-included-label':"What's Included",'stay-included-note':'* * * With cabin rental * * *','stay-included-body':'· Welcome drink when arrived at Bethel Lozana<br>· Free breakfast<br>· Electric meditation class (1.5 hours)<br>· Free padel class at <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 people)<br>· Mystery gift box<br>· Sauna<br>· WiFi<br>· Room service<br>· Hot tub<br>· Kayak',
     'stay-details-label':'Cabin Details','stay-cabin-lux':'· 4 luxury cabins — sleeps 2 or 4<br><span style="padding-left:0.9em;">1 California King bed or 2 double beds</span>','stay-cabin4':'· 5 premium cabins — sleeps 2<br><span style="padding-left:0.9em;">2 double beds</span>','stay-cabin2':'· 5 cabins — sleeps 2 · 1 California queen bed','stay-avail':'· Availability limited','cabin4-label':'4-Person Cabin','cabin4-sub':'2 Double Beds',
+    'stay-price-lux':'$419 <span style="color:rgba(255,255,255,0.4);">·</span> COP 1,500,000 <span style="color:#fff;font-size:13px;text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);">/ night</span>',
+    'stay-price-prem':'$249 <span style="color:rgba(255,255,255,0.4);">·</span> COP 900,000 <span style="color:#fff;font-size:13px;text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);">/ night</span>',
     'stay-reserve-label':'Reserve a Cabin','stay-reserve-body':'Spots are extremely limited. Email us to reserve your cabin alongside your RSVP.',
     'stay-cta':'Inquire Now',
     'contact-btn':'Contact Us','contact-title':'Get in Touch',
@@ -3191,6 +3193,8 @@ const translations = {
     'stay-about-label':'Acerca de','stay-about':'Hemos reservado todas las cabañas del resort para los asistentes de Kon.X.ion. Despierta en las montañas de Guatapé, a pasos del festival.',
     'stay-included-label':'Qué Incluye','stay-included-note':'* * * Con renta de cabaña * * *','stay-included-body':'· Bebida de bienvenida al llegar a Bethel Lozana<br>· Desayuno gratis<br>· Clase de electro meditación (1.5 horas)<br>· Clase gratuita de pádel en <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 personas)<br>· Caja sorpresa<br>· Sauna<br>· WiFi<br>· Servicio a la habitación<br>· Jacuzzi<br>· Kayak',
     'stay-details-label':'Detalles de la Cabaña','stay-cabin-lux':'· 4 cabañas de lujo — 2 o 4 personas<br><span style="padding-left:0.9em;">1 California king o 2 camas dobles</span>','stay-cabin4':'· 5 cabañas premium — 2 personas<br><span style="padding-left:0.9em;">2 camas dobles</span>','stay-cabin2':'· 5 cabañas — 2 personas · 1 cama California queen','stay-avail':'· Disponibilidad limitada','cabin4-label':'Cabaña para 4','cabin4-sub':'2 Camas Dobles',
+    'stay-price-lux':'COP 1,500,000 <span style="color:rgba(255,255,255,0.4);">·</span> $419 <span style="color:#fff;font-size:13px;text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);">/ noche</span>',
+    'stay-price-prem':'COP 900,000 <span style="color:rgba(255,255,255,0.4);">·</span> $249 <span style="color:#fff;font-size:13px;text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);">/ noche</span>',
     'stay-reserve-label':'Reserva una Cabaña','stay-reserve-body':'Los cupos son muy limitados. Escríbenos para reservar tu cabaña junto con tu RSVP.',
     'stay-cta':'Consultar Ahora',
     'contact-btn':'Contáctanos','contact-title':'Contáctanos',
