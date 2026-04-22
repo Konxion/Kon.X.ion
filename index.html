@@ -1597,9 +1597,8 @@ rsvpSheet.addEventListener('touchstart', e => { touchStartY = e.touches[0].clien
 rsvpSheet.addEventListener('touchend', e => { if (e.changedTouches[0].clientY - touchStartY > 60 && rsvpSheet.scrollTop === 0) closeRsvpSheet(); }, { passive: true });
 
 // ── FORM ──
-// Sign up free at https://formspree.io, create two forms, paste their IDs below
-const CONTACT_ENDPOINT = 'https://formspree.io/f/CONTACT_FORM_ID';
-const RSVP_ENDPOINT    = 'https://formspree.io/f/RSVP_FORM_ID';
+const CONTACT_ENDPOINT = '/api/contact';
+const RSVP_ENDPOINT    = '/api/rsvp';
 
 function handleSend() {
   const name  = document.getElementById('fname').value.trim();
