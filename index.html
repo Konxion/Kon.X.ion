@@ -1445,7 +1445,8 @@ function closeJourney() {
   const heroEl    = document.getElementById('hero');
   const heartCanvas = document.getElementById('heartCanvas');
 
-  content.style.opacity = '0';
+  content.style.opacity      = '0';
+  content.style.pointerEvents = 'none';
   back.style.opacity    = '0';
   const rsvpBtn = document.getElementById('rsvpBtn');
   if (rsvpBtn) rsvpBtn.style.opacity = '0';
