@@ -767,6 +767,7 @@
       </button>
     </div>
   </div>
+  <button class="tab-btn" onclick="vibrateBtn(this);switchTab('experience')"><span data-i18n="exp-nav">Experience</span> <span aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;color:rgba(4,200,10,0.75);">▼</span></button>
   <div class="tab-dropdown-wrap" id="shopDropWrap">
     <button class="tab-btn" id="shopTabBtn" onclick="toggleShopDrop(event)" aria-expanded="false" aria-haspopup="true"><span data-i18n="shop-nav">Shop</span> <span id="shopArrow" aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;color:rgba(4,200,10,0.75);">▼</span></button>
     <div id="shopDropMenu" style="display:none;position:absolute;top:52px;right:0;z-index:200;flex-direction:column;gap:8px;padding:12px;background:rgba(5,10,5,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(4,200,10,0.22);border-radius:14px;min-width:160px;box-shadow:0 8px 32px rgba(0,0,0,0.6);">
@@ -794,7 +795,7 @@
 
 <main id="mainContent">
 <!-- ═══ MUSIC TAB ═══ -->
-<div id="tab-music" class="tab-page active">
+<div id="tab-music" class="tab-page">
   <div class="tab-section-title" data-i18n="music-tab-title">Music</div>
   <div class="tab-card">
     <div class="tab-card-title" data-i18n="dj-lineup-title">DJ Lineup</div>
@@ -833,6 +834,10 @@
     <div class="tab-card-title" data-i18n="questions-title">Questions?</div>
     <div style="color:rgba(255,255,255,0.45);font-size:12px;" data-i18n="questions-body">Reach us at steve@konxion.us</div>
   </div>
+</div>
+
+<!-- ═══ EXPERIENCE TAB ═══ -->
+<div id="tab-experience" class="tab-page active" style="padding:0;background:transparent;overflow:hidden;pointer-events:none;">
 </div>
 
 <!-- ═══ SHOP TAB ═══ -->
@@ -1985,18 +1990,20 @@ let heartExplodeVels = [];
 function switchTab(name) {
   closeAllDropdowns();
   document.querySelectorAll('.tab-btn').forEach((btn, i) => {
-    const tabs = ['music','plan','shop'];
+    const tabs = ['music','plan','experience','shop'];
     btn.classList.toggle('active', tabs[i] === name);
   });
   document.querySelectorAll('.tab-page').forEach(page => {
     page.classList.toggle('active', page.id === 'tab-' + name);
   });
+  // Show hero + bg canvas only on Experience tab
   const heroEl   = document.getElementById('hero');
   const bgEl     = document.getElementById('bg');
   const heartEl  = document.getElementById('heartCanvas');
   const fadeEl   = document.getElementById('blackFade');
+  const isExp    = name === 'experience';
   [heroEl, bgEl, heartEl, fadeEl].forEach(el => {
-    if (el) el.style.visibility = 'hidden';
+    if (el) el.style.visibility = isExp ? '' : 'hidden';
   });
 }
 </script>
