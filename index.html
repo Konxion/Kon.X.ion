@@ -1306,7 +1306,7 @@
     <div id="planDropMenu" style="display:none;position:absolute;top:52px;left:50%;transform:translateX(-50%);z-index:200;flex-direction:column;gap:8px;padding:12px;background:rgba(5,10,5,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(4,200,10,0.22);border-radius:14px;min-width:160px;box-shadow:0 8px 32px rgba(0,0,0,0.6);">
       <button class="music-drop-item" onclick="openFestivalInfo();closePlanDrop();">
         <span style="font-size:16px;">🎪</span>
-        <span data-i18n="nav-festival">Festival Info</span>
+        <span data-i18n="nav-festival">Event Info</span>
       </button>
       <button class="music-drop-item" onclick="openGettingHere();closePlanDrop();">
         <span style="font-size:16px;">📍</span>
@@ -3783,7 +3783,7 @@ function closeMusicDrop() { closeAllDropdowns(); }
 const translations = {
   en: {
     'music-nav':'Music','plan-nav':'Plan','exp-nav':'Experience','shop-nav':'Shop',
-    'nav-lineup':'Lineup','nav-youtube':'YouTube Channel','nav-festival':'Festival Info','nav-getting':'Getting Here',
+    'nav-lineup':'Lineup','nav-youtube':'YouTube Channel','nav-festival':'Event Info','nav-getting':'Getting Here',
     'hero-tagline':'The energy is real. The experience is unique.','begin-btn':'Begin Journey',
     'music-tab-title':'Music','dj-lineup-title':'DJ Lineup','event-date':'Saturday, July 18 · 1PM — 5AM',
     'announce':'Lineup to be announced. Stay tuned.','genres-title':'Genres',
@@ -3793,20 +3793,15 @@ const translations = {
     'bring-title':'What to Bring','bring-body':'· Valid ID (18+)<br>· RSVP confirmation<br>· Comfortable footwear<br>· Good energy',
     'questions-title':'Questions?','questions-body':'Reach us at steve@konxion.us',
     'shop-tab-title':'Shop','merch-soon':'Merch Coming Soon',
-    'festival-page-title':'Festival Info','fi-date-title':'Date &amp; Time','fi-date-body':'Saturday, July 18<br>1PM — 5AM',
+    'festival-page-title':'Event Info','fi-date-title':'Date &amp; Time','fi-date-body':'Saturday, July 18<br>1PM — 5AM',
     'fi-venue-title':'Venue','fi-map-tap':'Tap to open in Maps',
     'fi-dresscode-title':'Dress Code','fi-dresscode-body':'None. Come as you are.','fi-dresscode-val':'None','fi-dresscode-sub':'Come as you are',
     'fi-capacity-title':'Capacity','fi-capacity-body':'120 people. An intimate experience.','fi-capacity-sub':'Intimate &amp; curated',
     'bring-item-1':'Valid ID (18+)','bring-item-2':'RSVP confirmation','bring-item-3':'Comfortable footwear','bring-item-4':'Good energy',
     'fi-admission-title':'Admission','fi-admission-body':'· Included with cabin rental<br>· General admission available for non-cabin guests',
     'gh-title':'Getting Here','gh-loc-title':'Location','gh-medellin-title':'From Medellín',
-    'gh-eyebrow':'KON.X.ION · July 18',
-    'gh-divider-travel':'Getting There','gh-divider-arrival':'On Arrival',
-    'gh-route-medellin':'Via Autopista Medellín–Bogotá','gh-sub-medellin':'toward El Peñol / Guatapé',
-    'gh-airport-title':'From JMC Airport','gh-airport-name':'José María Córdova','gh-sub-airport':'Rionegro · toward Guatapé',
-    'gh-rideshare':'No car? <strong>Uber, InDriver,</strong> and local taxis are available from Medellín.',
-    'gh-arrival-title':'When You Arrive','gh-parking-title':'Parking','gh-parking-val':'Provided on site',
-    'gh-shuttle-label':'Shuttles','gh-shuttle-val':'To the venue',
+    'gh-medellin-body':'Approximately 2 hours by car.<br>Take the highway toward El Peñol / Guatapé.',
+    'gh-airport-title':'From José María Córdova Airport','gh-airport-body':'Approximately 1.5 hours by car.<br>Take the highway toward El Peñol / Guatapé.','gh-parking-title':'Parking','gh-parking-body':'Parking will be provided. There will also be shuttles to the event.',
     'gh-q-title':'Questions?','shop-merch':'Merch','shop-soon':'Coming Soon',
     'shop-drops':'Drops with the lineup announcement.','back-btn':'← Back',
     'next-event':'Next Event','journey-date':'Saturday, July 18',
@@ -3829,7 +3824,7 @@ const translations = {
   },
   es: {
     'music-nav':'Música','plan-nav':'Plan','exp-nav':'Experiencia','shop-nav':'Tienda',
-    'nav-lineup':'Lineup','nav-youtube':'Canal de YouTube','nav-festival':'Info del Festival','nav-getting':'Cómo Llegar',
+    'nav-lineup':'Lineup','nav-youtube':'Canal de YouTube','nav-festival':'Info del Evento','nav-getting':'Cómo Llegar',
     'hero-tagline':'La energía es real. La experiencia es única.','begin-btn':'Comenzar',
     'music-tab-title':'Música','dj-lineup-title':'Lineup de DJs','event-date':'Sábado, 18 de julio · 1PM — 5AM',
     'announce':'Lineup por anunciar. Más info pronto.','genres-title':'Géneros',
@@ -3839,20 +3834,15 @@ const translations = {
     'bring-title':'Qué Traer','bring-body':'· Cédula 18+<br>· Confirmación de RSVP<br>· Calzado cómodo<br>· Buena energía',
     'questions-title':'¿Preguntas?','questions-body':'Escríbenos a steve@konxion.us',
     'shop-tab-title':'Tienda','merch-soon':'Merch Próximamente',
-    'festival-page-title':'Info del Festival','fi-date-title':'Fecha &amp; Hora','fi-date-body':'Sábado, 18 de julio<br>1PM — 5AM',
+    'festival-page-title':'Info del Evento','fi-date-title':'Fecha &amp; Hora','fi-date-body':'Sábado, 18 de julio<br>1PM — 5AM',
     'fi-venue-title':'Lugar','fi-map-tap':'Toca para abrir en Maps',
     'fi-dresscode-title':'Código de Vestimenta','fi-dresscode-body':'Ninguno. Ven como eres.','fi-dresscode-val':'Ninguno','fi-dresscode-sub':'Ven como eres',
     'fi-capacity-title':'Capacidad','fi-capacity-body':'120 personas. Una experiencia íntima.','fi-capacity-sub':'Íntimo y exclusivo',
     'bring-item-1':'Cédula 18+','bring-item-2':'Confirmación de RSVP','bring-item-3':'Calzado cómodo','bring-item-4':'Buena energía',
     'fi-admission-title':'Admisión','fi-admission-body':'· Incluida con la renta de cabaña<br>· Admisión general disponible para quienes no rentan cabaña',
     'gh-title':'Cómo Llegar','gh-loc-title':'Ubicación','gh-medellin-title':'Desde Medellín',
-    'gh-eyebrow':'KON.X.ION · 18 de Julio',
-    'gh-divider-travel':'Cómo Llegar','gh-divider-arrival':'Al Llegar',
-    'gh-route-medellin':'Por la Autopista Medellín–Bogotá','gh-sub-medellin':'hacia El Peñol / Guatapé',
-    'gh-airport-title':'Desde el Aeropuerto JMC','gh-airport-name':'José María Córdova','gh-sub-airport':'Rionegro · hacia Guatapé',
-    'gh-rideshare':'¿Sin carro? <strong>Uber, InDriver</strong> y taxis locales disponibles desde Medellín.',
-    'gh-arrival-title':'Cuando Llegues','gh-parking-title':'Parqueadero','gh-parking-val':'En el lugar',
-    'gh-shuttle-label':'Shuttles','gh-shuttle-val':'Al lugar del evento',
+    'gh-medellin-body':'Aproximadamente 2 horas en carro.<br>Toma la vía hacia El Peñol / Guatapé.',
+    'gh-airport-title':'Desde el Aeropuerto José María Córdova','gh-airport-body':'Aproximadamente 1.5 horas en carro.<br>Toma la vía hacia El Peñol / Guatapé.','gh-parking-title':'Parqueadero','gh-parking-body':'Se proporcionará estacionamiento. También habrá shuttles al evento.',
     'gh-q-title':'¿Preguntas?','shop-merch':'Merch','shop-soon':'Próximamente',
     'shop-drops':'Disponible con el anuncio del lineup.','back-btn':'← Volver',
     'next-event':'Próximo Evento','journey-date':'Sábado, 18 de julio',
