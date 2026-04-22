@@ -24,6 +24,35 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
+    /* Brand emerald — opacity scale */
+    --em:     rgba(4,200,10,1);
+    --em-220: rgba(4,220,10,1);
+    --em-80:  rgba(4,200,10,0.8);
+    --em-70:  rgba(4,200,10,0.7);
+    --em-60:  rgba(4,200,10,0.6);
+    --em-45:  rgba(4,200,10,0.45);
+    --em-30:  rgba(4,200,10,0.3);
+    --em-20:  rgba(4,200,10,0.2);
+    --em-18:  rgba(4,200,10,0.18);
+    --em-12:  rgba(4,200,10,0.12);
+    --em-06:  rgba(4,200,10,0.06);
+    /* Glow presets */
+    --em-glow-sm: 0 0 8px rgba(4,220,10,1), 0 0 24px rgba(4,220,10,0.7);
+    --em-glow:    0 0 18px rgba(4,200,10,0.7), 0 0 40px rgba(4,200,10,0.35);
+    /* Card tokens */
+    --card-bg:          rgba(4,200,10,0.06);
+    --card-border:      0.5px solid rgba(4,200,10,0.32);
+    --card-border-soft: 0.5px solid rgba(4,200,10,0.18);
+    /* Typography stacks */
+    --font-body:    'DM Sans', sans-serif;
+    --font-display: 'DM Serif Display', serif;
+    --font-serif:   'Cormorant Garamond', serif;
+    --font-label:   'Josefin Sans', sans-serif;
+    --font-impact:  'Bebas Neue', sans-serif;
+    /* Layout */
+    --page-pad: 120px 24px 60px;
+    --page-max: 520px;
+    /* Legacy tokens */
     --emerald: rgba(4,99,7,1);
     --emerald-line: rgba(4,99,7,0.28);
     --sheet-bg: rgba(255,255,255,0.72);
@@ -244,7 +273,6 @@
     max-height: 90dvh;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    overflow: hidden;
   }
   #rsvpNatureCanvas {
     position: absolute;
@@ -661,7 +689,7 @@
     border-radius: 2px;
   }
   .tab-btn.active {
-    color: rgba(255,255,255,0.68);
+    color: rgba(255,255,255,1);
   }
   .tab-btn-pop { animation: vibrate 0.32s ease; }
   .tab-btn:focus-visible {
@@ -670,7 +698,7 @@
     border-radius: 4px;
   }
   .tab-btn.active::after {
-    transform: scaleX(0);
+    transform: scaleX(1);
   }
   /* ── TAB PAGES ── */
   .tab-page {
@@ -722,6 +750,166 @@
 
   /* SVG icons inline */
   .svg-icon { width: 18px; height: 18px; }
+
+  /* ── BACK BUTTON — shared across all sub-pages ── */
+  .back-btn {
+    position: fixed;
+    top: 68px; left: 24px;
+    z-index: 50;
+    background: none;
+    border: 0.5px solid var(--em-30);
+    border-radius: 999px;
+    padding: 12px 24px;
+    min-height: 44px;
+    color: var(--em-80);
+    font-family: var(--font-body);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 300;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.4s ease, background 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .back-btn:hover   { background: rgba(4,200,10,0.08); }
+  .back-btn:active  { background: rgba(4,200,10,0.14); }
+  .back-btn:focus-visible {
+    outline: 2px solid var(--em-80);
+    outline-offset: 3px;
+  }
+
+  /* ── SUB-PAGE OVERLAY ── */
+  .sub-page {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: #000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ── SUB-PAGE CONTENT CONTAINER ── */
+  .sub-page-content {
+    padding: var(--page-pad);
+    max-width: var(--page-max);
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── SUB-PAGE HEADER ── */
+  .sub-page-title {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 300;
+    font-size: 60px;
+    color: #fff;
+    letter-spacing: 0.06em;
+  }
+  .sub-page-rule {
+    width: 40px;
+    height: 0.5px;
+    background: var(--em-45);
+    margin: 14px auto 0;
+  }
+
+  /* ── EMERALD PILL BUTTON ── */
+  .em-pill-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 0.5px solid var(--em-45);
+    border-radius: 999px;
+    padding: 9px 18px;
+    color: var(--em-80);
+    font-family: var(--font-body);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: transparent;
+    transition: background 0.2s ease, border-color 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .em-pill-btn:hover  { background: rgba(4,200,10,0.08); border-color: var(--em-70); }
+  .em-pill-btn:active { background: rgba(4,200,10,0.14); }
+  .em-pill-btn:focus-visible { outline: 2px solid var(--em-80); outline-offset: 3px; }
+
+  /* ── CIRCULAR ICON BUTTON (map pickers, etc.) ── */
+  .icon-circle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px; height: 50px;
+    border: 0.5px solid var(--em-30);
+    border-radius: 50%;
+    text-decoration: none;
+    background: rgba(255,255,255,0.04);
+    flex-shrink: 0;
+    transition: background 0.2s ease, border-color 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .icon-circle-btn:hover  { background: rgba(4,200,10,0.1); border-color: var(--em-45); }
+  .icon-circle-btn:active { background: rgba(4,200,10,0.18); }
+  .icon-circle-btn:focus-visible { outline: 2px solid var(--em-80); outline-offset: 3px; }
+
+  /* ── MAP PICKER ROW BUTTON ── */
+  .map-picker-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 0.5px solid rgba(4,200,10,0.2);
+    border-radius: 14px;
+    padding: 14px 18px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: background 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .map-picker-btn:last-of-type { margin-bottom: 6px; }
+  .map-picker-btn:hover  { background: rgba(4,200,10,0.08); }
+  .map-picker-btn:active { background: rgba(4,200,10,0.14); }
+  .map-picker-btn:focus-visible { outline: 2px solid var(--em-80); outline-offset: 3px; border-radius: 14px; }
+
+  /* ── KEYFRAMES (consolidated from inline style blocks) ── */
+  @keyframes jPulseRing  { 0%{width:60px;height:60px;opacity:0.8} 100%{width:520px;height:520px;opacity:0} }
+  @keyframes jTicker     { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  @keyframes lineupGlow  { 0%,100%{text-shadow:0 0 24px rgba(4,200,10,0.35),0 0 60px rgba(4,200,10,0.1),0 2px 4px rgba(0,0,0,0.6)} 50%{text-shadow:0 0 40px rgba(4,220,10,0.6),0 0 90px rgba(4,200,10,0.2),0 2px 4px rgba(0,0,0,0.6)} }
+  @keyframes lineupScan  { 0%{left:-30%;opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{left:130%;opacity:0} }
+  @keyframes prismFlow   { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+  @keyframes neonBreathe { 0%,100%{text-shadow:0 0 18px rgba(4,220,10,0.5),0 0 60px rgba(4,200,10,0.2),0 0 120px rgba(4,200,10,0.05)} 50%{text-shadow:0 0 40px rgba(4,255,10,1),0 0 100px rgba(4,220,10,0.5),0 0 200px rgba(4,200,10,0.15)} }
+  @keyframes diamondPulse { 0%,100%{opacity:0.6;transform:rotate(45deg) scale(1)} 50%{opacity:1;transform:rotate(45deg) scale(1.3)} }
+  @keyframes lineFade    { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
+  @keyframes natureDrift { 0%{opacity:0;transform:translateY(10px) scale(0.6)} 25%{opacity:1;transform:translateY(-8px) scale(1)} 70%{opacity:0.8;transform:translateY(-28px) scale(0.9)} 100%{opacity:0;transform:translateY(-55px) scale(0.7)} }
+  @keyframes stayKenBurns { from{transform:scale(1.0)} to{transform:scale(1.04)} }
+  .stay-slide {
+    position:absolute; inset:0;
+    background-color:#000;
+    background-repeat:no-repeat;
+    background-position:center 30%;
+    background-size:cover;
+    opacity:0;
+    transition:opacity 2.2s ease;
+    animation:stayKenBurns 18s ease-in-out infinite alternate;
+    will-change:transform;
+  }
+  @media (min-width:600px) {
+    .stay-slide { background-size:contain; background-position:center center; }
+  }
+  .stay-slide.active { opacity:1; }
+  .lineup-letter { display:inline-block; transition:opacity 0.35s ease, filter 0.35s ease; -webkit-text-stroke:1.5px rgba(4,210,10,0.5); }
+  .nature-particle { position:absolute; pointer-events:none; color:rgba(4,220,10,0.85); font-size:28px; animation:natureDrift 1.4s ease-out forwards; z-index:10; }
+  #lineupTitle.prism { background:linear-gradient(90deg,#04e80c,#ffffff,#00ffb0,#b4ff8a,#04e80c); background-size:300% 100%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; -webkit-text-stroke:1px rgba(80,255,120,0.25); background-position:40% 50%; }
+  .j-ring   { position:absolute;border-radius:50%;border:1px solid rgba(4,200,10,0.14);animation:jPulseRing 2.4s ease-out infinite; }
+  .j-ticker { display:flex;align-items:center;height:36px;white-space:nowrap;animation:jTicker 28s linear infinite; }
+  .j-tick   { font-size:12px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(4,200,10,0.7);font-weight:200;font-family:var(--font-body);padding:0 32px; }
+  .j-dot    { color:rgba(4,200,10,0.35);font-size:12px; }
 </style>
 </head>
 <body>
@@ -859,33 +1047,11 @@
     <div class="stay-slide" style="background-image:url('stay-bg-4.jpeg');"></div>
     <div class="stay-slide" style="background-image:url('stay-bg-5.jpeg');"></div>
   </div>
-  <style>
-    .stay-slide {
-      position:absolute;inset:0;
-      background-color:#000;
-      background-repeat:no-repeat;
-      background-position:center 30%;
-      background-size:cover;
-      opacity:0;
-      transition:opacity 2.2s ease;
-      animation:stayKenBurns 18s ease-in-out infinite alternate;
-      will-change:transform;
-    }
-    /* On wider screens, contain so portrait images don't stretch */
-    @media (min-width:600px) {
-      .stay-slide { background-size:contain; background-position:center center; }
-    }
-    .stay-slide.active { opacity:1; }
-    @keyframes stayKenBurns {
-      from { transform:scale(1.0); }
-      to   { transform:scale(1.04); }
-    }
-  </style>
   <!-- Dark overlay for readability -->
   <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to bottom, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.72) 100%);"></div>
   <!-- Inner scroll container -->
   <div id="stayScroll" style="position:absolute;inset:0;z-index:2;overflow-y:scroll;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;height:100%;">
-  <button onclick="closeStay()" style="position:fixed;top:68px;left:24px;z-index:50;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:12px 24px;min-height:44px;color:rgba(4,200,10,0.8);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;opacity:0;transition:opacity 0.4s ease;" id="stayBack" data-i18n="back-btn">← Back</button>
+  <button onclick="closeStay()" class="back-btn" id="stayBack" data-i18n="back-btn">← Back</button>
 
   <div style="padding:120px 24px 60px;max-width:520px;margin:0 auto;position:relative;z-index:1;">
     <div style="text-align:center;margin-bottom:48px;">
@@ -1011,7 +1177,7 @@
 <!-- ═══ SHOP PAGE ═══ -->
 <div id="shopPage" style="position:fixed;inset:0;z-index:40;background:#000;opacity:0;pointer-events:none;transition:opacity 0.4s ease;overflow-y:auto;-webkit-overflow-scrolling:touch;">
   <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 90% 55% at 50% 30%, rgba(4,160,12,0.3) 0%, rgba(4,80,8,0.12) 55%, transparent 100%);"></div>
-  <button onclick="closeShop()" style="position:fixed;top:68px;left:24px;z-index:50;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:12px 24px;min-height:44px;color:rgba(4,200,10,0.8);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;opacity:0;transition:opacity 0.4s ease;" id="shopBack" data-i18n="back-btn">← Back</button>
+  <button onclick="closeShop()" class="back-btn" id="shopBack" data-i18n="back-btn">← Back</button>
   <div style="padding:140px 24px 80px;max-width:520px;margin:0 auto;position:relative;z-index:1;text-align:center;">
     <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:56px;color:#fff;letter-spacing:0.06em;margin-bottom:16px;" data-i18n="shop-merch">Merch</div>
     <div style="font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(4,200,10,0.8);margin-bottom:48px;" data-i18n="shop-soon">Coming Soon</div>
@@ -1025,7 +1191,7 @@
   <canvas id="lineupGridCanvas" style="position:fixed;inset:0;z-index:0;pointer-events:none;"></canvas>
 
   <!-- back button -->
-  <button onclick="closeLineup()" style="position:fixed;top:68px;left:24px;z-index:50;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:12px 24px;min-height:44px;color:rgba(4,200,10,0.8);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;opacity:0;transition:opacity 0.4s ease;" id="lineupBack" data-i18n="back-btn">← Back</button>
+  <button onclick="closeLineup()" class="back-btn" id="lineupBack" data-i18n="back-btn">← Back</button>
 
   <div style="padding:120px 16px 60px;max-width:600px;margin:0 auto;position:relative;z-index:1;">
 
@@ -1122,7 +1288,7 @@
   <canvas id="festivalBgCanvas" style="position:fixed;inset:0;z-index:0;pointer-events:none;"></canvas>
   <!-- deep vignette -->
   <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 100% 100% at 50% 50%, transparent 30%, rgba(0,0,0,0.82) 100%);"></div>
-  <button onclick="closeFestivalInfo()" style="position:fixed;top:68px;left:24px;z-index:50;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:12px 24px;min-height:44px;color:rgba(4,200,10,0.8);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;opacity:0;transition:opacity 0.4s ease;" id="festivalInfoBack" data-i18n="back-btn">← Back</button>
+  <button onclick="closeFestivalInfo()" class="back-btn" id="festivalInfoBack" data-i18n="back-btn">← Back</button>
   <div style="padding:120px 24px 60px;max-width:520px;margin:0 auto;position:relative;z-index:1;">
     <div style="text-align:center;margin-bottom:40px;">
       <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:60px;color:#fff;letter-spacing:0.06em;" data-i18n="festival-page-title">Festival Info</div>
@@ -1136,11 +1302,11 @@
       <div class="info-card-title" data-i18n="fi-venue-title">Venue</div>
       <div class="info-card-body">Bethel Lozana<br>Guatapé, Colombia</div>
       <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
-        <a href="https://bethellozana.com/" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:7px;border:0.5px solid rgba(4,200,10,0.45);border-radius:999px;padding:9px 18px;color:rgba(4,200,10,0.85);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;" onmouseover="this.style.background='rgba(4,200,10,0.08)';this.style.borderColor='rgba(4,200,10,0.75)'" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(4,200,10,0.45)'">
+        <a href="https://bethellozana.com/" target="_blank" rel="noopener noreferrer" class="em-pill-btn">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
           Website
         </a>
-        <a href="https://www.instagram.com/bethel_lozana_guatape/" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:7px;border:0.5px solid rgba(4,200,10,0.45);border-radius:999px;padding:9px 18px;color:rgba(4,200,10,0.85);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;" onmouseover="this.style.background='rgba(4,200,10,0.08)';this.style.borderColor='rgba(4,200,10,0.75)'" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(4,200,10,0.45)'">
+        <a href="https://www.instagram.com/bethel_lozana_guatape/" target="_blank" rel="noopener noreferrer" class="em-pill-btn">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
           Instagram
         </a>
@@ -1167,8 +1333,16 @@
     </div>
 
     <div class="info-card">
-      <div class="info-card-title" data-i18n="fi-bring-title">What to Bring</div>
-      <div class="info-card-body" data-i18n="fi-bring-body">· Valid ID (18+)<br>· RSVP confirmation<br>· Comfortable footwear<br>· Good energy</div>
+      <div class="info-card-title" data-i18n="fi-dresscode-title">Dress Code</div>
+      <div class="info-card-body" data-i18n="fi-dresscode-body">None. Come as you are.</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title" data-i18n="fi-capacity-title">Capacity</div>
+      <div class="info-card-body" data-i18n="fi-capacity-body">120 people. An intimate experience.</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-title" data-i18n="fi-admission-title">Admission</div>
+      <div class="info-card-body" data-i18n="fi-admission-body">· Included with cabin rental<br>· General admission available for non-cabin guests</div>
     </div>
 
   </div>
@@ -1178,7 +1352,7 @@
 <div id="gettingHerePage" style="position:fixed;inset:0;z-index:40;background:#000;opacity:0;pointer-events:none;transition:opacity 0.4s ease;overflow-y:auto;-webkit-overflow-scrolling:touch;">
   <canvas id="gettingHereBgCanvas" style="position:fixed;inset:0;z-index:0;pointer-events:none;"></canvas>
   <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 100% 100% at 50% 50%, transparent 30%, rgba(0,0,0,0.82) 100%);"></div>
-  <button onclick="closeGettingHere()" style="position:fixed;top:68px;left:24px;z-index:50;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:12px 24px;min-height:44px;color:rgba(4,200,10,0.8);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;opacity:0;transition:opacity 0.4s ease;" id="gettingHereBack" data-i18n="back-btn">← Back</button>
+  <button onclick="closeGettingHere()" class="back-btn" id="gettingHereBack" data-i18n="back-btn">← Back</button>
   <div style="padding:120px 24px 60px;max-width:520px;margin:0 auto;position:relative;z-index:1;">
     <div style="text-align:center;margin-bottom:40px;">
       <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:60px;color:#fff;letter-spacing:0.06em;" data-i18n="gh-title">Getting Here</div>
@@ -1190,15 +1364,15 @@
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
           <a href="https://www.instagram.com/bethel_lozana_guatape/" target="_blank" rel="noopener" class="info-card-body" style="text-decoration:none;color:#fff;border-bottom:1.5px solid rgba(4,200,10,0.75);padding-bottom:2px;line-height:1.3;font-size:26px;">Bethel Lozana</a>
           <!-- Apple Maps -->
-          <a href="https://maps.apple.com/?ll=6.2341,-75.1561&q=Bethel+Lozana&t=m" target="_blank" rel="noopener" title="Apple Maps" style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;border:0.5px solid rgba(4,200,10,0.3);border-radius:50%;text-decoration:none;background:rgba(255,255,255,0.04);transition:background 0.2s;" onmouseover="this.style.background='rgba(4,200,10,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.04)'">
+          <a href="https://maps.apple.com/?ll=6.2341,-75.1561&q=Bethel+Lozana&t=m" target="_blank" rel="noopener" title="Apple Maps" class="icon-circle-btn">
             <svg width="26" height="26" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="amlg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3FCF6E"/><stop offset="50%" stop-color="#4DC8F0"/><stop offset="100%" stop-color="#3B8BF5"/></linearGradient></defs><rect width="24" height="24" rx="6" fill="url(#amlg)"/><path d="M12 5.5C9.51 5.5 7.5 7.51 7.5 10c0 3.75 4.5 9 4.5 9s4.5-5.25 4.5-9c0-2.49-2.01-4.5-4.5-4.5zm0 6.25a1.75 1.75 0 110-3.5 1.75 1.75 0 010 3.5z" fill="white"/></svg>
           </a>
           <!-- Google Maps -->
-          <a href="https://www.google.com/maps?q=6.2341,-75.1561" target="_blank" rel="noopener" title="Google Maps" style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;border:0.5px solid rgba(4,200,10,0.3);border-radius:50%;text-decoration:none;background:rgba(255,255,255,0.04);transition:background 0.2s;" onmouseover="this.style.background='rgba(4,200,10,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.04)'">
+          <a href="https://www.google.com/maps?q=6.2341,-75.1561" target="_blank" rel="noopener" title="Google Maps" class="icon-circle-btn">
             <svg width="26" height="26" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#EA4335"/><path d="M12 2v7.5A2.5 2.5 0 0014.5 7C14.5 4.57 13.38 2 12 2z" fill="#FBBC04"/><path d="M12 9.5A2.5 2.5 0 019.5 7C9.5 4.57 10.62 2 12 2v7.5z" fill="#34A853"/><circle cx="12" cy="9" r="2.5" fill="white"/></svg>
           </a>
           <!-- Waze -->
-          <a href="https://waze.com/ul?ll=6.2341,-75.1561&navigate=yes" target="_blank" rel="noopener" title="Waze" style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;border:0.5px solid rgba(4,200,10,0.3);border-radius:50%;text-decoration:none;background:rgba(255,255,255,0.04);transition:background 0.2s;" onmouseover="this.style.background='rgba(4,200,10,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.04)'">
+          <a href="https://waze.com/ul?ll=6.2341,-75.1561&navigate=yes" target="_blank" rel="noopener" title="Waze" class="icon-circle-btn">
             <svg width="26" height="26" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><ellipse cx="12" cy="11" rx="9" ry="8.5" fill="#33CCFF"/><circle cx="9.2" cy="10" r="1.3" fill="#1A1A1A"/><circle cx="14.8" cy="10" r="1.3" fill="#1A1A1A"/><path d="M9 13.5c.8 1.2 5.2 1.2 6 0" stroke="#1A1A1A" stroke-width="1.1" stroke-linecap="round" fill="none"/><circle cx="16.5" cy="17.5" r="2" fill="#FFCC00"/><circle cx="9.5" cy="19" r="1.5" fill="#FFCC00"/></svg>
           </a>
         </div>
@@ -1324,25 +1498,6 @@
 </div>
 
 <!-- ═══ JOURNEY PAGE (Option A — The Club Floor) ═══ -->
-<style>
-  @keyframes jPulseRing { 0%{width:60px;height:60px;opacity:0.8} 100%{width:520px;height:520px;opacity:0} }
-  @keyframes jTicker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-  @keyframes lineupGlow { 0%,100%{text-shadow:0 0 24px rgba(4,200,10,0.35),0 0 60px rgba(4,200,10,0.1),0 2px 4px rgba(0,0,0,0.6)} 50%{text-shadow:0 0 40px rgba(4,220,10,0.6),0 0 90px rgba(4,200,10,0.2),0 2px 4px rgba(0,0,0,0.6)} }
-  @keyframes lineupScan { 0%{left:-30%;opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{left:130%;opacity:0} }
-  @keyframes prismFlow { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
-  @keyframes neonBreathe { 0%,100%{text-shadow:0 0 18px rgba(4,220,10,0.5),0 0 60px rgba(4,200,10,0.2),0 0 120px rgba(4,200,10,0.05)} 50%{text-shadow:0 0 40px rgba(4,255,10,1),0 0 100px rgba(4,220,10,0.5),0 0 200px rgba(4,200,10,0.15)} }
-  .lineup-letter { display:inline-block; transition:opacity 0.35s ease, filter 0.35s ease; -webkit-text-stroke:1.5px rgba(4,210,10,0.5); }
-  .nature-particle { position:absolute; pointer-events:none; color:rgba(4,220,10,0.85); font-size:28px; animation:natureDrift 1.4s ease-out forwards; z-index:10; }
-  @keyframes natureDrift { 0%{opacity:0;transform:translateY(10px) scale(0.6)} 25%{opacity:1;transform:translateY(-8px) scale(1)} 70%{opacity:0.8;transform:translateY(-28px) scale(0.9)} 100%{opacity:0;transform:translateY(-55px) scale(0.7)} }
-  #lineupTitle.prism { background:linear-gradient(90deg,#04e80c,#ffffff,#00ffb0,#b4ff8a,#04e80c); background-size:300% 100%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; -webkit-text-stroke:1px rgba(80,255,120,0.25); background-position:40% 50%; }
-  @keyframes diamondPulse { 0%,100%{opacity:0.6;transform:rotate(45deg) scale(1)} 50%{opacity:1;transform:rotate(45deg) scale(1.3)} }
-  @keyframes lineFade { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
-  .j-ring { position:absolute;border-radius:50%;border:1px solid rgba(4,200,10,0.14);animation:jPulseRing 2.4s ease-out infinite; }
-  .j-ticker { display:flex;align-items:center;height:36px;white-space:nowrap;animation:jTicker 28s linear infinite; }
-  .j-tick { font-size:12px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(4,200,10,0.7);font-weight:200;font-family:'DM Sans',sans-serif;padding:0 32px; }
-  .j-dot  { color:rgba(4,200,10,0.35);font-size:12px; }
-</style>
-
 <div id="journey" style="position:fixed;inset:0;z-index:20;background:#000;opacity:0;pointer-events:none;transition:opacity 0.4s ease;overflow:hidden;">
   <canvas id="tunnelCanvas" style="position:absolute;inset:0;z-index:0;"></canvas>
   <div style="position:absolute;inset:0;z-index:1;pointer-events:none;display:flex;align-items:center;justify-content:center;">
@@ -1379,7 +1534,7 @@
     </div>
     </div><!-- /max-width wrapper -->
   </div>
-  <button id="journeyBack" onclick="closeJourney()" style="position:absolute;top:68px;left:24px;z-index:10;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:12px 24px;min-height:44px;color:rgba(4,200,10,0.8);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;transition:all 0.2s ease, opacity 0.5s ease;opacity:0;">← Back</button>
+  <button id="journeyBack" onclick="closeJourney()" class="back-btn" style="position:absolute;z-index:10;">← Back</button>
   <div style="position:absolute;bottom:0;left:0;right:0;z-index:5;height:36px;border-top:0.5px solid rgba(4,200,10,0.2);overflow:hidden;background:rgba(0,0,0,0.5);">
     <div style="display:inline-block;white-space:nowrap;line-height:36px;animation:jTicker 100s linear infinite;will-change:transform;font-size:12px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(4,200,10,0.7);font-weight:200;font-family:DM Sans,sans-serif;">Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · </div>
   </div>
@@ -3186,7 +3341,9 @@ const translations = {
     'shop-tab-title':'Shop','merch-soon':'Merch Coming Soon',
     'festival-page-title':'Festival Info','fi-date-title':'Date &amp; Time','fi-date-body':'Saturday, July 18<br>1PM — 5AM',
     'fi-venue-title':'Venue','fi-map-tap':'Tap to open in Maps',
-    'fi-bring-title':'What to Bring','fi-bring-body':'· Valid ID (18+)<br>· RSVP confirmation<br>· Comfortable footwear<br>· Good energy',
+    'fi-dresscode-title':'Dress Code','fi-dresscode-body':'None. Come as you are.',
+    'fi-capacity-title':'Capacity','fi-capacity-body':'120 people. An intimate experience.',
+    'fi-admission-title':'Admission','fi-admission-body':'· Included with cabin rental<br>· General admission available for non-cabin guests',
     'gh-title':'Getting Here','gh-loc-title':'Location','gh-medellin-title':'From Medellín',
     'gh-medellin-body':'Approximately 2 hours by car.<br>Take the highway toward El Peñol / Guatapé.',
     'gh-airport-title':'From José María Córdova Airport','gh-airport-body':'Approximately 1.5 hours by car.<br>Take the highway toward El Peñol / Guatapé.','gh-parking-title':'Parking','gh-parking-body':'Parking will be provided. There will also be shuttles to the event.',
@@ -3224,7 +3381,9 @@ const translations = {
     'shop-tab-title':'Tienda','merch-soon':'Merch Próximamente',
     'festival-page-title':'Info del Festival','fi-date-title':'Fecha &amp; Hora','fi-date-body':'Sábado, 18 de julio<br>1PM — 5AM',
     'fi-venue-title':'Lugar','fi-map-tap':'Toca para abrir en Maps',
-    'fi-bring-title':'Qué Traer','fi-bring-body':'· ID válida (18+)<br>· Confirmación de RSVP<br>· Calzado cómodo<br>· Buena energía',
+    'fi-dresscode-title':'Código de Vestimenta','fi-dresscode-body':'Ninguno. Ven como eres.',
+    'fi-capacity-title':'Capacidad','fi-capacity-body':'120 personas. Una experiencia íntima.',
+    'fi-admission-title':'Admisión','fi-admission-body':'· Incluida con la renta de cabaña<br>· Admisión general disponible para quienes no rentan cabaña',
     'gh-title':'Cómo Llegar','gh-loc-title':'Ubicación','gh-medellin-title':'Desde Medellín',
     'gh-medellin-body':'Aproximadamente 2 horas en carro.<br>Toma la vía hacia El Peñol / Guatapé.',
     'gh-airport-title':'Desde el Aeropuerto José María Córdova','gh-airport-body':'Aproximadamente 1.5 horas en carro.<br>Toma la vía hacia El Peñol / Guatapé.','gh-parking-title':'Parqueadero','gh-parking-body':'Se proporcionará estacionamiento. También habrá shuttles al evento.',
