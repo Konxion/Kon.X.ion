@@ -1141,6 +1141,138 @@
     from { opacity:0; }
     to   { opacity:1; }
   }
+
+  /* ── GETTING HERE PAGE ── */
+  .gh-hero { text-align: center; margin-bottom: 40px; }
+  .gh-eyebrow {
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px; margin-bottom: 18px;
+  }
+  .gh-eyebrow-line {
+    flex: 1; max-width: 48px; height: 0.5px;
+    background: linear-gradient(to right, transparent, rgba(4,200,10,0.38));
+  }
+  .gh-eyebrow-line.rev { background: linear-gradient(to left, transparent, rgba(4,200,10,0.38)); }
+  .gh-eyebrow-text {
+    font-family: var(--font-label); font-size: 9px; letter-spacing: 0.42em;
+    text-transform: uppercase; color: rgba(4,200,10,0.5);
+  }
+  .gh-venue-name {
+    font-family: var(--font-serif); font-style: italic; font-weight: 300;
+    font-size: clamp(52px, 14vw, 72px); color: #fff; letter-spacing: 0.04em;
+    line-height: 1.05; margin-bottom: 10px;
+    text-shadow: 0 0 40px rgba(4,200,10,0.15), 0 2px 16px rgba(0,0,0,0.6);
+  }
+  .gh-venue-location {
+    font-family: var(--font-body); font-size: 12px; font-weight: 300;
+    letter-spacing: 0.26em; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); margin-bottom: 28px;
+  }
+  .gh-map-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .gh-map-btn {
+    display: flex; align-items: center; gap: 8px; padding: 11px 18px;
+    background: var(--em-06); border: 0.5px solid var(--em-18); border-radius: 999px;
+    color: rgba(255,255,255,0.8); font-family: var(--font-label); font-size: 10px;
+    font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase;
+    text-decoration: none; transition: background 0.2s, border-color 0.2s, color 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .gh-map-btn:hover { background: rgba(4,200,10,0.12); border-color: rgba(4,200,10,0.45); color: #fff; }
+  .gh-map-btn-icon {
+    width: 26px; height: 26px; border-radius: 7px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .gh-section-divider {
+    display: flex; align-items: center; gap: 14px; margin: 32px 0 22px;
+  }
+  .gh-section-divider-line { flex: 1; height: 0.5px; background: rgba(4,200,10,0.15); }
+  .gh-section-divider-label {
+    font-family: var(--font-label); font-size: 9px; font-weight: 300;
+    letter-spacing: 0.42em; text-transform: uppercase; color: rgba(4,200,10,0.4);
+    white-space: nowrap;
+  }
+  .travel-card {
+    background: var(--em-06); border: var(--card-border);
+    border-radius: 20px; overflow: hidden; margin-bottom: 12px;
+  }
+  .travel-row { display: flex; align-items: center; gap: 16px; padding: 20px 22px; }
+  .travel-row + .travel-row { border-top: 0.5px solid rgba(4,200,10,0.1); }
+  .travel-icon {
+    width: 38px; height: 38px; border-radius: 12px;
+    background: rgba(4,200,10,0.08); border: 0.5px solid rgba(4,200,10,0.18);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; color: rgba(4,220,10,0.8);
+  }
+  .travel-info { flex: 1; min-width: 0; }
+  .travel-from {
+    font-family: var(--font-label); font-size: 10px; font-weight: 300;
+    letter-spacing: 0.24em; text-transform: uppercase; color: rgba(4,220,10,0.75);
+    margin-bottom: 2px;
+  }
+  .travel-detail {
+    font-family: var(--font-serif); font-weight: 300; font-size: 21px;
+    color: #fff; line-height: 1.2;
+  }
+  .travel-sub {
+    font-family: var(--font-body); font-size: 12px; font-weight: 300;
+    color: rgba(255,255,255,0.35); margin-top: 1px;
+  }
+  .travel-time {
+    font-family: var(--font-impact); font-size: 38px; letter-spacing: 0.06em;
+    color: rgba(4,200,10,0.65); text-shadow: 0 0 16px rgba(4,220,10,0.35);
+    flex-shrink: 0; line-height: 1;
+  }
+  .rideshare-note {
+    display: flex; align-items: center; gap: 10px; padding: 14px 18px;
+    background: rgba(255,255,255,0.025); border: 0.5px solid rgba(255,255,255,0.09);
+    border-radius: 12px; margin-bottom: 12px;
+  }
+  .rideshare-text {
+    font-family: var(--font-body); font-size: 13px; font-weight: 300;
+    color: rgba(255,255,255,0.45); line-height: 1.5;
+  }
+  .rideshare-text strong { color: rgba(255,255,255,0.72); font-weight: 400; }
+  .arrival-card {
+    background: var(--em-06); border: var(--card-border);
+    border-radius: 20px; padding: 20px 22px; margin-bottom: 12px;
+  }
+  .arrival-title {
+    font-family: var(--font-label); font-weight: 400; font-size: 11px;
+    letter-spacing: 0.38em; text-transform: uppercase;
+    color: var(--em-220); text-shadow: var(--em-glow-sm); margin-bottom: 14px;
+  }
+  .arrival-items { display: flex; gap: 10px; }
+  .arrival-item {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    gap: 8px; padding: 14px 10px;
+    background: rgba(4,200,10,0.04); border: 0.5px solid rgba(4,200,10,0.12);
+    border-radius: 14px; text-align: center;
+  }
+  .arrival-item-icon { color: rgba(4,220,10,0.65); }
+  .arrival-item-label {
+    font-family: var(--font-label); font-size: 9px; font-weight: 300;
+    letter-spacing: 0.3em; text-transform: uppercase; color: rgba(4,200,10,0.55);
+  }
+  .arrival-item-value {
+    font-family: var(--font-serif); font-weight: 300; font-size: 17px;
+    color: rgba(255,255,255,0.82); line-height: 1.3;
+  }
+  .gh-footer-contact {
+    text-align: center; margin-top: 32px; padding-top: 24px;
+    border-top: 0.5px solid rgba(4,200,10,0.1);
+  }
+  .gh-footer-qlabel {
+    font-family: var(--font-label); font-size: 9px; font-weight: 300;
+    letter-spacing: 0.38em; text-transform: uppercase;
+    color: rgba(255,255,255,0.22); margin-bottom: 8px;
+  }
+  .gh-footer-email {
+    font-family: var(--font-serif); font-style: italic; font-weight: 300;
+    font-size: 18px; color: rgba(4,200,10,0.6); text-decoration: none;
+    border-bottom: 0.5px solid rgba(4,200,10,0.28); padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s; display: inline-block;
+  }
+  .gh-footer-email:hover { color: rgba(4,220,10,0.9); border-color: rgba(4,200,10,0.55); }
 </style>
 </head>
 <body>
@@ -1613,50 +1745,110 @@
 <!-- ═══ GETTING HERE PAGE ═══ -->
 <div id="gettingHerePage" style="position:fixed;inset:0;z-index:40;background:#000;opacity:0;pointer-events:none;transition:opacity 0.4s ease;overflow-y:auto;-webkit-overflow-scrolling:touch;">
   <canvas id="gettingHereBgCanvas" style="position:fixed;inset:0;z-index:0;pointer-events:none;"></canvas>
-  <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 100% 100% at 50% 50%, transparent 30%, rgba(0,0,0,0.82) 100%);"></div>
+  <div class="fi-bg-deep" aria-hidden="true"></div>
+  <div class="fi-scanlines" aria-hidden="true"></div>
+  <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 110% 110% at 50% 50%, transparent 35%, rgba(0,0,0,0.75) 100%);" aria-hidden="true"></div>
   <button onclick="closeGettingHere()" class="back-btn" id="gettingHereBack" data-i18n="back-btn">← Back</button>
-  <div style="padding:120px 24px 60px;max-width:520px;margin:0 auto;position:relative;z-index:1;">
-    <div style="text-align:center;margin-bottom:40px;">
-      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:60px;color:#fff;letter-spacing:0.06em;" data-i18n="gh-title">Getting Here</div>
-      <div style="width:40px;height:0.5px;background:rgba(4,200,10,0.4);margin:14px auto 0;"></div>
-    </div>
-    <div class="info-card">
-      <div class="info-card-title" data-i18n="gh-loc-title">Location</div>
-      <div>
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-          <a href="https://www.instagram.com/bethel_lozana_guatape/" target="_blank" rel="noopener" class="info-card-body" style="text-decoration:none;color:#fff;border-bottom:1.5px solid rgba(4,200,10,0.75);padding-bottom:2px;line-height:1.3;font-size:26px;">Bethel Lozana</a>
-          <!-- Apple Maps -->
-          <a href="https://maps.apple.com/?ll=6.2341,-75.1561&q=Bethel+Lozana&t=m" target="_blank" rel="noopener" title="Apple Maps" class="icon-circle-btn">
-            <svg width="26" height="26" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="amlg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3FCF6E"/><stop offset="50%" stop-color="#4DC8F0"/><stop offset="100%" stop-color="#3B8BF5"/></linearGradient></defs><rect width="24" height="24" rx="6" fill="url(#amlg)"/><path d="M12 5.5C9.51 5.5 7.5 7.51 7.5 10c0 3.75 4.5 9 4.5 9s4.5-5.25 4.5-9c0-2.49-2.01-4.5-4.5-4.5zm0 6.25a1.75 1.75 0 110-3.5 1.75 1.75 0 010 3.5z" fill="white"/></svg>
-          </a>
-          <!-- Google Maps -->
-          <a href="https://www.google.com/maps?q=6.2341,-75.1561" target="_blank" rel="noopener" title="Google Maps" class="icon-circle-btn">
-            <svg width="26" height="26" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#EA4335"/><path d="M12 2v7.5A2.5 2.5 0 0014.5 7C14.5 4.57 13.38 2 12 2z" fill="#FBBC04"/><path d="M12 9.5A2.5 2.5 0 019.5 7C9.5 4.57 10.62 2 12 2v7.5z" fill="#34A853"/><circle cx="12" cy="9" r="2.5" fill="white"/></svg>
-          </a>
-          <!-- Waze -->
-          <a href="https://waze.com/ul?ll=6.2341,-75.1561&navigate=yes" target="_blank" rel="noopener" title="Waze" class="icon-circle-btn">
-            <svg width="26" height="26" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><ellipse cx="12" cy="11" rx="9" ry="8.5" fill="#33CCFF"/><circle cx="9.2" cy="10" r="1.3" fill="#1A1A1A"/><circle cx="14.8" cy="10" r="1.3" fill="#1A1A1A"/><path d="M9 13.5c.8 1.2 5.2 1.2 6 0" stroke="#1A1A1A" stroke-width="1.1" stroke-linecap="round" fill="none"/><circle cx="16.5" cy="17.5" r="2" fill="#FFCC00"/><circle cx="9.5" cy="19" r="1.5" fill="#FFCC00"/></svg>
-          </a>
-        </div>
-        <div onclick="openMapPicker()" style="font-family:'DM Sans',sans-serif;font-size:16px;letter-spacing:0.1em;color:#fff;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.3);display:inline-block;padding-bottom:1px;">Guatapé, Colombia</div>
+  <div class="fi-content">
+
+    <!-- VENUE HERO -->
+    <div class="gh-hero">
+      <div class="gh-eyebrow" aria-hidden="true">
+        <div class="gh-eyebrow-line"></div>
+        <span class="gh-eyebrow-text" data-i18n="gh-eyebrow">KON.X.ION · July 18</span>
+        <div class="gh-eyebrow-line rev"></div>
+      </div>
+      <div class="gh-venue-name">Bethel Lozana</div>
+      <div class="gh-venue-location">Guatapé · Antioquia · Colombia</div>
+      <div class="gh-map-btns">
+        <a href="https://maps.apple.com/?ll=6.2341,-75.1561&q=Bethel+Lozana&t=m" target="_blank" rel="noopener" class="gh-map-btn" aria-label="Open in Apple Maps">
+          <span class="gh-map-btn-icon" style="background:linear-gradient(135deg,#3FCF6E,#4DC8F0,#3B8BF5);" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M12 5.5C9.51 5.5 7.5 7.51 7.5 10c0 3.75 4.5 9 4.5 9s4.5-5.25 4.5-9c0-2.49-2.01-4.5-4.5-4.5zm0 6.25a1.75 1.75 0 110-3.5 1.75 1.75 0 010 3.5z" fill="white"/></svg></span>
+          Apple Maps
+        </a>
+        <a href="https://www.google.com/maps?q=6.2341,-75.1561" target="_blank" rel="noopener" class="gh-map-btn" aria-label="Open in Google Maps">
+          <span class="gh-map-btn-icon" style="background:#fff;" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#EA4335"/><path d="M12 2v7.5A2.5 2.5 0 0014.5 7C14.5 4.57 13.38 2 12 2z" fill="#FBBC04"/><path d="M12 9.5A2.5 2.5 0 019.5 7C9.5 4.57 10.62 2 12 2v7.5z" fill="#34A853"/><circle cx="12" cy="9" r="2.5" fill="white"/></svg></span>
+          Google Maps
+        </a>
+        <a href="https://waze.com/ul?ll=6.2341,-75.1561&navigate=yes" target="_blank" rel="noopener" class="gh-map-btn" aria-label="Open in Waze">
+          <span class="gh-map-btn-icon" style="background:#33CCFF;" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24"><ellipse cx="12" cy="11" rx="9" ry="8.5" fill="#33CCFF"/><circle cx="9.2" cy="10" r="1.3" fill="#1A1A1A"/><circle cx="14.8" cy="10" r="1.3" fill="#1A1A1A"/><path d="M9 13.5c.8 1.2 5.2 1.2 6 0" stroke="#1A1A1A" stroke-width="1.1" stroke-linecap="round" fill="none"/><circle cx="16.5" cy="17.5" r="2" fill="#FFCC00"/><circle cx="9.5" cy="19" r="1.5" fill="#FFCC00"/></svg></span>
+          Waze
+        </a>
       </div>
     </div>
-    <div class="info-card">
-      <div class="info-card-title" data-i18n="gh-medellin-title">From Medellín</div>
-      <div class="info-card-body" data-i18n="gh-medellin-body">Approximately 2 hours by car.<br>Take the highway toward El Peñol / Guatapé.</div>
+
+    <!-- GETTING THERE DIVIDER -->
+    <div class="gh-section-divider" aria-hidden="true">
+      <div class="gh-section-divider-line"></div>
+      <span class="gh-section-divider-label" data-i18n="gh-divider-travel">Getting There</span>
+      <div class="gh-section-divider-line"></div>
     </div>
-    <div class="info-card">
-      <a href="https://www.google.com/maps/search/Aeropuerto+Internacional+Jos%C3%A9+Mar%C3%ADa+C%C3%B3rdova" target="_blank" rel="noopener" class="info-card-title" data-i18n="gh-airport-title" style="text-decoration:none;display:block;cursor:pointer;border-bottom:1px solid rgba(4,220,10,0.4);padding-bottom:2px;display:inline-block;">From José María Córdova Airport</a>
-      <div class="info-card-body" data-i18n="gh-airport-body">Approximately 1.5 hours by car.<br>Take the highway toward El Peñol / Guatapé.</div>
+
+    <!-- TRAVEL DISTANCES -->
+    <div class="travel-card">
+      <div class="travel-row">
+        <div class="travel-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2"/><rect x="7" y="17" width="10" height="4" rx="2"/><path d="M5 9V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4"/></svg>
+        </div>
+        <div class="travel-info">
+          <div class="travel-from" data-i18n="gh-medellin-title">From Medellín</div>
+          <div class="travel-detail" data-i18n="gh-route-medellin">Via Autopista Medellín–Bogotá</div>
+          <div class="travel-sub" data-i18n="gh-sub-medellin">toward El Peñol / Guatapé</div>
+        </div>
+        <div class="travel-time" aria-label="2 hours">2h</div>
+      </div>
+      <div class="travel-row">
+        <div class="travel-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21 4 19 4s-2 1-3.5 2.5L11 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
+        </div>
+        <div class="travel-info">
+          <div class="travel-from" data-i18n="gh-airport-title">From JMC Airport</div>
+          <div class="travel-detail" data-i18n="gh-airport-name">José María Córdova</div>
+          <div class="travel-sub" data-i18n="gh-sub-airport">Rionegro · toward Guatapé</div>
+        </div>
+        <div class="travel-time" aria-label="1.5 hours">1.5h</div>
+      </div>
     </div>
-    <div class="info-card">
-      <div class="info-card-title" data-i18n="gh-parking-title">Parking</div>
-      <div class="info-card-body" data-i18n="gh-parking-body">Parking will be provided. There will also be shuttles to the event.</div>
+
+    <!-- RIDESHARE NOTE -->
+    <div class="rideshare-note" role="note">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div class="rideshare-text" data-i18n="gh-rideshare">No car? <strong>Uber, InDriver,</strong> and local taxis are available from Medellín.</div>
     </div>
-    <div class="info-card">
-      <div class="info-card-title" data-i18n="gh-q-title">Questions?</div>
-      <a href="mailto:steve@konxion.us?subject=KON.X.ION%20Question" class="info-card-body" style="text-decoration:none;color:#fff;border-bottom:1px solid rgba(4,200,10,0.5);padding-bottom:2px;display:inline-block;cursor:pointer;">steve@konxion.us</a>
+
+    <!-- ON ARRIVAL DIVIDER -->
+    <div class="gh-section-divider" aria-hidden="true">
+      <div class="gh-section-divider-line"></div>
+      <span class="gh-section-divider-label" data-i18n="gh-divider-arrival">On Arrival</span>
+      <div class="gh-section-divider-line"></div>
     </div>
+
+    <!-- ARRIVAL — PARKING + SHUTTLES -->
+    <div class="arrival-card">
+      <div class="arrival-title" data-i18n="gh-arrival-title">When You Arrive</div>
+      <div class="arrival-items">
+        <div class="arrival-item">
+          <div class="arrival-item-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+          <div class="arrival-item-label" data-i18n="gh-parking-title">Parking</div>
+          <div class="arrival-item-value" data-i18n="gh-parking-val">Provided on site</div>
+        </div>
+        <div class="arrival-item">
+          <div class="arrival-item-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
+          </div>
+          <div class="arrival-item-label" data-i18n="gh-shuttle-label">Shuttles</div>
+          <div class="arrival-item-value" data-i18n="gh-shuttle-val">To the venue</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER CONTACT -->
+    <div class="gh-footer-contact">
+      <div class="gh-footer-qlabel" data-i18n="gh-q-title">Questions?</div>
+      <a href="mailto:steve@konxion.us?subject=KON.X.ION%20Question" class="gh-footer-email">steve@konxion.us</a>
+    </div>
+
   </div>
 </div>
 
@@ -3608,8 +3800,13 @@ const translations = {
     'bring-item-1':'Valid ID (18+)','bring-item-2':'RSVP confirmation','bring-item-3':'Comfortable footwear','bring-item-4':'Good energy',
     'fi-admission-title':'Admission','fi-admission-body':'· Included with cabin rental<br>· General admission available for non-cabin guests',
     'gh-title':'Getting Here','gh-loc-title':'Location','gh-medellin-title':'From Medellín',
-    'gh-medellin-body':'Approximately 2 hours by car.<br>Take the highway toward El Peñol / Guatapé.',
-    'gh-airport-title':'From José María Córdova Airport','gh-airport-body':'Approximately 1.5 hours by car.<br>Take the highway toward El Peñol / Guatapé.','gh-parking-title':'Parking','gh-parking-body':'Parking will be provided. There will also be shuttles to the event.',
+    'gh-eyebrow':'KON.X.ION · July 18',
+    'gh-divider-travel':'Getting There','gh-divider-arrival':'On Arrival',
+    'gh-route-medellin':'Via Autopista Medellín–Bogotá','gh-sub-medellin':'toward El Peñol / Guatapé',
+    'gh-airport-title':'From JMC Airport','gh-airport-name':'José María Córdova','gh-sub-airport':'Rionegro · toward Guatapé',
+    'gh-rideshare':'No car? <strong>Uber, InDriver,</strong> and local taxis are available from Medellín.',
+    'gh-arrival-title':'When You Arrive','gh-parking-title':'Parking','gh-parking-val':'Provided on site',
+    'gh-shuttle-label':'Shuttles','gh-shuttle-val':'To the venue',
     'gh-q-title':'Questions?','shop-merch':'Merch','shop-soon':'Coming Soon',
     'shop-drops':'Drops with the lineup announcement.','back-btn':'← Back',
     'next-event':'Next Event','journey-date':'Saturday, July 18',
@@ -3649,8 +3846,13 @@ const translations = {
     'bring-item-1':'Cédula 18+','bring-item-2':'Confirmación de RSVP','bring-item-3':'Calzado cómodo','bring-item-4':'Buena energía',
     'fi-admission-title':'Admisión','fi-admission-body':'· Incluida con la renta de cabaña<br>· Admisión general disponible para quienes no rentan cabaña',
     'gh-title':'Cómo Llegar','gh-loc-title':'Ubicación','gh-medellin-title':'Desde Medellín',
-    'gh-medellin-body':'Aproximadamente 2 horas en carro.<br>Toma la vía hacia El Peñol / Guatapé.',
-    'gh-airport-title':'Desde el Aeropuerto José María Córdova','gh-airport-body':'Aproximadamente 1.5 horas en carro.<br>Toma la vía hacia El Peñol / Guatapé.','gh-parking-title':'Parqueadero','gh-parking-body':'Se proporcionará estacionamiento. También habrá shuttles al evento.',
+    'gh-eyebrow':'KON.X.ION · 18 de Julio',
+    'gh-divider-travel':'Cómo Llegar','gh-divider-arrival':'Al Llegar',
+    'gh-route-medellin':'Por la Autopista Medellín–Bogotá','gh-sub-medellin':'hacia El Peñol / Guatapé',
+    'gh-airport-title':'Desde el Aeropuerto JMC','gh-airport-name':'José María Córdova','gh-sub-airport':'Rionegro · hacia Guatapé',
+    'gh-rideshare':'¿Sin carro? <strong>Uber, InDriver</strong> y taxis locales disponibles desde Medellín.',
+    'gh-arrival-title':'Cuando Llegues','gh-parking-title':'Parqueadero','gh-parking-val':'En el lugar',
+    'gh-shuttle-label':'Shuttles','gh-shuttle-val':'Al lugar del evento',
     'gh-q-title':'¿Preguntas?','shop-merch':'Merch','shop-soon':'Próximamente',
     'shop-drops':'Disponible con el anuncio del lineup.','back-btn':'← Volver',
     'next-event':'Próximo Evento','journey-date':'Sábado, 18 de julio',
