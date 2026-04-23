@@ -1074,7 +1074,12 @@
     letter-spacing: 0.22em; text-transform: uppercase;
     text-align: center;
     text-shadow: 0 0 12px rgba(4,200,10,0.45);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    -webkit-tap-highlight-color: transparent;
   }
+  .ticket-price-display:hover  { background: rgba(4,200,10,0.14); border-color: rgba(4,200,10,0.6); }
+  .ticket-price-display:active { background: rgba(4,200,10,0.22); }
 
   /* RSVP CTA */
   .rsvp-cta {
@@ -1749,7 +1754,7 @@
     <div class="admission-card">
       <div class="info-card-title" data-i18n="fi-admission-title">Admission</div>
       <div class="info-card-body" data-i18n="fi-admission-body"><span class="bullet-green">·</span> Included with cabin rental<br><span class="bullet-green">·</span> Day passes available for non-cabin guests</div>
-      <div class="ticket-price-display" data-i18n="rsvp-date">General Admission &nbsp;·&nbsp; $35 USD</div>
+      <div class="ticket-price-display" data-i18n="rsvp-date" onclick="location.href='mailto:steve@konxion.us?subject='+(currentLang==='es'?encodeURIComponent('Comprar Boleta'):encodeURIComponent('Buy Ticket'))">General Admission &nbsp;·&nbsp; $35 USD</div>
       <!-- TO RE-ACTIVATE: remove the div above and uncomment the button below -->
       <!-- <button class="rsvp-cta" onclick="openRsvpSheet()" data-i18n="rsvp-title">Get Tickets</button> -->
     </div>
