@@ -577,6 +577,16 @@
     border-radius: 12px;
     overflow: hidden;
     border: 0.5px solid rgba(4,200,10,0.2);
+    position: relative;
+  }
+  #djHRSHY .dj-photo-wrap-v::after {
+    content: '';
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 52px; height: 52px;
+    background: radial-gradient(ellipse at 100% 100%, rgba(0,0,0,0.92) 20%, transparent 72%);
+    border-radius: 0 0 12px 0;
+    pointer-events: none;
   }
   .dj-name-v {
     font-family: 'Bebas Neue', sans-serif;
@@ -1074,12 +1084,7 @@
     letter-spacing: 0.22em; text-transform: uppercase;
     text-align: center;
     text-shadow: 0 0 12px rgba(4,200,10,0.45);
-    cursor: pointer;
-    transition: background 0.2s, border-color 0.2s;
-    -webkit-tap-highlight-color: transparent;
   }
-  .ticket-price-display:hover  { background: rgba(4,200,10,0.14); border-color: rgba(4,200,10,0.6); }
-  .ticket-price-display:active { background: rgba(4,200,10,0.22); }
 
   /* RSVP CTA */
   .rsvp-cta {
@@ -1754,9 +1759,8 @@
     <div class="admission-card">
       <div class="info-card-title" data-i18n="fi-admission-title">Admission</div>
       <div class="info-card-body" data-i18n="fi-admission-body"><span class="bullet-green">·</span> Included with cabin rental<br><span class="bullet-green">·</span> Day passes available for non-cabin guests</div>
-      <div class="ticket-price-display" data-i18n="rsvp-date" onclick="location.href='mailto:steve@konxion.us?subject='+(currentLang==='es'?encodeURIComponent('Comprar Boleta'):encodeURIComponent('Buy Ticket'))">General Admission &nbsp;·&nbsp; $35 USD</div>
-      <!-- TO RE-ACTIVATE: remove the div above and uncomment the button below -->
-      <!-- <button class="rsvp-cta" onclick="openRsvpSheet()" data-i18n="rsvp-title">Get Tickets</button> -->
+      <div class="ticket-price-display" data-i18n="rsvp-date">General Admission &nbsp;·&nbsp; $35 USD</div>
+      <button class="rsvp-cta" onclick="location.href='mailto:steve@konxion.us?subject='+(currentLang==='es'?encodeURIComponent('Reservar Boleta'):encodeURIComponent('Reserve Ticket'))" data-i18n="reserve-tickets-btn">Reserve Tickets</button>
     </div>
 
     <!-- DETAILS ROW -->
@@ -3923,7 +3927,7 @@ const translations = {
     'gh-q-title':'Questions?','shop-merch':'Merch','shop-soon':'Coming Soon',
     'shop-drops':'Drops with the lineup announcement.','back-btn':'← Back',
     'next-event':'Next Event','journey-date':'Saturday, July 18',
-    'rsvp-title':'Get Tickets','rsvp-date':'General Admission &nbsp;·&nbsp; $35 USD',
+    'rsvp-title':'Get Tickets','rsvp-date':'General Admission &nbsp;·&nbsp; $35 USD','reserve-tickets-btn':'Reserve Tickets',
     'nav-stay':'Stay','stay-title':'Stay','stay-subtitle':'Cabin Rentals · Guatapé',
     'stay-about-label':'About','stay-about':"We've reserved all the cabins in the resort for Kon.X.ion attendees. Wake up in the mountains of Guatape, steps from the festival.",
     'stay-included-label':"What's Included",'stay-included-note':'* * * With cabin rental * * *',
@@ -3964,7 +3968,7 @@ const translations = {
     'gh-q-title':'¿Preguntas?','shop-merch':'Merch','shop-soon':'Próximamente',
     'shop-drops':'Disponible con el anuncio del lineup.','back-btn':'← Volver',
     'next-event':'Próximo Evento','journey-date':'Sábado, 18 de julio',
-    'rsvp-title':'Comprar Boletos','rsvp-date':'Admisión General &nbsp;·&nbsp; COP 135,000',
+    'rsvp-title':'Comprar Boletos','rsvp-date':'Admisión General &nbsp;·&nbsp; COP 135,000','reserve-tickets-btn':'Reservar Boleta',
     'nav-stay':'Hospedaje','stay-title':'Hospedaje','stay-subtitle':'Cabañas · Guatapé',
     'stay-about-label':'Acerca de','stay-about':'Hemos reservado todas las cabañas del resort para los asistentes de Kon.X.ion. Despierta en las montañas de Guatapé, a pasos del festival.',
     'stay-included-label':'Qué Incluye','stay-included-note':'* * * Con renta de cabaña * * *',
