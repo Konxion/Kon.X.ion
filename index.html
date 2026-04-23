@@ -1971,7 +1971,7 @@
   <div class="sheet-handle"></div>
   <div class="sheet-header">
     <div class="sheet-title" style="color:rgba(4,200,10,1);text-shadow:0 0 18px rgba(4,200,10,0.7),0 0 40px rgba(4,200,10,0.35);" data-i18n="rsvp-title">Get Tickets</div>
-    <div class="sheet-sub" data-i18n="rsvp-date">General Admission &nbsp;·&nbsp; $35 USD / COP 125,000</div>
+    <div class="sheet-sub" data-i18n="rsvp-date">General Admission &nbsp;·&nbsp; $35 USD</div>
   </div>
   <div class="form-section">
     <label class="form-label">Your details</label>
@@ -3898,7 +3898,7 @@ const translations = {
     'gh-q-title':'Questions?','shop-merch':'Merch','shop-soon':'Coming Soon',
     'shop-drops':'Drops with the lineup announcement.','back-btn':'← Back',
     'next-event':'Next Event','journey-date':'Saturday, July 18',
-    'rsvp-title':'Get Tickets','rsvp-date':'General Admission &nbsp;·&nbsp; $35 USD / COP 125,000',
+    'rsvp-title':'Get Tickets','rsvp-date':'General Admission &nbsp;·&nbsp; $35 USD',
     'nav-stay':'Stay','stay-title':'Stay','stay-subtitle':'Cabin Rentals · Guatapé',
     'stay-about-label':'About','stay-about':"We've reserved all the cabins in the resort for Kon.X.ion attendees. Wake up in the mountains of Guatape, steps from the festival.",
     'stay-included-label':"What's Included",'stay-included-note':'* * * With cabin rental * * *',
@@ -3967,6 +3967,7 @@ function applyLanguage(lang) {
     var key = el.dataset.i18n;
     if (t[key] !== undefined) el.innerHTML = t[key];
   });
+  updateTicketTotal();
   document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
     var key = el.dataset.i18nPlaceholder;
     if (t[key] !== undefined) el.placeholder = t[key];
