@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Festival Info — Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;1,9..40,200&family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Josefin+Sans:wght@100;200;300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --em:     rgba(4,200,10,1);
+  --em-220: rgba(4,220,10,1);
+  --em-80:  rgba(4,200,10,0.8);
+  --em-60:  rgba(4,200,10,0.6);
+  --em-45:  rgba(4,200,10,0.45);
+  --em-30:  rgba(4,200,10,0.3);
+  --em-20:  rgba(4,200,10,0.2);
+  --em-12:  rgba(4,200,10,0.12);
+  --em-06:  rgba(4,200,10,0.06);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html, body {
+  height: 100%; width: 100%;
+  overflow: hidden;
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background: #000;
+  color: #fff;
+}
+
+/* ── PREVIEW BADGE ── */
+.preview-badge {
+  position: fixed;
+  bottom: calc(16px + var(--safe-bottom));
+  right: 16px;
+  z-index: 999;
+  background: rgba(255,200,0,0.12);
+  border: 0.5px solid rgba(255,200,0,0.45);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(255,200,0,0.85);
+  pointer-events: none;
+}
+
+/* ── SIMULATED TAB BAR ── */
+.tab-bar-sim {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 52px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 0.5px solid rgba(4,200,10,0.18);
+}
+.tab-sim {
+  flex: 1;
+  max-width: 120px;
+  text-align: center;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.42);
+  position: relative;
+}
+.tab-sim.active {
+  color: rgba(255,255,255,1);
+}
+.tab-sim.active::after {
+  content: '';
+  position: absolute;
+  bottom: -18px; left: 20%; right: 20%;
+  height: 1.5px;
+  background: rgba(4,200,10,0.85);
+  border-radius: 2px;
+}
+
+/* ── BACKGROUND LAYERS ── */
+.fi-bg-deep {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 55% at 50% 15%, rgba(4,130,8,0.32) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 40% at 15% 75%, rgba(4,70,5,0.16) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 35% at 85% 55%, rgba(4,90,6,0.12) 0%, transparent 55%);
+  animation: bgBreathe 9s ease-in-out infinite;
+}
+@keyframes bgBreathe {
+  0%, 100% { opacity: 0.8; }
+  50%       { opacity: 1; }
+}
+
+.fi-scanlines {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px, transparent 2px,
+    rgba(0,0,0,0.032) 2px, rgba(0,0,0,0.032) 4px
+  );
+}
+
+.fi-vignette {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 110% 110% at 50% 50%, transparent 35%, rgba(0,0,0,0.75) 100%);
+}
+
+/* ── PAGE CONTAINER ── */
+#festivalInfoPage {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── BACK BUTTON ── */
+.back-btn {
+  position: fixed;
+  top: 68px; left: 24px;
+  z-index: 50;
+  background: none;
+  border: 0.5px solid var(--em-30);
+  border-radius: 999px;
+  padding: 12px 24px;
+  min-height: 44px;
+  color: var(--em-80);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 300;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  animation: fadeIn 0.5s ease 0.15s both;
+}
+.back-btn:hover { background: rgba(4,200,10,0.08); }
+
+/* ── CONTENT ── */
+.fi-content {
+  padding: 106px 24px calc(60px + var(--safe-bottom));
+  max-width: 520px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ─────────────────────────────────────────
+   DATE HERO BLOCK
+───────────────────────────────────────── */
+.fi-date-hero {
+  text-align: center;
+  margin-bottom: 40px;
+  animation: heroFadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+.fi-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  animation: fadeIn 0.6s ease 0.4s both;
+}
+.fi-eyebrow-line {
+  width: 36px; height: 0.5px;
+  background: linear-gradient(to right, transparent, rgba(4,200,10,0.38));
+}
+.fi-eyebrow-line.rev {
+  background: linear-gradient(to left, transparent, rgba(4,200,10,0.38));
+}
+.fi-eyebrow-text {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: rgba(4,200,10,0.5);
+}
+
+.fi-date-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(86px, 24vw, 118px);
+  letter-spacing: 0.08em;
+  line-height: 0.88;
+  color: #fff;
+  text-shadow:
+    0 0 28px rgba(4,220,10,0.42),
+    0 0 70px rgba(4,200,10,0.16),
+    2px 3px 0 rgba(1,44,2,1),
+    4px 7px 14px rgba(0,0,0,0.75);
+  animation: dateReveal 1s cubic-bezier(0.22, 1, 0.36, 1) 0.18s both;
+  position: relative;
+}
+
+/* Subtle chromatic drift on the date */
+.fi-date-num::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  color: rgba(4,240,12,0.22);
+  transform: translate(3px, 0);
+  filter: blur(1.5px);
+  pointer-events: none;
+  mix-blend-mode: screen;
+  animation: chromaDrift 5s ease-in-out infinite;
+}
+@keyframes chromaDrift {
+  0%, 100% { transform: translate(3px, 0); opacity: 0.8; }
+  50%       { transform: translate(-2px, 0); opacity: 0.4; }
+}
+
+.fi-date-day {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 24px;
+  color: rgba(255,255,255,0.78);
+  letter-spacing: 0.12em;
+  margin-top: 8px;
+  animation: fadeUp 0.6s ease 0.52s both;
+}
+
+.fi-date-time {
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: var(--em-220);
+  text-shadow: 0 0 10px rgba(4,220,10,0.5), 0 0 28px rgba(4,220,10,0.2);
+  margin-top: 5px;
+  animation: fadeUp 0.6s ease 0.62s both;
+}
+
+/* Deco rule below date */
+.fi-deco {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+  animation: fadeIn 0.6s ease 0.72s both;
+}
+.fi-deco-line {
+  height: 0.5px; width: 56px;
+  background: linear-gradient(to right, transparent, rgba(4,200,10,0.45));
+}
+.fi-deco-line.rev {
+  background: linear-gradient(to left, transparent, rgba(4,200,10,0.45));
+}
+.fi-deco-dot {
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: rgba(4,200,10,0.5);
+}
+.fi-deco-diamond {
+  width: 5px; height: 5px;
+  background: rgba(4,220,10,0.92);
+  transform: rotate(45deg);
+  box-shadow: 0 0 8px rgba(4,220,10,0.7), 0 0 18px rgba(4,200,10,0.3);
+  animation: diamPulse 2.6s ease-in-out infinite;
+}
+@keyframes diamPulse {
+  0%, 100% { opacity: 0.7; transform: rotate(45deg) scale(1); }
+  50%       { opacity: 1;   transform: rotate(45deg) scale(1.4); }
+}
+
+/* ─────────────────────────────────────────
+   VENUE CARD  (elevated, map flush-bottom)
+───────────────────────────────────────── */
+.venue-card {
+  background: rgba(4,200,10,0.07);
+  border: 0.5px solid rgba(4,200,10,0.36);
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  animation: fadeUp 0.6s ease 0.42s both;
+}
+.venue-inner {
+  padding: 20px 22px 18px;
+}
+
+.info-card-title {
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--em-220);
+  text-shadow: 0 0 8px rgba(4,220,10,0.9), 0 0 22px rgba(4,220,10,0.45);
+  margin-bottom: 10px;
+}
+
+.venue-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 300;
+  color: #fff;
+  line-height: 1.1;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(4,200,10,0.6);
+  display: inline-block;
+  padding-bottom: 2px;
+  margin-bottom: 4px;
+}
+.venue-location {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(4,200,10,0.55);
+  margin-bottom: 14px;
+}
+.venue-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.em-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0.5px solid rgba(4,200,10,0.45);
+  border-radius: 999px;
+  padding: 8px 15px;
+  color: rgba(4,200,10,0.85);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: transparent;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.em-pill-btn:hover { background: rgba(4,200,10,0.1); border-color: rgba(4,200,10,0.7); }
+
+/* Map flush to card bottom */
+.venue-map {
+  margin-top: 16px;
+  border-top: 0.5px solid rgba(4,200,10,0.15);
+  position: relative;
+}
+.venue-map iframe {
+  width: 100%;
+  height: 155px;
+  border: none;
+  display: block;
+  filter: invert(90%) hue-rotate(130deg) saturate(0.7) brightness(0.78);
+}
+.venue-map-strip {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  text-decoration: none;
+  background: linear-gradient(transparent, rgba(0,0,0,0.82) 55%);
+}
+.venue-map-label {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(4,220,10,0.9);
+  margin-bottom: 1px;
+}
+.venue-map-hint {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 9px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.06em;
+}
+
+/* ─────────────────────────────────────────
+   ADMISSION CARD  (with RSVP CTA)
+───────────────────────────────────────── */
+.admission-card {
+  background: var(--em-06);
+  border: 0.5px solid rgba(4,200,10,0.32);
+  border-radius: 16px;
+  padding: 20px 22px;
+  margin-bottom: 12px;
+  animation: fadeUp 0.6s ease 0.52s both;
+}
+
+.info-card-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: rgba(255,255,255,1);
+  line-height: 1.72;
+}
+
+.rsvp-cta {
+  display: block;
+  width: 100%;
+  margin-top: 18px;
+  padding: 15px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(4,200,10,0.92);
+  color: #000;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 0 24px rgba(4,200,10,0.22);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.rsvp-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 30px rgba(4,200,10,0.38);
+}
+.rsvp-cta:active { transform: scale(0.97); opacity: 0.9; }
+
+/* ─────────────────────────────────────────
+   DETAILS ROW  (2-column compact)
+───────────────────────────────────────── */
+.details-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+  animation: fadeUp 0.6s ease 0.60s both;
+}
+.detail-card {
+  background: rgba(4,200,10,0.05);
+  border: 0.5px solid rgba(4,200,10,0.22);
+  border-radius: 14px;
+  padding: 16px 16px;
+}
+.detail-label {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(4,220,10,0.65);
+  text-shadow: 0 0 6px rgba(4,220,10,0.35);
+  margin-bottom: 8px;
+}
+.detail-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: 18px;
+  color: rgba(255,255,255,0.92);
+  line-height: 1.3;
+}
+.detail-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 200;
+  color: rgba(255,255,255,0.38);
+  letter-spacing: 0.03em;
+  margin-top: 3px;
+}
+
+/* ─────────────────────────────────────────
+   WHAT TO BRING  (2×2 grid)
+───────────────────────────────────────── */
+.bring-card {
+  background: var(--em-06);
+  border: 0.5px solid rgba(4,200,10,0.32);
+  border-radius: 16px;
+  padding: 20px 22px;
+  animation: fadeUp 0.6s ease 0.68s both;
+}
+.bring-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 18px;
+  margin-top: 8px;
+}
+.bring-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.68);
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+.bring-dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: rgba(4,200,10,0.7);
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+/* ── KEYFRAMES ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes dateReveal {
+  from { opacity: 0; transform: translateY(22px) scaleY(0.93); filter: blur(5px); }
+  to   { opacity: 1; transform: translateY(0) scaleY(1); filter: blur(0); }
+}
+
+/* ── REDUCED MOTION ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Preview badge -->
+<div class="preview-badge">Preview — not live</div>
+
+<!-- Simulated tab bar -->
+<nav class="tab-bar-sim" aria-hidden="true">
+  <span class="tab-sim">Music ▾</span>
+  <span class="tab-sim active">Plan ▾</span>
+  <span class="tab-sim">Shop ▾</span>
+</nav>
+
+<!-- Background layers -->
+<div class="fi-bg-deep"   aria-hidden="true"></div>
+<div class="fi-scanlines" aria-hidden="true"></div>
+<div class="fi-vignette"  aria-hidden="true"></div>
+
+<!-- Back button -->
+<button class="back-btn">← Back</button>
+
+<!-- Page -->
+<div id="festivalInfoPage">
+  <div class="fi-content">
+
+    <!-- DATE HERO -->
+    <div class="fi-date-hero">
+      <div class="fi-eyebrow" aria-hidden="true">
+        <div class="fi-eyebrow-line"></div>
+        <span class="fi-eyebrow-text">KON.X.ION · Guatapé, Colombia</span>
+        <div class="fi-eyebrow-line rev"></div>
+      </div>
+
+      <div class="fi-date-num" data-text="JULY 18">JULY 18</div>
+      <div class="fi-date-day">Saturday</div>
+      <div class="fi-date-time">1PM — 5AM</div>
+
+      <div class="fi-deco" aria-hidden="true">
+        <div class="fi-deco-line"></div>
+        <div class="fi-deco-dot"></div>
+        <div class="fi-deco-diamond"></div>
+        <div class="fi-deco-dot"></div>
+        <div class="fi-deco-line rev"></div>
+      </div>
+    </div>
+
+    <!-- VENUE CARD -->
+    <div class="venue-card">
+      <div class="venue-inner">
+        <div class="info-card-title">Venue</div>
+        <a href="https://bethellozana.com/" target="_blank" rel="noopener" class="venue-name">Bethel Lozana</a>
+        <div class="venue-location">Guatapé · Antioquia · Colombia</div>
+        <div class="venue-pills">
+          <a href="https://bethellozana.com/" target="_blank" rel="noopener noreferrer" class="em-pill-btn">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Website
+          </a>
+          <a href="https://www.instagram.com/bethel_lozana_guatape/" target="_blank" rel="noopener noreferrer" class="em-pill-btn">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            Instagram
+          </a>
+        </div>
+      </div>
+      <div class="venue-map">
+        <iframe
+          src="https://www.openstreetmap.org/export/embed.html?bbox=-75.22%2C6.16%2C-75.09%2C6.31&amp;layer=mapnik&amp;marker=6.2341%2C-75.1561"
+          loading="lazy"
+          title="Bethel Lozana, Guatapé, Colombia">
+        </iframe>
+        <a href="https://www.google.com/maps/place/Bethel+Lozana/@6.2341,-75.1561,15z"
+           target="_blank" rel="noopener noreferrer"
+           class="venue-map-strip">
+          <div>
+            <div class="venue-map-label">Guatapé, Antioquia</div>
+            <div class="venue-map-hint">Tap to open in Maps</div>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(4,220,10,0.85)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- ADMISSION + RSVP CTA -->
+    <div class="admission-card">
+      <div class="info-card-title">Admission</div>
+      <div class="info-card-body">
+        · Included with cabin rental<br>
+        · General admission available
+      </div>
+      <a href="#" onclick="return false;" class="rsvp-cta">Reserve Your Spot →</a>
+    </div>
+
+    <!-- DETAILS ROW -->
+    <div class="details-row">
+      <div class="detail-card">
+        <div class="detail-label">Capacity</div>
+        <div class="detail-value">120</div>
+        <div class="detail-sub">Intimate &amp; curated</div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-label">Dress Code</div>
+        <div class="detail-value">None</div>
+        <div class="detail-sub">Come as you are</div>
+      </div>
+    </div>
+
+    <!-- WHAT TO BRING -->
+    <div class="bring-card">
+      <div class="info-card-title">What to Bring</div>
+      <div class="bring-grid">
+        <div class="bring-item"><div class="bring-dot" aria-hidden="true"></div>Valid ID (18+)</div>
+        <div class="bring-item"><div class="bring-dot" aria-hidden="true"></div>RSVP confirmation</div>
+        <div class="bring-item"><div class="bring-dot" aria-hidden="true"></div>Comfortable footwear</div>
+        <div class="bring-item"><div class="bring-dot" aria-hidden="true"></div>Good energy</div>
+      </div>
+    </div>
+
+  </div><!-- /fi-content -->
+</div><!-- /festivalInfoPage -->
+
+</body>
+</html>

@@ -1737,7 +1737,7 @@
     <div class="admission-card">
       <div class="info-card-title" data-i18n="fi-admission-title">Admission</div>
       <div class="info-card-body" data-i18n="fi-admission-body"><span class="bullet-green">·</span> Included with cabin rental<br><span class="bullet-green">·</span> General admission available for non-cabin guests</div>
-      <button class="rsvp-cta" onclick="window.location.href='mailto:konxion@icloud.com?subject='+encodeURIComponent(currentLang==='es'?'Comprar boleto(s)':'Purchase Ticket(s)')" data-i18n="rsvp-title">Coming Soon</button>
+      <button class="rsvp-cta" onclick="openRsvpSheet()" data-i18n="rsvp-title">Get Tickets</button>
     </div>
 
     <!-- DETAILS ROW -->
@@ -1749,8 +1749,7 @@
       </div>
       <div class="detail-card">
         <div class="detail-label" data-i18n="fi-dresscode-title">Dress Code</div>
-        <div class="detail-value" data-i18n="fi-dresscode-val">Smart Casual</div>
-        <div class="detail-sub" data-i18n="fi-dresscode-sub">Look good, feel free</div>
+        <div class="detail-value" data-i18n="fi-dresscode-val">Casual</div>
       </div>
     </div>
 
@@ -1949,27 +1948,39 @@
   </div>
 </div>
 
-<!-- ═══ RSVP SHEET ═══ -->
-<div id="rsvpSheet" role="dialog" aria-modal="true" aria-label="RSVP">
+<!-- ═══ PAYMENT SUCCESS TOAST ═══ -->
+<div id="paymentToast" style="display:none;position:fixed;bottom:32px;left:50%;transform:translateX(-50%);z-index:9999;background:rgba(4,200,10,0.12);border:1px solid rgba(4,200,10,0.45);border-radius:14px;padding:16px 28px;text-align:center;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);max-width:90vw;">
+  <div style="font-family:'DM Sans',sans-serif;font-size:13px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 12px rgba(4,220,10,0.6);margin-bottom:4px;">You're In</div>
+  <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:300;color:rgba(255,255,255,0.85);">Confirmation sent to your email.</div>
+</div>
+
+<!-- ═══ TICKET SHEET ═══ -->
+<div id="rsvpSheet" role="dialog" aria-modal="true" aria-label="Get Tickets">
   <canvas id="rsvpNatureCanvas"></canvas>
   <div class="sheet-handle"></div>
   <div class="sheet-header">
-    <div class="sheet-title" style="color:rgba(4,200,10,1);text-shadow:0 0 18px rgba(4,200,10,0.7),0 0 40px rgba(4,200,10,0.35);" data-i18n="rsvp-title">Reserve Your Spot</div>
-    <div class="sheet-sub" data-i18n="rsvp-date">Saturday, July 18 &nbsp;·&nbsp; 1PM — 5AM</div>
+    <div class="sheet-title" style="color:rgba(4,200,10,1);text-shadow:0 0 18px rgba(4,200,10,0.7),0 0 40px rgba(4,200,10,0.35);" data-i18n="rsvp-title">Get Tickets</div>
+    <div class="sheet-sub" data-i18n="rsvp-date">General Admission &nbsp;·&nbsp; $35 USD / COP 125,000</div>
   </div>
   <div class="form-section">
     <label class="form-label">Your details</label>
     <input class="form-field" type="text" id="rname" placeholder="Full Name" autocomplete="name" aria-label="Full Name">
     <input class="form-field" type="email" id="remail" placeholder="Email" autocomplete="email" aria-label="Email">
-    <select class="form-field" id="rtickets" aria-label="Number of tickets" style="appearance:none;-webkit-appearance:none;background:transparent;cursor:pointer;">
+    <select class="form-field" id="rtickets" aria-label="Number of tickets" style="appearance:none;-webkit-appearance:none;background:transparent;cursor:pointer;" onchange="updateTicketTotal()">
       <option value="" disabled selected>Number of tickets</option>
       <option value="1">1 ticket</option>
       <option value="2">2 tickets</option>
       <option value="3">3 tickets</option>
       <option value="4">4 tickets</option>
-      <option value="5+">5+ tickets</option>
+      <option value="5">5 tickets</option>
+      <option value="6">6 tickets</option>
+      <option value="7">7 tickets</option>
+      <option value="8">8 tickets</option>
+      <option value="9">9 tickets</option>
+      <option value="10">10 tickets</option>
     </select>
-    <button class="send-btn" onclick="handleRsvp()" style="background:rgba(4,200,10,0.9);color:#000;font-weight:500;">Reserve →</button>
+    <div id="ticketTotal" style="display:none;font-family:'DM Sans',sans-serif;font-size:13px;letter-spacing:0.1em;color:rgba(4,220,10,0.85);text-align:right;padding:0 2px 6px;"></div>
+    <button class="send-btn" onclick="handleTickets()" style="background:rgba(4,200,10,0.9);color:#000;font-weight:500;">Buy Tickets →</button>
     <div class="send-confirm" id="rsvpConfirm"></div>
   </div>
 </div>
@@ -1999,7 +2010,7 @@
       <div style="width:40px;height:0.5px;background:rgba(4,210,10,0.4);"></div>
     </div>
     <div style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:32px;">
-      <button id="rsvpBtn" onclick="openRsvpSheet()" style="background:rgba(4,200,10,0.9);border:none;border-radius:999px;padding:14px 48px;min-height:44px;color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;">RSVP</button>
+      <button id="rsvpBtn" onclick="openRsvpSheet()" style="background:rgba(4,200,10,0.9);border:none;border-radius:999px;padding:14px 48px;min-height:44px;color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;">Get Tickets</button>
       <button id="contactBtn" onclick="openSheet()" style="background:transparent;border:1px solid rgba(4,200,10,0.7);border-radius:999px;padding:14px 48px;min-height:44px;color:rgba(4,200,10,0.9);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;" data-i18n="contact-btn">Contact Us</button>
       <div id="langBtnMobile" style="display:flex;align-items:center;gap:7px;margin-top:4px;">
         <span class="lang-opt-en" style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.1em;font-weight:400;color:rgba(255,255,255,0.92);transition:color 0.3s;display:flex;align-items:center;gap:4px;white-space:nowrap;">🇺🇸 EN</span>
@@ -2228,8 +2239,8 @@ rsvpSheet.addEventListener('touchstart', e => { touchStartY = e.touches[0].clien
 rsvpSheet.addEventListener('touchend', e => { if (e.changedTouches[0].clientY - touchStartY > 60 && rsvpSheet.scrollTop === 0) closeRsvpSheet(); }, { passive: true });
 
 // ── FORM ──
-const CONTACT_ENDPOINT = '/api/contact';
-const RSVP_ENDPOINT    = '/api/rsvp';
+const CONTACT_ENDPOINT    = '/api/contact';
+const CHECKOUT_ENDPOINT   = '/api/create-checkout';
 
 function handleSend() {
   const name  = document.getElementById('fname').value.trim();
@@ -2255,28 +2266,41 @@ function handleSend() {
   .finally(() => { btn.disabled = false; btn.textContent = 'Send'; });
 }
 
-function handleRsvp() {
-  const name    = document.getElementById('rname').value.trim();
-  const email   = document.getElementById('remail').value.trim();
-  const tickets = document.getElementById('rtickets').value;
-  const conf    = document.getElementById('rsvpConfirm');
-  const btn     = document.querySelector('#rsvpSheet .send-btn');
-  if (!name || !email || !tickets) { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Please fill in all fields.'; return; }
-  btn.disabled = true; btn.textContent = 'Sending…';
-  fetch(RSVP_ENDPOINT, {
+function updateTicketTotal() {
+  const qty = parseInt(document.getElementById('rtickets').value, 10);
+  const el  = document.getElementById('ticketTotal');
+  if (!qty) { el.style.display = 'none'; return; }
+  const cop = (qty * 125000).toLocaleString();
+  el.style.display = 'block';
+  el.textContent = `Total · $${qty * 35} USD / COP ${cop}`;
+}
+
+function handleTickets() {
+  const name     = document.getElementById('rname').value.trim();
+  const email    = document.getElementById('remail').value.trim();
+  const quantity = document.getElementById('rtickets').value;
+  const conf     = document.getElementById('rsvpConfirm');
+  const btn      = document.querySelector('#rsvpSheet .send-btn');
+  if (!name || !email || !quantity) { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Please fill in all fields.'; return; }
+  btn.disabled = true; btn.textContent = 'Redirecting…';
+  fetch(CHECKOUT_ENDPOINT, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-    body: JSON.stringify({ name, email, tickets })
+    body: JSON.stringify({ name, email, quantity: parseInt(quantity, 10) })
   })
   .then(r => r.json())
   .then(data => {
-    if (data.ok) {
-      conf.style.color='rgba(4,99,7,0.8)'; conf.textContent='You\'re on the list! Check your email for confirmation.';
-      document.getElementById('rname').value=''; document.getElementById('remail').value=''; document.getElementById('rtickets').value='';
-    } else { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Something went wrong. Email us at konxion@icloud.com'; }
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Something went wrong. Email us at konxion@icloud.com';
+      btn.disabled = false; btn.textContent = 'Buy Tickets →';
+    }
   })
-  .catch(() => { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Connection error. Email us at konxion@icloud.com'; })
-  .finally(() => { btn.disabled = false; btn.textContent = 'Reserve →'; });
+  .catch(() => {
+    conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Connection error. Email us at konxion@icloud.com';
+    btn.disabled = false; btn.textContent = 'Buy Tickets →';
+  });
 }
 
 // ── CONTACT AURORA BACKGROUND ──
@@ -2357,6 +2381,23 @@ function handleRsvp() {
   });
   obs.observe(sheet, { attributes: true, attributeFilter: ['class'] });
   window.addEventListener('resize', () => { if (sheet.classList.contains('open')) resize(); });
+})();
+
+// ── PAYMENT SUCCESS TOAST ──
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('payment') === 'success') {
+    history.replaceState(null, '', window.location.pathname);
+    const toast = document.getElementById('paymentToast');
+    if (toast) {
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.transition = 'opacity 0.6s ease';
+        toast.style.opacity = '0';
+        setTimeout(() => { toast.style.display = 'none'; }, 650);
+      }, 7000);
+    }
+  }
 })();
 
 // ── RSVP NATURE BACKGROUND ──
@@ -3819,7 +3860,7 @@ const translations = {
     'festival-page-title':'Event Info','fi-date-title':'Date &amp; Time','fi-date-body':'Saturday, July 18<br>1PM — 5AM',
     'fi-venue-title':'Venue','fi-map-tap':'Tap to open in Maps',
     'fi-capacity-title':'Capacity','fi-capacity-body':'120 people. An intimate experience.','fi-capacity-sub':'Intimate &amp; curated',
-    'fi-dresscode-title':'Dress Code','fi-dresscode-val':'Smart Casual','fi-dresscode-sub':'Look good, feel free',
+    'fi-dresscode-title':'Dress Code','fi-dresscode-val':'Casual',
     'bring-item-1':'Valid ID (18+)','bring-item-2':'RSVP confirmation','bring-item-3':'Comfortable footwear','bring-item-4':'Good energy',
     'fi-admission-title':'Admission','fi-admission-body':'<span class="bullet-green">·</span> Included with cabin rental<br><span class="bullet-green">·</span> General admission available for non-cabin guests',
     'gh-title':'Getting Here','gh-loc-title':'Location','gh-medellin-title':'From Medellín',
@@ -3828,7 +3869,7 @@ const translations = {
     'gh-q-title':'Questions?','shop-merch':'Merch','shop-soon':'Coming Soon',
     'shop-drops':'Drops with the lineup announcement.','back-btn':'← Back',
     'next-event':'Next Event','journey-date':'Saturday, July 18',
-    'rsvp-title':'Coming Soon','rsvp-date':'Saturday, July 18 &nbsp;·&nbsp; 1PM — 5AM',
+    'rsvp-title':'Get Tickets','rsvp-date':'General Admission &nbsp;·&nbsp; $35 USD / COP 125,000',
     'nav-stay':'Stay','stay-title':'Stay','stay-subtitle':'Cabin Rentals · Guatapé',
     'stay-about-label':'About','stay-about':"We've reserved all the cabins in the resort for Kon.X.ion attendees. Wake up in the mountains of Guatape, steps from the festival.",
     'stay-included-label':"What's Included",'stay-included-note':'* * * With cabin rental * * *',
@@ -3860,7 +3901,7 @@ const translations = {
     'festival-page-title':'Info del Evento','fi-date-title':'Fecha &amp; Hora','fi-date-body':'Sábado, 18 de julio<br>1PM — 5AM',
     'fi-venue-title':'Lugar','fi-map-tap':'Toca para abrir en Maps',
     'fi-capacity-title':'Capacidad','fi-capacity-body':'120 personas. Una experiencia íntima.','fi-capacity-sub':'Íntimo y exclusivo',
-    'fi-dresscode-title':'Código de Vestimenta','fi-dresscode-val':'Casual','fi-dresscode-sub':'Lúcete, siéntete libre',
+    'fi-dresscode-title':'Código de Vestimenta','fi-dresscode-val':'Casual',
     'bring-item-1':'Cédula 18+','bring-item-2':'Confirmación de RSVP','bring-item-3':'Calzado cómodo','bring-item-4':'Buena energía',
     'fi-admission-title':'Admisión','fi-admission-body':'<span class="bullet-green">·</span> Incluida con la renta de cabaña<br><span class="bullet-green">·</span> Admisión general disponible para quienes no rentan cabaña',
     'gh-title':'Cómo Llegar','gh-loc-title':'Ubicación','gh-medellin-title':'Desde Medellín',
@@ -3869,7 +3910,7 @@ const translations = {
     'gh-q-title':'¿Preguntas?','shop-merch':'Merch','shop-soon':'Próximamente',
     'shop-drops':'Disponible con el anuncio del lineup.','back-btn':'← Volver',
     'next-event':'Próximo Evento','journey-date':'Sábado, 18 de julio',
-    'rsvp-title':'Pronto','rsvp-date':'Sábado, 18 de julio &nbsp;·&nbsp; 1PM — 5AM',
+    'rsvp-title':'Comprar Boletos','rsvp-date':'Admisión General &nbsp;·&nbsp; $35 USD / COP 125,000',
     'nav-stay':'Hospedaje','stay-title':'Hospedaje','stay-subtitle':'Cabañas · Guatapé',
     'stay-about-label':'Acerca de','stay-about':'Hemos reservado todas las cabañas del resort para los asistentes de Kon.X.ion. Despierta en las montañas de Guatapé, a pasos del festival.',
     'stay-included-label':'Qué Incluye','stay-included-note':'* * * Con renta de cabaña * * *',
