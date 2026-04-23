@@ -2280,9 +2280,13 @@ function updateTicketTotal() {
   const qty = parseInt(document.getElementById('rtickets').value, 10);
   const el  = document.getElementById('ticketTotal');
   if (!qty) { el.style.display = 'none'; return; }
-  const cop = (qty * 125000).toLocaleString();
   el.style.display = 'block';
-  el.textContent = `Total · $${qty * 35} USD / COP ${cop}`;
+  if (currentLang === 'es') {
+    const cop = (qty * 135000).toLocaleString();
+    el.textContent = `Total · COP ${cop}`;
+  } else {
+    el.textContent = `Total · $${qty * 35} USD`;
+  }
 }
 
 const STRIPE_PK = 'pk_test_51TPA1mJYIRcc3T4U5iow4fk5Z44XGan7MxYx7hpMQPOQwUP12wlMHqgY9CvVbvDICZMUpqVBVAXM0V6lPhz2xuMs00E5DSQlPH';
@@ -3935,7 +3939,7 @@ const translations = {
     'gh-q-title':'¿Preguntas?','shop-merch':'Merch','shop-soon':'Próximamente',
     'shop-drops':'Disponible con el anuncio del lineup.','back-btn':'← Volver',
     'next-event':'Próximo Evento','journey-date':'Sábado, 18 de julio',
-    'rsvp-title':'Comprar Boletos','rsvp-date':'Admisión General &nbsp;·&nbsp; $35 USD / COP 125,000',
+    'rsvp-title':'Comprar Boletos','rsvp-date':'Admisión General &nbsp;·&nbsp; COP 135,000',
     'nav-stay':'Hospedaje','stay-title':'Hospedaje','stay-subtitle':'Cabañas · Guatapé',
     'stay-about-label':'Acerca de','stay-about':'Hemos reservado todas las cabañas del resort para los asistentes de Kon.X.ion. Despierta en las montañas de Guatapé, a pasos del festival.',
     'stay-included-label':'Qué Incluye','stay-included-note':'* * * Con renta de cabaña * * *',
