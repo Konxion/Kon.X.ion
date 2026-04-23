@@ -621,9 +621,10 @@
   .info-card-body {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 300;
-    font-size: 21px;
+    font-size: 26px;
     color: rgba(255,255,255,1);
     line-height: 1.75;
+    text-shadow: 0 0 12px rgba(255,255,255,0.25);
   }
 
   /* ── CURSOR TRAIL ── */
@@ -1114,8 +1115,9 @@
   }
   .bring-item {
     display: flex; align-items: flex-start; gap: 7px;
-    font-family: var(--font-body); font-size: 19px; font-weight: 300;
+    font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300;
     color: rgba(255,255,255,1); letter-spacing: 0.02em; line-height: 1.4;
+    text-shadow: 0 0 12px rgba(255,255,255,0.25);
   }
   .bring-dot {
     width: 4px; height: 4px; border-radius: 50%;
@@ -1730,7 +1732,7 @@
     <!-- ADMISSION + RSVP CTA -->
     <div class="admission-card">
       <div class="info-card-title" data-i18n="fi-admission-title">Admission</div>
-      <div class="info-card-body" style="font-size:19px;" data-i18n="fi-admission-body">· Included with cabin rental<br>· General admission available for non-cabin guests</div>
+      <div class="info-card-body" data-i18n="fi-admission-body">· Included with cabin rental<br>· General admission available for non-cabin guests</div>
       <button class="rsvp-cta" onclick="window.location.href='mailto:konxion@icloud.com?subject='+encodeURIComponent(currentLang==='es'?'Comprar boleto(s)':'Purchase Ticket(s)')" data-i18n="rsvp-title">Coming Soon</button>
     </div>
 
