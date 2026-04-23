@@ -1065,6 +1065,17 @@
     border-radius: 16px; padding: 20px 22px; margin-bottom: 12px;
   }
 
+  /* Ticket price display (shown when buy tickets is inactive) */
+  .ticket-price-display {
+    display: block; width: 100%; margin-top: 18px; padding: 15px;
+    border-radius: 999px; border: 1px solid rgba(4,200,10,0.35);
+    background: rgba(4,200,10,0.07); color: rgba(4,220,10,0.95);
+    font-family: var(--font-body); font-size: 12px; font-weight: 500;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    text-align: center;
+    text-shadow: 0 0 12px rgba(4,200,10,0.45);
+  }
+
   /* RSVP CTA */
   .rsvp-cta {
     display: block; width: 100%; margin-top: 18px; padding: 15px;
@@ -1618,13 +1629,13 @@
       </div>
     </div>
 
-    <!-- DJ ROW: 2x2 grid -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;">
+    <!-- DJ ROW: 4 side by side -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%;">
 
       <!-- AGU -->
       <div class="dj-card-v" id="djAGU">
         <div class="dj-photo-wrap-v">
-          <img id="aguPhoto" src="agu-new.jpg" loading="lazy" alt="AGU" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:12px;">
+          <img id="aguPhoto" src="agu-new.jpg" loading="lazy" alt="AGU" style="width:100%;height:100%;object-fit:cover;object-position:50% 0%;display:block;border-radius:12px;">
           <div id="aguPlaceholder" style="width:100%;height:100%;display:none;align-items:center;justify-content:center;border-radius:12px;background:rgba(4,200,10,0.06);"><span style="font-size:32px;">🎧</span></div>
         </div>
         <div class="dj-name-v">AGU</div>
@@ -1738,6 +1749,8 @@
     <div class="admission-card">
       <div class="info-card-title" data-i18n="fi-admission-title">Admission</div>
       <div class="info-card-body" data-i18n="fi-admission-body"><span class="bullet-green">·</span> Included with cabin rental<br><span class="bullet-green">·</span> Day passes available for non-cabin guests</div>
+      <div class="ticket-price-display" data-i18n="rsvp-date">General Admission &nbsp;·&nbsp; $35 USD</div>
+      <!-- TO RE-ACTIVATE: remove the div above and uncomment the button below -->
       <!-- <button class="rsvp-cta" onclick="openRsvpSheet()" data-i18n="rsvp-title">Get Tickets</button> -->
     </div>
 
@@ -3920,9 +3933,9 @@ const translations = {
     'festival-page-title':'Info del Evento','fi-date-title':'Fecha &amp; Hora','fi-date-body':'Sábado, 18 de julio<br>1PM — 5AM',
     'fi-venue-title':'Lugar','fi-map-tap':'Toca para abrir en Maps',
     'fi-capacity-title':'Capacidad','fi-capacity-body':'120 personas. Una experiencia íntima.','fi-capacity-sub':'Íntimo y exclusivo',
-    'fi-dresscode-title':'Código de Vestimenta','fi-dresscode-val':'Casual',
+    'fi-dresscode-title':'Código de Vestimenta','fi-dresscode-val':'Casual','fi-age-title':'Edad',
     'bring-item-1':'Cédula 18+','bring-item-2':'Confirmación de RSVP','bring-item-3':'Calzado cómodo','bring-item-4':'Buena energía',
-    'fi-admission-title':'Admisión','fi-admission-body':'<span class="bullet-green">·</span> Incluida con la renta de cabaña<br><span class="bullet-green">·</span> Admisión general disponible para quienes no rentan cabaña',
+    'fi-admission-title':'Admisión','fi-admission-body':'<span class="bullet-green">·</span> Incluida con la renta de cabaña<br><span class="bullet-green">·</span> Pases de día disponibles para quienes no rentan cabaña',
     'gh-title':'Cómo Llegar','gh-loc-title':'Ubicación','gh-medellin-title':'Desde Medellín',
     'gh-medellin-body':'Aproximadamente 2 horas en carro.<br>Toma la vía hacia El Peñol / Guatapé.',
     'gh-airport-title':'Desde el Aeropuerto José María Córdova','gh-airport-body':'Aproximadamente 1.5 horas en carro.<br>Toma la vía hacia El Peñol / Guatapé.','gh-parking-title':'Parqueadero','gh-parking-body':'Se proporcionará estacionamiento en el lugar.',
