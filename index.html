@@ -2009,7 +2009,7 @@
   </div>
   <div style="position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,0.72) 100%);"></div>
   <div style="position:absolute;inset:0;z-index:3;pointer-events:none;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);"></div>
-  <div id="journeyContent" style="position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px 60px;gap:0;pointer-events:none;opacity:0;transition:opacity 0.8s ease;overflow:hidden auto;">
+  <div id="journeyContent" style="position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px 60px;gap:0;pointer-events:none;opacity:0;transition:opacity 0.8s ease;overflow:hidden;">
     <div style="width:100%;max-width:480px;display:flex;flex-direction:column;align-items:center;">
     <div style="font-family:'DM Sans',sans-serif;font-size:clamp(42px,11vw,96px);font-weight:200;line-height:0.9;color:#fff;text-align:center;letter-spacing:0.12em;text-shadow:0 0 40px rgba(4,180,10,0.4),0 0 120px rgba(4,180,10,0.15);">KON<span style="color:rgba(4,220,10,1);text-shadow:0 0 20px rgba(4,220,10,0.8),0 0 60px rgba(4,220,10,0.4);">.</span>X<span style="color:rgba(4,220,10,1);text-shadow:0 0 20px rgba(4,220,10,0.8),0 0 60px rgba(4,220,10,0.4);">.</span>ION</div>
     <div style="font-size:14px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(4,210,10,0.7);margin-top:14px;margin-bottom:0;font-family:'DM Sans',sans-serif;font-weight:300;" data-i18n="next-event">Next Event</div>
@@ -2044,14 +2044,27 @@
 <script>
 // ── JOURNEY OPEN / CLOSE ──
 let tunnelRAF = null;
+let _journeyOpenTimers  = [];
+let _journeyCloseTimers = [];
 
 function openJourney() {
+  // Cancel any in-flight close timers to avoid state conflicts
+  _journeyCloseTimers.forEach(t => clearTimeout(t));
+  _journeyCloseTimers = [];
+
   const journey   = document.getElementById('journey');
   const content   = document.getElementById('journeyContent');
   const back      = document.getElementById('journeyBack');
   const blackFade = document.getElementById('blackFade');
   const bg        = document.getElementById('bg');
   const heroEl    = document.getElementById('hero');
+
+  // Reset any inline styles left over from a previous close
+  const contactBtn = document.getElementById('contactBtn');
+  if (contactBtn) contactBtn.style.opacity = '';
+  const lbm = document.getElementById('langBtnMobile');
+  if (lbm) { lbm.style.opacity = ''; lbm.style.pointerEvents = ''; }
+  content.scrollTop = 0;
 
   // Step 1: Explode the heart immediately
   heartExploding = true;
@@ -2067,20 +2080,20 @@ function openJourney() {
 
   // Step 2: Start tunnel at 1s (behind the black)
   startTunnel();
-  setTimeout(() => {
+  _journeyOpenTimers.push(setTimeout(() => {
     journey.style.opacity = '1';
     journey.style.pointerEvents = 'all';
-  }, 1000);
+  }, 1000));
 
   // Step 3: At peak black (1.5s), fade black overlay away revealing tunnel
-  setTimeout(() => {
+  _journeyOpenTimers.push(setTimeout(() => {
     blackFade.style.transition = 'opacity 1.2s ease';
     blackFade.style.opacity = '0';
     blackFade.style.pointerEvents = 'none';
-  }, 1500);
+  }, 1500));
 
   // Step 4: Show event content + back button + tab bar
-  setTimeout(() => {
+  _journeyOpenTimers.push(setTimeout(() => {
     content.style.opacity = '1';
     content.style.pointerEvents = 'auto';
     back.style.opacity    = '1';
@@ -2088,10 +2101,14 @@ function openJourney() {
     if (tabBar) { tabBar.style.opacity = '1'; tabBar.style.pointerEvents = 'all'; }
     const lb = document.getElementById('langBtn');
     if (lb) { lb.style.opacity = '1'; lb.style.pointerEvents = ''; }
-  }, 2200);
+  }, 2200));
 }
 
 function closeJourney() {
+  // Cancel any in-flight open timers to avoid state conflicts
+  _journeyOpenTimers.forEach(t => clearTimeout(t));
+  _journeyOpenTimers = [];
+
   const journey   = document.getElementById('journey');
   const content   = document.getElementById('journeyContent');
   const back      = document.getElementById('journeyBack');
@@ -2118,7 +2135,7 @@ function closeJourney() {
   blackFade.style.opacity = '1';
   blackFade.style.pointerEvents = 'all';
 
-  setTimeout(() => {
+  _journeyCloseTimers.push(setTimeout(() => {
     journey.style.opacity = '0';
     journey.style.pointerEvents = 'none';
     // Reset heart
@@ -2127,13 +2144,13 @@ function closeJourney() {
     heartCanvas.style.opacity = '1';
     heroEl.style.opacity = '1';
     if (tunnelRAF) { cancelAnimationFrame(tunnelRAF); tunnelRAF = null; }
-  }, 800);
+  }, 800));
 
-  setTimeout(() => {
+  _journeyCloseTimers.push(setTimeout(() => {
     blackFade.style.transition = 'opacity 1s ease';
     blackFade.style.opacity = '0';
     blackFade.style.pointerEvents = 'none';
-  }, 1000);
+  }, 1000));
 }
 
 
