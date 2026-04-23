@@ -24,7 +24,7 @@ export default async function handler(req, res) {
   // Notification to organizer
   const notifyPayload = {
     from: 'KON.X.ION <events@konxion.us>',
-    to: ['steve@konxion.us'],
+    to: ['konxion@icloud.com'],
     reply_to: email,
     subject: `New RSVP — ${name} (${tickets} ${ticketWord})`,
     html: `
@@ -54,7 +54,7 @@ export default async function handler(req, res) {
           Your RSVP is confirmed. We've reserved <strong style="color:#04c80a;">${tickets} ${ticketWord}</strong> for you.<br><br>
           We'll send arrival details and any updates to this email as the event approaches.
         </p>
-        <p style="color:rgba(255,255,255,0.4);font-size:12px;margin:0;">Questions? Reply to this email or reach us at steve@konxion.us</p>
+        <p style="color:rgba(255,255,255,0.4);font-size:12px;margin:0;">Questions? Reply to this email or reach us at konxion@icloud.com</p>
       </div>
     `
   };
