@@ -1408,7 +1408,7 @@
   </div>
   <div class="tab-card">
     <div class="tab-card-title" data-i18n="questions-title">Questions?</div>
-    <div style="color:rgba(255,255,255,0.45);font-size:12px;" data-i18n="questions-body">Reach us at steve@konxion.us</div>
+    <div style="color:rgba(255,255,255,0.45);font-size:12px;" data-i18n="questions-body">Reach us at konxion@icloud.com</div>
   </div>
 </div>
 
@@ -1501,7 +1501,7 @@
     <div style="background:rgba(4,200,10,0.06);border:0.5px solid rgba(4,200,10,0.32);border-radius:20px;padding:24px;margin-bottom:14px;">
       <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);margin-bottom:10px;" data-i18n="stay-reserve-label">Reserve a Cabin</div>
       <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,1);line-height:1.75;margin-bottom:18px;" data-i18n="stay-reserve-body">Spots are extremely limited. Email us to reserve your cabin alongside your RSVP.</div>
-      <a href="mailto:steve@konxion.us?subject=Cabin%20Rental%20—%20KON.X.ION&body=Name%2FNombre%3A%0AWhat%20type%20of%20cabin%2FQue%20tipo%20de%20caba%C3%B1a%3F%0ANumber%20of%20Guests%2FN%C3%BAmero%20de%20hu%C3%A9spedes%3A%0APhone%20Number%2FEmail%2FN%C3%BAmero%20de%20tel%C3%A9fono%2FCorreo%20Electr%C3%B3nico%3A" style="display:block;text-align:center;background:rgba(4,200,10,0.9);color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;padding:16px 24px;border-radius:999px;text-decoration:none;" data-i18n="stay-cta">Inquire Now</a>
+      <a href="mailto:konxion@icloud.com?subject=Cabin%20Rental%20—%20KON.X.ION&body=Name%2FNombre%3A%0AWhat%20type%20of%20cabin%2FQue%20tipo%20de%20caba%C3%B1a%3F%0ANumber%20of%20Guests%2FN%C3%BAmero%20de%20hu%C3%A9spedes%3A%0APhone%20Number%2FEmail%2FN%C3%BAmero%20de%20tel%C3%A9fono%2FCorreo%20Electr%C3%B3nico%3A" style="display:block;text-align:center;background:rgba(4,200,10,0.9);color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;padding:16px 24px;border-radius:999px;text-decoration:none;" data-i18n="stay-cta">Inquire Now</a>
       <div style="text-align:center;margin-top:14px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.12em;color:rgba(255,255,255,0.4);" data-i18n="stay-dm">Questions? DM us <a href="https://www.instagram.com/kon.x.ion/" target="_blank" style="color:rgba(4,200,10,0.7);text-decoration:none;">@kon.x.ion</a></div>
     </div>
 
@@ -1868,7 +1868,7 @@
     <!-- FOOTER CONTACT -->
     <div class="gh-footer-contact">
       <div class="gh-footer-qlabel" data-i18n="gh-q-title">Questions?</div>
-      <a href="mailto:steve@konxion.us?subject=KON.X.ION%20Question" class="gh-footer-email">steve@konxion.us</a>
+      <a href="mailto:konxion@icloud.com?subject=KON.X.ION%20Question" class="gh-footer-email">konxion@icloud.com</a>
     </div>
 
   </div>
@@ -2249,9 +2249,9 @@ function handleSend() {
     if (data.ok) {
       conf.style.color='rgba(4,99,7,0.8)'; conf.textContent='Message sent! We\'ll be in touch.';
       document.getElementById('fname').value=''; document.getElementById('femail').value=''; document.getElementById('fmsg').value='';
-    } else { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Something went wrong. Email us directly at steve@konxion.us'; }
+    } else { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Something went wrong. Email us directly at konxion@icloud.com'; }
   })
-  .catch(() => { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Connection error. Email us at steve@konxion.us'; })
+  .catch(() => { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Connection error. Email us at konxion@icloud.com'; })
   .finally(() => { btn.disabled = false; btn.textContent = 'Send'; });
 }
 
@@ -2273,9 +2273,9 @@ function handleRsvp() {
     if (data.ok) {
       conf.style.color='rgba(4,99,7,0.8)'; conf.textContent='You\'re on the list! Check your email for confirmation.';
       document.getElementById('rname').value=''; document.getElementById('remail').value=''; document.getElementById('rtickets').value='';
-    } else { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Something went wrong. Email us at steve@konxion.us'; }
+    } else { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Something went wrong. Email us at konxion@icloud.com'; }
   })
-  .catch(() => { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Connection error. Email us at steve@konxion.us'; })
+  .catch(() => { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Connection error. Email us at konxion@icloud.com'; })
   .finally(() => { btn.disabled = false; btn.textContent = 'Reserve →'; });
 }
 
@@ -3814,7 +3814,7 @@ const translations = {
     'plan-tab-title':'Plan Your Visit','date-title':'Date &amp; Time','plan-date':'Saturday, July 18 · 1PM — 5AM',
     'venue-title':'Venue','transport':'Directions and transport details coming soon.',
     'bring-title':'What to Bring','bring-body':'· Valid ID (18+)<br>· RSVP confirmation<br>· Comfortable footwear<br>· Good energy',
-    'questions-title':'Questions?','questions-body':'Reach us at steve@konxion.us',
+    'questions-title':'Questions?','questions-body':'Reach us at konxion@icloud.com',
     'shop-tab-title':'Shop','merch-soon':'Merch Coming Soon',
     'festival-page-title':'Event Info','fi-date-title':'Date &amp; Time','fi-date-body':'Saturday, July 18<br>1PM — 5AM',
     'fi-venue-title':'Venue','fi-map-tap':'Tap to open in Maps',
@@ -3855,7 +3855,7 @@ const translations = {
     'plan-tab-title':'Planifica tu Visita','date-title':'Fecha &amp; Hora','plan-date':'Sábado, 18 de julio · 1PM — 5AM',
     'venue-title':'Lugar','transport':'Detalles de transporte próximamente.',
     'bring-title':'Qué Traer','bring-body':'· Cédula 18+<br>· Confirmación de RSVP<br>· Calzado cómodo<br>· Buena energía',
-    'questions-title':'¿Preguntas?','questions-body':'Escríbenos a steve@konxion.us',
+    'questions-title':'¿Preguntas?','questions-body':'Escríbenos a konxion@icloud.com',
     'shop-tab-title':'Tienda','merch-soon':'Merch Próximamente',
     'festival-page-title':'Info del Evento','fi-date-title':'Fecha &amp; Hora','fi-date-body':'Sábado, 18 de julio<br>1PM — 5AM',
     'fi-venue-title':'Lugar','fi-map-tap':'Toca para abrir en Maps',
