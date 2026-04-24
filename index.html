@@ -771,8 +771,8 @@
     background: none;
     border: 0.5px solid var(--em-30);
     border-radius: 999px;
-    padding: 12px 24px;
-    min-height: 44px;
+    padding: 8px 16px;
+    min-height: 36px;
     color: var(--em-80);
     font-family: var(--font-body);
     font-size: 12px;
@@ -3431,8 +3431,9 @@ function closeStay() {
   const page = document.getElementById('stayPage');
   const back = document.getElementById('stayBack');
   if (!page) return;
-  back.style.opacity = '0'; page.style.opacity = '0';
-  setTimeout(() => { page.style.pointerEvents = 'none'; }, 400);
+  back.style.opacity = '0';
+  page.style.opacity = '0';
+  page.style.pointerEvents = 'none';
   stopStayBg();
 }
 function startStayBg() {
