@@ -2453,9 +2453,9 @@ function handleSend() {
     if (data.ok) {
       conf.style.color='rgba(4,99,7,0.8)'; conf.textContent='Message sent! We\'ll be in touch.';
       document.getElementById('fname').value=''; document.getElementById('femail').value=''; document.getElementById('fmsg').value='';
-    } else { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Something went wrong. Email us directly at steve@konxion.us'; }
+    } else { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Something went wrong. Email us directly at konxion@icloud.com'; }
   })
-  .catch(() => { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Connection error. Email us at steve@konxion.us'; })
+  .catch(() => { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Connection error. Email us at konxion@icloud.com'; })
   .finally(() => { btn.disabled = false; btn.textContent = 'Send'; });
 }
 
@@ -2511,7 +2511,7 @@ async function handleTickets() {
     stripeCheckout.mount('#stripeCheckoutMount');
   } catch (err) {
     conf.style.color = 'rgba(200,50,30,0.7)';
-    conf.textContent = 'Something went wrong. Email us at steve@konxion.us';
+    conf.textContent = 'Something went wrong. Email us at konxion@icloud.com';
   } finally {
     btn.disabled = false; btn.textContent = (translations[currentLang] || {})['reserve-tickets-btn'] || 'Buy Tickets →';
   }
@@ -2567,7 +2567,7 @@ async function handleCabinBook() {
   } catch (err) {
     console.error('Cabin booking error:', err);
     conf.style.color = 'rgba(200,50,30,0.7)';
-    conf.textContent = err.message || 'Something went wrong. Email us at steve@konxion.us';
+    conf.textContent = err.message || 'Something went wrong. Email us at konxion@icloud.com';
   } finally {
     btn.disabled = false; btn.textContent = (translations[currentLang] || {})['cb-btn'] || 'Book Cabin';
   }
