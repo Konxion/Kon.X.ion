@@ -147,6 +147,7 @@
     margin: -8px 0 0;
     pointer-events: none;
     user-select: none;
+    animation: vibrate 0.08s linear infinite;
   }
   .cd-cell {
     display: flex;
@@ -164,7 +165,6 @@
     text-shadow: 0 0 8px rgba(4,255,10,0.9), 0 0 20px rgba(4,220,10,0.7), 0 0 50px rgba(4,200,10,0.45);
     letter-spacing: 0.04em;
     font-variant-numeric: tabular-nums;
-    animation: vibrate 0.08s linear infinite;
   }
   .cd-label {
     font-family: 'DM Sans', sans-serif;
@@ -174,7 +174,6 @@
     text-transform: uppercase;
     color: rgba(0,0,0,1);
     text-shadow: 0 0 8px rgba(4,255,10,0.9), 0 0 20px rgba(4,220,10,0.7);
-    animation: vibrate 0.08s linear infinite;
   }
   .cd-sep {
     font-family: 'DM Sans', sans-serif;
@@ -1963,6 +1962,11 @@
     <div class="cd-sep">·</div>
     <div class="cd-cell"><span class="cd-num" id="cdSecs">--</span><span class="cd-label">Sec</span></div>
   </div>
+  <div style="display:flex;align-items:center;gap:8px;pointer-events:none;user-select:none;">
+    <span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:0.22em;text-transform:uppercase;color:rgba(0,0,0,1);text-shadow:0 0 8px rgba(4,255,10,0.9),0 0 20px rgba(4,220,10,0.7);">$35 · GA</span>
+    <span style="width:3px;height:3px;border-radius:50%;background:rgba(4,200,10,0.4);flex-shrink:0;"></span>
+    <span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:0.22em;text-transform:uppercase;color:rgba(0,0,0,0.7);text-shadow:0 0 8px rgba(4,255,10,0.7),0 0 16px rgba(4,220,10,0.5);">Limited to 120</span>
+  </div>
   <button id="beginBtn" data-i18n="begin-btn">Begin Journey</button>
 </section>
 
@@ -2260,8 +2264,8 @@ function startTunnel() {
   let W, H, cx, cy;
 
   function resize() {
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = window.innerHeight;
+    W = canvas.width  = document.documentElement.clientWidth;
+    H = canvas.height = document.documentElement.clientHeight;
     cx = W / 2; cy = H / 2;
   }
   resize();
@@ -2369,8 +2373,9 @@ rsvpSheet.addEventListener('touchstart', e => { touchStartY = e.touches[0].clien
 rsvpSheet.addEventListener('touchend', e => { if (e.changedTouches[0].clientY - touchStartY > 60 && rsvpSheet.scrollTop === 0) closeRsvpSheet(); }, { passive: true });
 
 // ── FORM ──
-const CONTACT_ENDPOINT    = '/api/contact';
-const CHECKOUT_ENDPOINT   = '/api/create-checkout';
+const CONTACT_ENDPOINT        = '/api/contact';
+const CHECKOUT_ENDPOINT       = '/api/create-checkout';
+const CABIN_CHECKOUT_ENDPOINT = '/api/create-cabin-checkout';
 
 function handleSend() {
   const name  = document.getElementById('fname').value.trim();
@@ -2390,9 +2395,9 @@ function handleSend() {
     if (data.ok) {
       conf.style.color='rgba(4,99,7,0.8)'; conf.textContent='Message sent! We\'ll be in touch.';
       document.getElementById('fname').value=''; document.getElementById('femail').value=''; document.getElementById('fmsg').value='';
-    } else { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Something went wrong. Email us directly at konxion@icloud.com'; }
+    } else { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Something went wrong. Email us directly at steve@konxion.us'; }
   })
-  .catch(() => { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Connection error. Email us at konxion@icloud.com'; })
+  .catch(() => { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Connection error. Email us at steve@konxion.us'; })
   .finally(() => { btn.disabled = false; btn.textContent = 'Send'; });
 }
 
@@ -2446,7 +2451,7 @@ async function handleTickets() {
     stripeCheckout.mount('#stripeCheckoutMount');
   } catch (err) {
     conf.style.color = 'rgba(200,50,30,0.7)';
-    conf.textContent = 'Something went wrong. Email us at konxion@icloud.com';
+    conf.textContent = 'Something went wrong. Email us at steve@konxion.us';
   } finally {
     btn.disabled = false; btn.textContent = 'Buy Tickets →';
   }
@@ -2464,7 +2469,7 @@ async function handleTickets() {
 
   function resize() {
     const sheet = document.getElementById('sheet');
-    W = canvas.width  = sheet.offsetWidth  || window.innerWidth;
+    W = canvas.width  = sheet.offsetWidth  || document.documentElement.clientWidth;
     H = canvas.height = sheet.offsetHeight || 600;
     stars.length = 0;
     for (let i = 0; i < STARS; i++) {
@@ -2561,7 +2566,7 @@ async function handleTickets() {
 
   function resize() {
     const sheet = document.getElementById('rsvpSheet');
-    W = canvas.width  = sheet.offsetWidth  || window.innerWidth;
+    W = canvas.width  = sheet.offsetWidth  || document.documentElement.clientWidth;
     H = canvas.height = sheet.offsetHeight || 500;
   }
 
@@ -2727,7 +2732,7 @@ let heartExplodeVels = [];
   }
 
   function resize() {
-    W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight;
+    W=canvas.width=document.documentElement.clientWidth; H=canvas.height=document.documentElement.clientHeight;
     cx=W/2; cy=H/2; heartScale=Math.min(W,H)*0.26;
   }
 
@@ -2836,7 +2841,7 @@ function switchTab(name) {
   const canvas = document.getElementById('cursorTrailCanvas');
   const ctx    = canvas.getContext('2d');
   let W, H;
-  function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  function resize(){ W = canvas.width = document.documentElement.clientWidth; H = canvas.height = document.documentElement.clientHeight; }
   resize();
   window.addEventListener('resize', resize);
 
@@ -3023,8 +3028,8 @@ function startFestivalBg() {
   });
 
   function resize() {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
+    W = canvas.width = document.documentElement.clientWidth;
+    H = canvas.height = document.documentElement.clientHeight;
   }
   resize();
   window.addEventListener('resize', resize);
@@ -3126,7 +3131,7 @@ function startGettingHereBg() {
     return { offset: i / 3 };
   });
 
-  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  function resize() { W = canvas.width = document.documentElement.clientWidth; H = canvas.height = document.documentElement.clientHeight; }
   resize();
   window.addEventListener('resize', resize);
 
@@ -3536,13 +3541,13 @@ function _startStayBgOLD() {
   if (!canvas || canvas._running) return;
   canvas._running = true;
   const ctx = canvas.getContext('2d');
-  let W = canvas.width = window.innerWidth;
-  let H = canvas.height = window.innerHeight;
+  let W = canvas.width = document.documentElement.clientWidth;
+  let H = canvas.height = document.documentElement.clientHeight;
   let t = 0;
 
   window.addEventListener('resize', () => {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
+    W = canvas.width = document.documentElement.clientWidth;
+    H = canvas.height = document.documentElement.clientHeight;
   });
 
   // Stars
@@ -3903,7 +3908,7 @@ function startLineupGrid() {
     phase: Math.random() * Math.PI * 2
   }));
 
-  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  function resize() { canvas.width = document.documentElement.clientWidth; canvas.height = document.documentElement.clientHeight; }
   resize();
   canvas._resizeHandler = resize;
   window.addEventListener('resize', resize);
