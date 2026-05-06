@@ -139,6 +139,48 @@
     user-select: none;
   }
 
+  /* countdown timer */
+  #heroCountdown {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin: -8px 0 0;
+    pointer-events: none;
+    user-select: none;
+  }
+  .cd-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    min-width: 46px;
+  }
+  .cd-num {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 200;
+    font-size: 28px;
+    line-height: 1;
+    color: rgba(4,220,10,0.92);
+    text-shadow: 0 0 14px rgba(4,200,10,0.55), 0 0 36px rgba(4,200,10,0.25);
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+  }
+  .cd-label {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 8px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(4,200,10,0.45);
+  }
+  .cd-sep {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 20px;
+    font-weight: 100;
+    color: rgba(4,200,10,0.25);
+    margin-bottom: 12px;
+  }
+
   /* begin journey button */
   #beginBtn {
     position: relative;
@@ -194,7 +236,7 @@
     position: fixed;
     left: 0; right: 0;
     bottom: 0;
-    z-index: 30;
+    z-index: 46;
     border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
     background: linear-gradient(175deg, #040f06 0%, #030c05 50%, #020a04 100%);
     box-shadow:
@@ -465,7 +507,7 @@
 
   /* overlay dim */
   #overlay {
-    position: fixed; inset: 0; z-index: 29;
+    position: fixed; inset: 0; z-index: 45;
     background: rgba(0,0,0,0);
     pointer-events: none;
     transition: background 0.4s ease;
