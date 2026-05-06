@@ -2480,7 +2480,7 @@ async function handleTickets() {
     const data = await r.json();
     if (!data.clientSecret) throw new Error(data.error || 'No client secret');
     const stripe = Stripe(STRIPE_PK);
-    stripeCheckout = await stripe.initEmbeddedCheckout({ clientSecret: data.clientSecret });
+    stripeCheckout = await stripe.initEmbeddedCheckout({ clientSecret: data.clientSecret, locale: currentLang });
     closeRsvpSheet();
     document.getElementById('stripeModal').style.display = 'block';
     stripeCheckout.mount('#stripeCheckoutMount');
@@ -2525,7 +2525,7 @@ async function handleCabinBook() {
     const data = await r.json();
     if (!data.clientSecret) throw new Error(data.error || 'No client secret');
     const stripe = Stripe(STRIPE_PK);
-    stripeCheckout = await stripe.initEmbeddedCheckout({ clientSecret: data.clientSecret });
+    stripeCheckout = await stripe.initEmbeddedCheckout({ clientSecret: data.clientSecret, locale: currentLang });
     closeCabinSheet();
     document.getElementById('stripeModal').style.display = 'block';
     stripeCheckout.mount('#stripeCheckoutMount');
