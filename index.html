@@ -2121,7 +2121,6 @@
   <div class="form-section">
     <label class="form-label" data-i18n="cb-details">Your details</label>
     <input class="form-field" type="text" id="cbname" placeholder="Full Name" autocomplete="name" aria-label="Full Name" data-i18n-placeholder="cb-name-ph">
-    <input class="form-field" type="email" id="cbemail" placeholder="Email" autocomplete="email" aria-label="Email">
     <select class="form-field" id="cbtype" aria-label="Cabin type" style="appearance:none;-webkit-appearance:none;background:transparent;cursor:pointer;">
       <option value="" disabled selected data-i18n="cb-select-prompt">Select cabin type</option>
       <option value="luxury" data-i18n="cb-opt-lux">Luxury Cabin — $419 (sleeps 2–4, King or 2 doubles)</option>
@@ -2539,11 +2538,10 @@ function closeCabinSheet() {
 }
 async function handleCabinBook() {
   const name     = document.getElementById('cbname').value.trim();
-  const email    = document.getElementById('cbemail').value.trim();
   const cabinType = document.getElementById('cbtype').value;
   const conf     = document.getElementById('cabinConfirm');
   const btn      = document.querySelector('#cabinSheet .send-btn');
-  if (!name || !email || !cabinType) {
+  if (!name || !cabinType) {
     conf.style.color = 'rgba(200,50,30,0.7)';
     conf.textContent = 'Please fill in all fields.';
     return;
@@ -2554,7 +2552,7 @@ async function handleCabinBook() {
     const r = await fetch(CABIN_CHECKOUT_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ name, email, cabinType })
+      body: JSON.stringify({ name, cabinType })
     });
     const data = await r.json();
     if (!data.clientSecret) throw new Error(data.error || 'No client secret');

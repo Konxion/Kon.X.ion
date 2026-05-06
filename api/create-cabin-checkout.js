@@ -25,10 +25,9 @@ export default async function handler(req, res) {
   const ip = req.headers['x-forwarded-for']?.split(',')[0].trim() ?? 'unknown';
   if (isRateLimited(ip)) return res.status(429).json({ error: 'Too many requests' });
 
-  const { name, email, cabinType } = req.body ?? {};
+  const { name, cabinType } = req.body ?? {};
 
-  if (!name || !email || !cabinType) return res.status(400).json({ error: 'Missing required fields' });
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ error: 'Invalid email' });
+  if (!name || !cabinType) return res.status(400).json({ error: 'Missing required fields' });
 
   const product = CABIN_PRODUCTS[cabinType];
   if (!product) return res.status(400).json({ error: 'Invalid cabin type' });
@@ -36,7 +35,6 @@ export default async function handler(req, res) {
   const params = new URLSearchParams({
     'ui_mode': 'embedded_page',
     'mode': 'payment',
-    'customer_email': email,
     'return_url': `${ORIGIN}/?payment=success&session_id={CHECKOUT_SESSION_ID}`,
     'line_items[0][price_data][currency]': 'usd',
     'line_items[0][price_data][unit_amount]': String(product.price),
@@ -44,7 +42,6 @@ export default async function handler(req, res) {
     'line_items[0][price_data][product_data][description]': product.description,
     'line_items[0][quantity]': '1',
     'metadata[attendee_name]': name,
-    'metadata[attendee_email]': email,
     'metadata[cabin_type]': cabinType,
     'metadata[product]': 'cabin',
   });
