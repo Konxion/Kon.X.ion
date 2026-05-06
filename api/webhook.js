@@ -1,5 +1,11 @@
 import { createHmac, timingSafeEqual } from 'crypto';
 
+function escapeHtml(str) {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 function parseStripeSignature(header) {
   const parts = {};
   for (const part of header.split(',')) {
@@ -57,8 +63,8 @@ export default async function handler(req, res) {
     const session = event.data.object;
     if (session.payment_status !== 'paid') return res.status(200).json({ received: true });
 
-    const name = session.metadata?.attendee_name;
-    const email = session.customer_email || session.metadata?.attendee_email;
+    const name = escapeHtml(session.metadata?.attendee_name);
+    const email = escapeHtml(session.customer_email || session.metadata?.attendee_email);
     const quantity = parseInt(session.metadata?.quantity, 10);
     const ticketWord = quantity === 1 ? 'ticket' : 'tickets';
     const total = (quantity * 35).toFixed(2);

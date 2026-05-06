@@ -1,5 +1,9 @@
 const ORIGIN = 'https://konxion.us';
-const GA_PRICE_CENTS = 3500;
+
+const CABIN_PRODUCTS = {
+  luxury:  { name: 'KON.X.ION — Luxury Cabin',  description: 'Sleeps 2–4 · California King or 2 Double Beds · Hot tub · Room service · WiFi · Admission included', price: 41900 },
+  premium: { name: 'KON.X.ION — Premium Cabin', description: 'Sleeps 4 · 2 Double Beds · Hot tub · Room service · WiFi · Admission included',                    price: 24900 },
+};
 
 const hits = new Map();
 const WINDOW = 60_000;
@@ -21,20 +25,13 @@ export default async function handler(req, res) {
   const ip = req.headers['x-forwarded-for']?.split(',')[0].trim() ?? 'unknown';
   if (isRateLimited(ip)) return res.status(429).json({ error: 'Too many requests' });
 
-  const { name, email, quantity } = req.body ?? {};
+  const { name, email, cabinType } = req.body ?? {};
 
-  if (!name || !email || !quantity) {
-    return res.status(400).json({ error: 'Missing required fields' });
-  }
+  if (!name || !email || !cabinType) return res.status(400).json({ error: 'Missing required fields' });
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ error: 'Invalid email' });
 
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return res.status(400).json({ error: 'Invalid email' });
-  }
-
-  const qty = parseInt(quantity, 10);
-  if (!Number.isInteger(qty) || qty < 1 || qty > 10) {
-    return res.status(400).json({ error: 'Invalid quantity' });
-  }
+  const product = CABIN_PRODUCTS[cabinType];
+  if (!product) return res.status(400).json({ error: 'Invalid cabin type' });
 
   const params = new URLSearchParams({
     'ui_mode': 'embedded_page',
@@ -42,13 +39,14 @@ export default async function handler(req, res) {
     'customer_email': email,
     'return_url': `${ORIGIN}/?payment=success&session_id={CHECKOUT_SESSION_ID}`,
     'line_items[0][price_data][currency]': 'usd',
-    'line_items[0][price_data][unit_amount]': String(GA_PRICE_CENTS),
-    'line_items[0][price_data][product_data][name]': 'KON.X.ION — General Admission',
-    'line_items[0][price_data][product_data][description]': 'Saturday, July 18 · Bethel Lozana, Guatapé, Colombia · 1PM – 5AM',
-    'line_items[0][quantity]': String(qty),
+    'line_items[0][price_data][unit_amount]': String(product.price),
+    'line_items[0][price_data][product_data][name]': product.name,
+    'line_items[0][price_data][product_data][description]': product.description,
+    'line_items[0][quantity]': '1',
     'metadata[attendee_name]': name,
     'metadata[attendee_email]': email,
-    'metadata[quantity]': String(qty),
+    'metadata[cabin_type]': cabinType,
+    'metadata[product]': 'cabin',
   });
 
   try {
@@ -62,15 +60,14 @@ export default async function handler(req, res) {
     });
 
     const session = await stripeRes.json();
-
     if (!stripeRes.ok) {
-      console.error('Stripe error:', session.error);
+      console.error('Stripe cabin error:', session.error);
       return res.status(500).json({ error: session.error?.message || 'Stripe error' });
     }
 
     return res.status(200).json({ clientSecret: session.client_secret });
   } catch (err) {
-    console.error('Checkout error:', err);
+    console.error('Cabin checkout error:', err);
     return res.status(500).json({ error: 'Failed to create checkout session' });
   }
 }

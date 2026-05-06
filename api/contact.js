@@ -1,38 +1,55 @@
+const hits = new Map();
+const WINDOW = 60_000;
+const LIMIT  = 3;
+
+function isRateLimited(ip) {
+  const now  = Date.now();
+  const entry = hits.get(ip) ?? { count: 0, start: now };
+  if (now - entry.start > WINDOW) { hits.set(ip, { count: 1, start: now }); return false; }
+  if (entry.count >= LIMIT) return true;
+  entry.count++;
+  hits.set(ip, entry);
+  return false;
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { name, email, message } = req.body;
+  const ip = req.headers['x-forwarded-for']?.split(',')[0].trim() ?? 'unknown';
+  if (isRateLimited(ip)) return res.status(429).json({ error: 'Too many requests' });
 
-  if (!name || !email || !message) {
-    return res.status(400).json({ error: 'Missing required fields' });
-  }
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    return res.status(400).json({ error: 'Invalid email address' });
-  }
+  const { name, email, message } = req.body ?? {};
+  if (!name || !email || !message) return res.status(400).json({ error: 'Missing required fields' });
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ error: 'Invalid email address' });
+  if (String(message).length > 2000) return res.status(400).json({ error: 'Message too long' });
 
   const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    return res.status(500).json({ error: 'Server configuration error' });
-  }
+  if (!apiKey) return res.status(500).json({ error: 'Server configuration error' });
+
+  const safeName    = escapeHtml(name);
+  const safeEmail   = escapeHtml(email);
+  const safeMessage = escapeHtml(message);
 
   const payload = {
     from: 'KON.X.ION <events@konxion.us>',
-    to: ['konxion@icloud.com'],
+    to: ['steve@konxion.us'],
     reply_to: email,
-    subject: `Message from ${name}`,
+    subject: `Message from ${safeName}`,
     html: `
       <div style="font-family:sans-serif;max-width:480px;padding:32px;background:#fff;">
         <h2 style="color:#046303;margin:0 0 24px;">New Message</h2>
         <table style="width:100%;border-collapse:collapse;">
-          <tr><td style="padding:8px 0;color:#666;font-size:14px;">Name</td><td style="padding:8px 0;font-size:14px;font-weight:600;">${name}</td></tr>
-          <tr><td style="padding:8px 0;color:#666;font-size:14px;">Email</td><td style="padding:8px 0;font-size:14px;">${email}</td></tr>
+          <tr><td style="padding:8px 0;color:#666;font-size:14px;">Name</td><td style="padding:8px 0;font-size:14px;font-weight:600;">${safeName}</td></tr>
+          <tr><td style="padding:8px 0;color:#666;font-size:14px;">Email</td><td style="padding:8px 0;font-size:14px;">${safeEmail}</td></tr>
         </table>
-        <div style="margin:20px 0;padding:16px;background:#f5f5f5;border-radius:8px;font-size:14px;line-height:1.7;white-space:pre-wrap;">${message}</div>
-        <p style="margin:0;font-size:12px;color:#999;">Reply to this email to respond directly to ${name}.</p>
+        <div style="margin:20px 0;padding:16px;background:#f5f5f5;border-radius:8px;font-size:14px;line-height:1.7;white-space:pre-wrap;">${safeMessage}</div>
+        <p style="margin:0;font-size:12px;color:#999;">Reply to this email to respond directly to ${safeName}.</p>
       </div>
     `
   };
@@ -43,13 +60,11 @@ export default async function handler(req, res) {
       headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
-
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));
       console.error('Resend error:', err);
       return res.status(500).json({ error: 'Failed to send email' });
     }
-
     return res.status(200).json({ ok: true });
   } catch (err) {
     console.error('Contact handler error:', err);

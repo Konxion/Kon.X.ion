@@ -1566,8 +1566,8 @@
     <!-- Book -->
     <div style="background:rgba(4,200,10,0.06);border:0.5px solid rgba(4,200,10,0.32);border-radius:20px;padding:24px;margin-bottom:14px;">
       <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);margin-bottom:10px;" data-i18n="stay-reserve-label">Reserve a Cabin</div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,1);line-height:1.75;margin-bottom:18px;" data-i18n="stay-reserve-body">Each cabin is all-inclusive — your stay and party entry in one. Spots are limited. Email us to lock in your cabin.</div>
-      <a href="mailto:konxion@icloud.com?subject=Cabin%20Rental%20—%20KON.X.ION&body=Name%2FNombre%3A%0AWhat%20type%20of%20cabin%2FQue%20tipo%20de%20caba%C3%B1a%3F%0ANumber%20of%20Guests%2FN%C3%BAmero%20de%20hu%C3%A9spedes%3A%0APhone%20Number%2FEmail%2FN%C3%BAmero%20de%20tel%C3%A9fono%2FCorreo%20Electr%C3%B3nico%3A" style="display:block;text-align:center;background:rgba(4,200,10,0.9);color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;padding:16px 24px;border-radius:999px;text-decoration:none;" data-i18n="stay-cta">Book</a>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,1);line-height:1.75;margin-bottom:18px;" data-i18n="stay-reserve-body">Each cabin is all-inclusive — your stay and party entry in one. Spots are limited.</div>
+      <button onclick="openCabinSheet()" style="display:block;width:100%;text-align:center;background:rgba(4,200,10,0.9);color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;padding:16px 24px;border-radius:999px;border:none;cursor:pointer;" data-i18n="stay-cta">Book</button>
     </div>
 
     <!-- LOGO -->
@@ -1931,7 +1931,10 @@
     <!-- FOOTER CONTACT -->
     <div class="gh-footer-contact">
       <div class="gh-footer-qlabel" data-i18n="gh-q-title">Questions?</div>
-      <a href="mailto:konxion@icloud.com?subject=KON.X.ION%20Question" class="gh-footer-email">konxion@icloud.com</a>
+      <a href="mailto:steve@konxion.us?subject=KON.X.ION%20Question" class="gh-footer-email">steve@konxion.us</a>
+    </div>
+    <div style="text-align:center;margin-top:20px;">
+      <a href="/privacy.html" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.2);text-decoration:none;" target="_blank" rel="noopener">Privacy Policy</a>
     </div>
 
   </div>
@@ -2074,6 +2077,27 @@
       <svg width="16" height="16" viewBox="0 0 24 24" fill="rgba(37,211,102,0.75)" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       Share on WhatsApp
     </a>
+  </div>
+</div>
+
+<!-- ═══ CABIN BOOKING SHEET ═══ -->
+<div id="cabinSheet" role="dialog" aria-modal="true" aria-label="Reserve a Cabin" style="position:fixed;bottom:0;left:0;right:0;z-index:60;background:rgba(5,10,5,0.97);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);border-top:0.5px solid rgba(4,200,10,0.22);border-radius:28px 28px 0 0;padding:0 0 calc(28px + var(--safe-bottom,0px));transform:translateY(100%);transition:transform 0.4s cubic-bezier(0.32,0.72,0,1);will-change:transform;">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <div class="sheet-title" style="color:rgba(4,200,10,1);text-shadow:0 0 18px rgba(4,200,10,0.7),0 0 40px rgba(4,200,10,0.35);">Reserve a Cabin</div>
+    <div class="sheet-sub">All-inclusive · Admission + Stay · July 18</div>
+  </div>
+  <div class="form-section">
+    <label class="form-label">Your details</label>
+    <input class="form-field" type="text" id="cbname" placeholder="Full Name" autocomplete="name" aria-label="Full Name">
+    <input class="form-field" type="email" id="cbemail" placeholder="Email" autocomplete="email" aria-label="Email">
+    <select class="form-field" id="cbtype" aria-label="Cabin type" style="appearance:none;-webkit-appearance:none;background:transparent;cursor:pointer;">
+      <option value="" disabled selected>Select cabin type</option>
+      <option value="luxury">Luxury Cabin — $419 (sleeps 2–4, King or 2 doubles)</option>
+      <option value="premium">Premium Cabin — $249 (sleeps 4, 2 double beds)</option>
+    </select>
+    <button class="send-btn" onclick="handleCabinBook()" style="background:rgba(4,200,10,0.9);color:#000;font-weight:500;">Reserve &amp; Pay →</button>
+    <div class="send-confirm" id="cabinConfirm"></div>
   </div>
 </div>
 
@@ -2363,7 +2387,7 @@ function openRsvpSheet()   { rsvpSheet.classList.add('open'); sheet.classList.re
 function closeRsvpSheet()  { rsvpSheet.classList.remove('open'); overlay.classList.remove('active'); hero.classList.remove('hidden'); if(locTag) locTag.classList.remove('hidden'); }
 
 beginBtn.addEventListener('click', openJourney);
-overlay.addEventListener('click', () => { closeSheet(); closeRsvpSheet(); });
+overlay.addEventListener('click', () => { closeSheet(); closeRsvpSheet(); closeCabinSheet(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeSheet(); closeRsvpSheet(); } });
 
 let touchStartY = 0;
@@ -2454,6 +2478,51 @@ async function handleTickets() {
     conf.textContent = 'Something went wrong. Email us at steve@konxion.us';
   } finally {
     btn.disabled = false; btn.textContent = 'Buy Tickets →';
+  }
+}
+
+// ── CABIN BOOKING ──
+function openCabinSheet() {
+  document.getElementById('cabinSheet').style.transform = 'translateY(0)';
+  document.getElementById('overlay').style.opacity = '1';
+  document.getElementById('overlay').style.pointerEvents = 'auto';
+}
+function closeCabinSheet() {
+  document.getElementById('cabinSheet').style.transform = 'translateY(100%)';
+  document.getElementById('overlay').style.opacity = '0';
+  document.getElementById('overlay').style.pointerEvents = 'none';
+}
+async function handleCabinBook() {
+  const name     = document.getElementById('cbname').value.trim();
+  const email    = document.getElementById('cbemail').value.trim();
+  const cabinType = document.getElementById('cbtype').value;
+  const conf     = document.getElementById('cabinConfirm');
+  const btn      = document.querySelector('#cabinSheet .send-btn');
+  if (!name || !email || !cabinType) {
+    conf.style.color = 'rgba(200,50,30,0.7)';
+    conf.textContent = 'Please fill in all fields.';
+    return;
+  }
+  btn.disabled = true; btn.textContent = 'Loading…';
+  conf.textContent = '';
+  try {
+    const r = await fetch(CABIN_CHECKOUT_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ name, email, cabinType })
+    });
+    const data = await r.json();
+    if (!data.clientSecret) throw new Error(data.error || 'No client secret');
+    const stripe = Stripe(STRIPE_PK);
+    stripeCheckout = await stripe.initEmbeddedCheckout({ clientSecret: data.clientSecret });
+    closeCabinSheet();
+    document.getElementById('stripeModal').style.display = 'block';
+    stripeCheckout.mount('#stripeCheckoutMount');
+  } catch (err) {
+    conf.style.color = 'rgba(200,50,30,0.7)';
+    conf.textContent = 'Something went wrong. Email us at steve@konxion.us';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Reserve & Pay →';
   }
 }
 
