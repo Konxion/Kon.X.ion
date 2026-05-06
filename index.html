@@ -2126,7 +2126,7 @@
       <option value="luxury" data-i18n="cb-opt-lux">Luxury Cabin — $419 (sleeps 2–4, King or 2 doubles)</option>
       <option value="premium" data-i18n="cb-opt-prem">Premium Cabin — $249 (sleeps 4, 2 double beds)</option>
     </select>
-    <button class="send-btn" onclick="handleCabinBook()" style="background:rgba(4,200,10,0.9);color:#000;font-weight:500;" data-i18n="cb-btn">Reserve &amp; Pay →</button>
+    <button class="send-btn" onclick="handleCabinBook()" style="background:rgba(4,200,10,0.9);color:#000;font-weight:500;" data-i18n="cb-btn">Book Cabin</button>
     <div class="send-confirm" id="cabinConfirm"></div>
   </div>
 </div>
@@ -2568,7 +2568,7 @@ async function handleCabinBook() {
     conf.style.color = 'rgba(200,50,30,0.7)';
     conf.textContent = 'Something went wrong. Email us at steve@konxion.us';
   } finally {
-    btn.disabled = false; btn.textContent = (translations[currentLang] || {})['cb-btn'] || 'Reserve & Pay →';
+    btn.disabled = false; btn.textContent = (translations[currentLang] || {})['cb-btn'] || 'Book Cabin';
   }
 }
 
@@ -4167,7 +4167,7 @@ const translations = {
     'cb-select-prompt':'Select cabin type',
     'cb-opt-lux':'Luxury Cabin — $419 (sleeps 2–4, King or 2 doubles)',
     'cb-opt-prem':'Premium Cabin — $249 (sleeps 4, 2 double beds)',
-    'cb-btn':'Reserve &amp; Pay →'
+    'cb-btn':'Book Cabin'
   },
   es: {
     'music-nav':'Música','plan-nav':'Plan','exp-nav':'Experiencia','shop-nav':'Tienda',
@@ -4214,7 +4214,7 @@ const translations = {
     'cb-select-prompt':'Selecciona tipo de cabaña',
     'cb-opt-lux':'Cabaña de Lujo — COP 1,500,000 (2–4 pers., King o 2 dobles)',
     'cb-opt-prem':'Cabaña Premium — COP 900,000 (4 pers., 2 camas dobles)',
-    'cb-btn':'Reservar y Pagar →'
+    'cb-btn':'Rentar Cabaña'
   }
 };
 
