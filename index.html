@@ -2502,6 +2502,8 @@ async function handleTickets() {
     });
     const data = await r.json();
     if (!data.clientSecret) throw new Error(data.error || 'No client secret');
+    if (stripeCheckout) { stripeCheckout.destroy(); stripeCheckout = null; }
+    document.getElementById('stripeCheckoutMount').innerHTML = '';
     const stripe = Stripe(STRIPE_PK);
     stripeCheckout = await stripe.initEmbeddedCheckout({ clientSecret: data.clientSecret, locale: currentLang });
     closeRsvpSheet();
@@ -2556,12 +2558,15 @@ async function handleCabinBook() {
     });
     const data = await r.json();
     if (!data.clientSecret) throw new Error(data.error || 'No client secret');
+    if (stripeCheckout) { stripeCheckout.destroy(); stripeCheckout = null; }
+    document.getElementById('stripeCheckoutMount').innerHTML = '';
     const stripe = Stripe(STRIPE_PK);
     stripeCheckout = await stripe.initEmbeddedCheckout({ clientSecret: data.clientSecret, locale: currentLang });
     closeCabinSheet();
     document.getElementById('stripeModal').style.display = 'block';
     stripeCheckout.mount('#stripeCheckoutMount');
   } catch (err) {
+    console.error('Cabin booking error:', err);
     conf.style.color = 'rgba(200,50,30,0.7)';
     conf.textContent = 'Something went wrong. Email us at steve@konxion.us';
   } finally {
