@@ -357,6 +357,26 @@
   #rsvpSheet.open {
     transform: translateY(0);
   }
+  #cabinSheet {
+    position: fixed;
+    left: 0; right: 0;
+    bottom: 0;
+    z-index: 60;
+    border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+    background: linear-gradient(175deg, #0a1a0c 0%, #071209 40%, #050e07 100%);
+    box-shadow:
+      0 -1px 0 rgba(4,200,10,0.2),
+      0 -8px 40px rgba(0,0,0,0.4);
+    padding: 0 0 calc(24px + var(--safe-bottom)) 0;
+    transform: translateY(110%);
+    transition: transform 0.48s cubic-bezier(0.32,0.72,0,1);
+    max-height: 90dvh;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+  #cabinSheet.open {
+    transform: translateY(0);
+  }
 
   /* cabin sheet dark overrides */
   #cabinSheet .sheet-handle { background: rgba(4,200,10,0.3); }
@@ -2092,7 +2112,7 @@
 </div>
 
 <!-- ═══ CABIN BOOKING SHEET ═══ -->
-<div id="cabinSheet" role="dialog" aria-modal="true" aria-label="Reserve a Cabin" style="position:fixed;bottom:0;left:0;right:0;z-index:60;background:rgba(5,10,5,0.97);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);border-top:0.5px solid rgba(4,200,10,0.22);border-radius:28px 28px 0 0;padding:0 0 calc(28px + var(--safe-bottom,0px));transform:translateY(100%);transition:transform 0.4s cubic-bezier(0.32,0.72,0,1);will-change:transform;">
+<div id="cabinSheet" role="dialog" aria-modal="true" aria-label="Reserve a Cabin">
   <div class="sheet-handle"></div>
   <div class="sheet-header">
     <div class="sheet-title" style="color:rgba(4,200,10,1);text-shadow:0 0 18px rgba(4,200,10,0.7),0 0 40px rgba(4,200,10,0.35);" data-i18n="cb-title">Reserve a Cabin</div>
@@ -2399,13 +2419,16 @@ function closeRsvpSheet()  { rsvpSheet.classList.remove('open'); overlay.classLi
 
 beginBtn.addEventListener('click', openJourney);
 overlay.addEventListener('click', () => { closeSheet(); closeRsvpSheet(); closeCabinSheet(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeSheet(); closeRsvpSheet(); } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeSheet(); closeRsvpSheet(); closeCabinSheet(); } });
 
 let touchStartY = 0;
 sheet.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
 sheet.addEventListener('touchend', e => { if (e.changedTouches[0].clientY - touchStartY > 60 && sheet.scrollTop === 0) closeSheet(); }, { passive: true });
 rsvpSheet.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
 rsvpSheet.addEventListener('touchend', e => { if (e.changedTouches[0].clientY - touchStartY > 60 && rsvpSheet.scrollTop === 0) closeRsvpSheet(); }, { passive: true });
+const cabinSheet = document.getElementById('cabinSheet');
+cabinSheet.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
+cabinSheet.addEventListener('touchend', e => { if (e.changedTouches[0].clientY - touchStartY > 60 && cabinSheet.scrollTop === 0) closeCabinSheet(); }, { passive: true });
 
 // ── FORM ──
 const CONTACT_ENDPOINT        = '/api/contact';
@@ -2494,14 +2517,23 @@ async function handleTickets() {
 
 // ── CABIN BOOKING ──
 function openCabinSheet() {
-  document.getElementById('cabinSheet').style.transform = 'translateY(0)';
-  document.getElementById('overlay').style.opacity = '1';
-  document.getElementById('overlay').style.pointerEvents = 'auto';
+  const cs = document.getElementById('cabinSheet');
+  cs.classList.add('open');
+  sheet.classList.remove('open');
+  rsvpSheet.classList.remove('open');
+  overlay.classList.add('active');
+  hero.classList.add('hidden');
+  if (locTag) locTag.classList.add('hidden');
 }
 function closeCabinSheet() {
-  document.getElementById('cabinSheet').style.transform = 'translateY(100%)';
-  document.getElementById('overlay').style.opacity = '0';
-  document.getElementById('overlay').style.pointerEvents = 'none';
+  const cs = document.getElementById('cabinSheet');
+  cs.classList.remove('open');
+  overlay.classList.remove('active');
+  hero.classList.remove('hidden');
+  if (locTag) locTag.classList.remove('hidden');
+  // restore langBtn — closeSheet() hides it unconditionally, so we undo that here
+  const lb = document.getElementById('langBtn');
+  if (lb) { lb.style.opacity = '1'; lb.style.pointerEvents = ''; }
 }
 async function handleCabinBook() {
   const name     = document.getElementById('cbname').value.trim();
