@@ -358,6 +358,19 @@
     transform: translateY(0);
   }
 
+  /* cabin sheet dark overrides */
+  #cabinSheet .sheet-handle { background: rgba(4,200,10,0.3); }
+  #cabinSheet .sheet-header { border-bottom-color: rgba(4,200,10,0.15); }
+  #cabinSheet .sheet-sub { color: rgba(180,220,180,0.6) !important; }
+  #cabinSheet .form-label { color: rgba(180,220,180,0.55) !important; }
+  #cabinSheet .form-field {
+    background: rgba(255,255,255,0.07) !important;
+    border-color: rgba(4,200,10,0.2) !important;
+    color: rgba(230,255,230,0.9) !important;
+  }
+  #cabinSheet .form-field::placeholder { color: rgba(180,220,180,0.35) !important; }
+  #cabinSheet .form-field option { background: #0a1a0c; color: rgba(230,255,230,0.9); }
+
   /* drag handle */
   .sheet-handle {
     width: 36px; height: 5px;
@@ -4110,7 +4123,7 @@ const translations = {
     'stay-price-prem':'$249 <span style="color:rgba(255,255,255,0.6);">·</span> COP 900,000',
     'stay-dm':'Questions? DM us <a href="https://www.instagram.com/kon.x.ion/" target="_blank" style="color:rgba(4,200,10,0.7);text-decoration:none;">@kon.x.ion</a>',
     'stay-reserve-label':'Reserve a Cabin','stay-reserve-body':'Each cabin is all-inclusive — your stay and party entry in one. Spots are limited. Email us to lock in your cabin.',
-    'stay-cta':'Book',
+    'stay-cta':'Book Cabin',
     'contact-btn':'Contact Us','contact-title':'Get in Touch',
     'contact-email-label':'Email us','contact-name':'Name',
     'contact-msg':'Your message…','contact-send':'Send',
@@ -4156,7 +4169,7 @@ const translations = {
     'stay-price-lux':'COP 1,500,000 <span style="color:rgba(255,255,255,0.6);">·</span> $419',
     'stay-price-prem':'COP 900,000 <span style="color:rgba(255,255,255,0.4);">·</span> $249',
     'stay-reserve-label':'Reserva una Cabaña','stay-reserve-body':'Cada cabaña es todo incluido — tu estadía y entrada al party en uno. Los cupos son limitados. Escríbenos para asegurar tu cabaña.',
-    'stay-cta':'Reservar',
+    'stay-cta':'Reservar Cabaña',
     'stay-dm':'¿Preguntas? Escríbenos <a href="https://www.instagram.com/kon.x.ion/" target="_blank" style="color:rgba(4,200,10,0.7);text-decoration:none;">@kon.x.ion</a>',
     'contact-btn':'Contáctanos','contact-title':'Contáctanos',
     'contact-email-label':'Escríbenos','contact-name':'Nombre',
