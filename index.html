@@ -1568,7 +1568,7 @@
     <div style="background:rgba(4,200,10,0.06);border:0.5px solid rgba(4,200,10,0.32);border-radius:20px;padding:24px;margin-bottom:14px;">
       <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);margin-bottom:10px;" data-i18n="stay-reserve-label">Reserve a Cabin</div>
       <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,1);line-height:1.75;margin-bottom:18px;" data-i18n="stay-reserve-body">Each cabin is all-inclusive — your stay and party entry in one. Spots are limited. Email us to lock in your cabin.</div>
-      <a href="mailto:konxion@icloud.com?subject=Cabin%20Rental%20—%20KON.X.ION&body=Name%2FNombre%3A%0AWhat%20type%20of%20cabin%2FQue%20tipo%20de%20caba%C3%B1a%3F%0ANumber%20of%20Guests%2FN%C3%BAmero%20de%20hu%C3%A9spedes%3A%0APhone%20Number%2FEmail%2FN%C3%BAmero%20de%20tel%C3%A9fono%2FCorreo%20Electr%C3%B3nico%3A" style="display:block;text-align:center;background:rgba(4,200,10,0.9);color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;padding:16px 24px;border-radius:999px;text-decoration:none;" data-i18n="stay-cta">Inquire Now</a>
+      <a href="mailto:konxion@icloud.com?subject=Cabin%20Rental%20—%20KON.X.ION&body=Name%2FNombre%3A%0AWhat%20type%20of%20cabin%2FQue%20tipo%20de%20caba%C3%B1a%3F%0ANumber%20of%20Guests%2FN%C3%BAmero%20de%20hu%C3%A9spedes%3A%0APhone%20Number%2FEmail%2FN%C3%BAmero%20de%20tel%C3%A9fono%2FCorreo%20Electr%C3%B3nico%3A" style="display:block;text-align:center;background:rgba(4,200,10,0.9);color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;padding:16px 24px;border-radius:999px;text-decoration:none;" data-i18n="stay-cta">Book</a>
     </div>
 
     <!-- LOGO -->
@@ -3905,6 +3905,7 @@ function startLineupGrid() {
 
   function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
   resize();
+  canvas._resizeHandler = resize;
   window.addEventListener('resize', resize);
 
   function draw() {
@@ -3963,14 +3964,20 @@ function startLineupGrid() {
 
     offset += 0.7;
     t++;
-    requestAnimationFrame(draw);
+    canvas._raf = requestAnimationFrame(draw);
   }
   draw();
 }
 
 function stopLineupGrid() {
   const canvas = document.getElementById('lineupGridCanvas');
-  if (canvas) canvas._running = false;
+  if (!canvas) return;
+  canvas._running = false;
+  cancelAnimationFrame(canvas._raf);
+  if (canvas._resizeHandler) {
+    window.removeEventListener('resize', canvas._resizeHandler);
+    canvas._resizeHandler = null;
+  }
 }
 function closeLineup() {
   const page = document.getElementById('lineupPage');
@@ -4031,7 +4038,7 @@ const translations = {
     'stay-price-prem':'$249 <span style="color:rgba(255,255,255,0.6);">·</span> COP 900,000',
     'stay-dm':'Questions? DM us <a href="https://www.instagram.com/kon.x.ion/" target="_blank" style="color:rgba(4,200,10,0.7);text-decoration:none;">@kon.x.ion</a>',
     'stay-reserve-label':'Reserve a Cabin','stay-reserve-body':'Each cabin is all-inclusive — your stay and party entry in one. Spots are limited. Email us to lock in your cabin.',
-    'stay-cta':'Inquire Now',
+    'stay-cta':'Book',
     'contact-btn':'Contact Us','contact-title':'Get in Touch',
     'contact-email-label':'Email us','contact-name':'Name',
     'contact-msg':'Your message…','contact-send':'Send'
@@ -4071,7 +4078,7 @@ const translations = {
     'stay-price-lux':'COP 1,500,000 <span style="color:rgba(255,255,255,0.6);">·</span> $419',
     'stay-price-prem':'COP 900,000 <span style="color:rgba(255,255,255,0.4);">·</span> $249',
     'stay-reserve-label':'Reserva una Cabaña','stay-reserve-body':'Cada cabaña es todo incluido — tu estadía y entrada al party en uno. Los cupos son limitados. Escríbenos para asegurar tu cabaña.',
-    'stay-cta':'Consultar Ahora',
+    'stay-cta':'Reservar',
     'stay-dm':'¿Preguntas? Escríbenos <a href="https://www.instagram.com/kon.x.ion/" target="_blank" style="color:rgba(4,200,10,0.7);text-decoration:none;">@kon.x.ion</a>',
     'contact-btn':'Contáctanos','contact-title':'Contáctanos',
     'contact-email-label':'Escríbenos','contact-name':'Nombre',
