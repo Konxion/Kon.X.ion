@@ -2566,7 +2566,7 @@ async function handleCabinBook() {
   } catch (err) {
     console.error('Cabin booking error:', err);
     conf.style.color = 'rgba(200,50,30,0.7)';
-    conf.textContent = 'Something went wrong. Email us at steve@konxion.us';
+    conf.textContent = err.message || 'Something went wrong. Email us at steve@konxion.us';
   } finally {
     btn.disabled = false; btn.textContent = (translations[currentLang] || {})['cb-btn'] || 'Book Cabin';
   }
