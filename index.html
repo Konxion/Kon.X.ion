@@ -1405,20 +1405,25 @@
     text-align: center; margin-top: 32px; padding-top: 24px;
     border-top: 0.5px solid rgba(4,200,10,0.1);
   }
+  .gh-footer-glow {
+    color: #fff;
+    text-shadow: 0 0 6px rgba(4,220,10,1), 0 0 18px rgba(4,220,10,0.8), 0 0 40px rgba(4,220,10,0.5), 0 0 80px rgba(4,220,10,0.25);
+  }
   .gh-footer-qlabel {
-    font-family: var(--font-label); font-size: 9px; font-weight: 300;
-    letter-spacing: 0.38em; text-transform: uppercase;
-    color: rgba(4,220,10,1); margin-bottom: 8px;
-    text-shadow: 0 0 4px rgba(4,220,10,1), 0 0 12px rgba(4,220,10,1), 0 0 30px rgba(4,220,10,0.9), 0 0 60px rgba(4,220,10,0.6), 0 0 100px rgba(4,220,10,0.3);
+    font-family: var(--font-label); font-size: 13px; font-weight: 300;
+    letter-spacing: 0.32em; text-transform: uppercase; margin-bottom: 10px;
   }
   .gh-footer-email {
     font-family: var(--font-serif); font-style: italic; font-weight: 300;
-    font-size: 18px; color: rgba(4,220,10,1); text-decoration: none;
-    border-bottom: 0.5px solid rgba(4,200,10,0.6); padding-bottom: 2px;
-    text-shadow: 0 0 8px rgba(4,220,10,0.9), 0 0 24px rgba(4,220,10,0.6), 0 0 50px rgba(4,220,10,0.35);
-    transition: color 0.2s, border-color 0.2s, text-shadow 0.2s; display: inline-block;
+    font-size: 20px; text-decoration: none;
+    border-bottom: 0.5px solid rgba(4,200,10,0.4); padding-bottom: 2px;
+    transition: text-shadow 0.2s; display: inline-block;
   }
-  .gh-footer-email:hover { color: rgba(4,220,10,1); border-color: rgba(4,200,10,0.8); text-shadow: 0 0 10px rgba(4,220,10,1), 0 0 32px rgba(4,220,10,0.8), 0 0 70px rgba(4,220,10,0.5); }
+  .gh-footer-privacy {
+    font-family: 'DM Sans', sans-serif; font-size: 13px;
+    letter-spacing: 0.22em; text-transform: uppercase; text-decoration: none;
+    transition: text-shadow 0.2s;
+  }
 </style>
 </head>
 <body>
@@ -1985,11 +1990,11 @@
 
     <!-- FOOTER CONTACT -->
     <div class="gh-footer-contact">
-      <div class="gh-footer-qlabel" data-i18n="gh-q-title">Questions?</div>
-      <a href="mailto:steve@konxion.us?subject=KON.X.ION%20Question" class="gh-footer-email">steve@konxion.us</a>
+      <div class="gh-footer-qlabel gh-footer-glow" data-i18n="gh-q-title">Questions?</div>
+      <a href="mailto:konxion@icloud.com?subject=KON.X.ION%20Question" class="gh-footer-email gh-footer-glow">konxion@icloud.com</a>
     </div>
     <div style="text-align:center;margin-top:20px;">
-      <a href="/privacy.html" style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(4,220,10,0.7);text-decoration:none;text-shadow:0 0 8px rgba(4,220,10,0.5),0 0 20px rgba(4,220,10,0.25);transition:color 0.2s,text-shadow 0.2s;" target="_blank" rel="noopener">Privacy Policy</a>
+      <a href="/privacy.html" class="gh-footer-privacy gh-footer-glow" target="_blank" rel="noopener">Privacy Policy</a>
     </div>
 
   </div>
