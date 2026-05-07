@@ -1424,7 +1424,9 @@
     letter-spacing: 0.22em; text-transform: uppercase; text-decoration: none;
     transition: text-shadow 0.2s;
   }
+  html.entry-stay #hero { visibility: hidden !important; }
 </style>
+<script>if (location.pathname === '/stay') document.documentElement.classList.add('entry-stay');</script>
 </head>
 <body>
 
@@ -3679,7 +3681,11 @@ function openStay() {
   if (tabBar) { tabBar.style.opacity = '1'; tabBar.style.pointerEvents = 'all'; }
   const lb = document.getElementById('langBtn');
   if (lb) { lb.style.opacity = '1'; lb.style.pointerEvents = ''; }
-  history.pushState({ stay: true }, '', '/stay');
+  if (location.pathname === '/stay') {
+    history.replaceState({ stay: true }, '', '/stay');
+  } else {
+    history.pushState({ stay: true }, '', '/stay');
+  }
 }
 function closeStay() {
   const page = document.getElementById('stayPage');
