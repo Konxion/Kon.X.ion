@@ -4348,6 +4348,10 @@ function pickMap(type) {
   window.open(MAP_URLS[type], '_blank');
 }
 
+if (location.pathname === '/stay') {
+  document.addEventListener('DOMContentLoaded', openStay);
+}
+
 </script>
 </main>
 
