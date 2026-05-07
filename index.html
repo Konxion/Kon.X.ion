@@ -1697,7 +1697,7 @@
 </div>
 
 <!-- ═══ LINEUP PAGE ═══ -->
-<div id="lineupPage" style="position:fixed;inset:0;z-index:40;background:#000;opacity:0;pointer-events:none;transition:opacity 0.4s ease;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;">
+<div id="lineupPage" style="position:fixed;inset:0;z-index:40;background:#000;opacity:0;pointer-events:none;transition:opacity 0.4s ease;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-y;">
   <!-- bg glow layer -->
   <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 90% 55% at 50% 22%, rgba(4,160,12,0.45) 0%, rgba(4,80,8,0.18) 50%, transparent 100%);"></div>
   <canvas id="lineupGridCanvas" style="position:fixed;inset:0;z-index:0;pointer-events:none;"></canvas>
@@ -1705,7 +1705,7 @@
   <!-- back button -->
   <button onclick="closeLineup()" class="back-btn" id="lineupBack" data-i18n="back-btn">← Back</button>
 
-  <div style="padding:120px 16px 60px;max-width:600px;margin:0 auto;position:relative;z-index:1;">
+  <div style="padding:120px 16px 60px;max-width:600px;margin:0 auto;position:relative;z-index:1;overflow-x:hidden;touch-action:pan-y;">
 
     <!-- header -->
     <div style="text-align:center;margin-bottom:52px;position:relative;">
@@ -4052,9 +4052,11 @@ function startLineupGrid() {
   canvas._running = true;
   const ctx = canvas.getContext('2d');
   let offset = 0, t = 0;
+  const isMobile = window.matchMedia('(pointer:coarse)').matches;
 
-  // particles
-  const particles = Array.from({length: 38}, () => ({
+  // fewer particles on mobile to free up main thread for touch
+  const particleCount = isMobile ? 12 : 38;
+  const particles = Array.from({length: particleCount}, () => ({
     x: Math.random(), y: Math.random(),
     vx: (Math.random() - 0.5) * 0.0003,
     vy: (Math.random() - 0.5) * 0.0003,
@@ -4068,8 +4070,12 @@ function startLineupGrid() {
   canvas._resizeHandler = resize;
   window.addEventListener('resize', resize);
 
+  let frameCount = 0;
   function draw() {
     if (!canvas._running) return;
+    // throttle to ~20fps on mobile (skip every 2 of 3 frames)
+    frameCount++;
+    if (isMobile && frameCount % 3 !== 0) { canvas._raf = requestAnimationFrame(draw); return; }
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     const W = canvas.width, H = canvas.height;
     const spacing = 52;
@@ -4088,15 +4094,17 @@ function startLineupGrid() {
       ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
     }
 
-    // intersection node flashes at grid crossings
-    for (let y = (offset % spacing) - spacing; y < H + spacing; y += spacing) {
-      for (let x = 0; x < W + spacing; x += spacing) {
-        const pulse = 0.5 + 0.5 * Math.sin(t * 0.07 + x * 0.08 + y * 0.06);
-        if (pulse > 0.85) {
-          ctx.beginPath();
-          ctx.arc(x, y, 1.5, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(4,255,10,${(pulse - 0.85) * 4})`;
-          ctx.fill();
+    // intersection node flashes — skip on mobile (too expensive)
+    if (!isMobile) {
+      for (let y = (offset % spacing) - spacing; y < H + spacing; y += spacing) {
+        for (let x = 0; x < W + spacing; x += spacing) {
+          const pulse = 0.5 + 0.5 * Math.sin(t * 0.07 + x * 0.08 + y * 0.06);
+          if (pulse > 0.85) {
+            ctx.beginPath();
+            ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(4,255,10,${(pulse - 0.85) * 4})`;
+            ctx.fill();
+          }
         }
       }
     }
