@@ -2528,14 +2528,14 @@ async function handleTickets() {
     if (!data.clientSecret) throw new Error(data.error || 'No client secret');
     safeDestroyCheckout();
     const stripe = Stripe(STRIPE_PK);
-    stripeCheckout = await stripe.initEmbeddedCheckout({ clientSecret: data.clientSecret, locale: currentLang });
+    stripeCheckout = await stripe.initEmbeddedCheckout({ clientSecret: data.clientSecret });
     closeRsvpSheet();
     document.getElementById('stripeModal').style.display = 'block';
     stripeCheckout.mount('#stripeCheckoutMount');
   } catch (err) {
     console.error('Ticket checkout error:', err);
     conf.style.color = 'rgba(200,50,30,0.7)';
-    conf.textContent = err.message || 'Something went wrong. Email us at steve@konxion.us';
+    conf.textContent = err.message || 'Something went wrong. Email us at konxion@icloud.com';
   } finally {
     btn.disabled = false; btn.textContent = (translations[currentLang] || {})['reserve-tickets-btn'] || 'Buy Tickets →';
   }
@@ -2583,14 +2583,14 @@ async function handleCabinBook() {
     if (!data.clientSecret) throw new Error(data.error || 'No client secret');
     safeDestroyCheckout();
     const stripe = Stripe(STRIPE_PK);
-    stripeCheckout = await stripe.initEmbeddedCheckout({ clientSecret: data.clientSecret, locale: currentLang });
+    stripeCheckout = await stripe.initEmbeddedCheckout({ clientSecret: data.clientSecret });
     closeCabinSheet();
     document.getElementById('stripeModal').style.display = 'block';
     stripeCheckout.mount('#stripeCheckoutMount');
   } catch (err) {
     console.error('Cabin booking error:', err);
     conf.style.color = 'rgba(200,50,30,0.7)';
-    conf.textContent = err.message || 'Something went wrong. Email us at steve@konxion.us';
+    conf.textContent = err.message || 'Something went wrong. Email us at konxion@icloud.com';
   } finally {
     btn.disabled = false; btn.textContent = (translations[currentLang] || {})['cb-btn'] || 'Book Cabin';
   }
@@ -4176,7 +4176,7 @@ const translations = {
     'gh-q-title':'Questions?','shop-merch':'Merch','shop-soon':'Coming Soon',
     'shop-drops':'Drops with the lineup announcement.','back-btn':'← Back',
     'next-event':'Next Event','journey-date':'Saturday, July 18',
-    'rsvp-title':'Get Tickets','rsvp-date':'General Admission &nbsp;·&nbsp; $35 USD','reserve-tickets-btn':'Reserve Tickets',
+    'rsvp-title':'Get Tickets','rsvp-date':'General Admission &nbsp;·&nbsp; $35 USD','reserve-tickets-btn':'Buy Tickets',
     'nav-stay':'Stay','stay-title':'Stay','stay-subtitle':'Cabin Rentals · Guatapé',
     'stay-about-label':'About','stay-about':"We've reserved all the cabins in the resort for Kon.X.ion attendees. Wake up in the mountains of Guatape, steps from the party.",
     'stay-included-label':"What's Included",'stay-included-note':'* * * With cabin rental * * *',
