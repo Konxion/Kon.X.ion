@@ -2495,10 +2495,14 @@ function updateTicketTotal() {
 const STRIPE_PK = 'pk_live_51TPA19R3l2fbjjXGWciQiRYRrmvY40TGeGm8dQpSXxIPX0WpI0rCBT1phW7eJ3y22QBYRrw1f38lfNJbyPaDI5mS00y606AFaX';
 let stripeCheckout = null;
 
-function closeStripeModal() {
-  if (stripeCheckout) { stripeCheckout.destroy(); stripeCheckout = null; }
-  document.getElementById('stripeModal').style.display = 'none';
+function safeDestroyCheckout() {
+  if (stripeCheckout) { try { stripeCheckout.destroy(); } catch(e) {} stripeCheckout = null; }
   document.getElementById('stripeCheckoutMount').innerHTML = '';
+}
+
+function closeStripeModal() {
+  safeDestroyCheckout();
+  document.getElementById('stripeModal').style.display = 'none';
 }
 
 async function handleTickets() {
@@ -2522,16 +2526,16 @@ async function handleTickets() {
     });
     const data = await r.json();
     if (!data.clientSecret) throw new Error(data.error || 'No client secret');
-    if (stripeCheckout) { stripeCheckout.destroy(); stripeCheckout = null; }
-    document.getElementById('stripeCheckoutMount').innerHTML = '';
+    safeDestroyCheckout();
     const stripe = Stripe(STRIPE_PK);
     stripeCheckout = await stripe.initEmbeddedCheckout({ clientSecret: data.clientSecret, locale: currentLang });
     closeRsvpSheet();
     document.getElementById('stripeModal').style.display = 'block';
     stripeCheckout.mount('#stripeCheckoutMount');
   } catch (err) {
+    console.error('Ticket checkout error:', err);
     conf.style.color = 'rgba(200,50,30,0.7)';
-    conf.textContent = 'Something went wrong. Email us at konxion@icloud.com';
+    conf.textContent = err.message || 'Something went wrong. Email us at steve@konxion.us';
   } finally {
     btn.disabled = false; btn.textContent = (translations[currentLang] || {})['reserve-tickets-btn'] || 'Buy Tickets →';
   }
@@ -2577,8 +2581,7 @@ async function handleCabinBook() {
     });
     const data = await r.json();
     if (!data.clientSecret) throw new Error(data.error || 'No client secret');
-    if (stripeCheckout) { stripeCheckout.destroy(); stripeCheckout = null; }
-    document.getElementById('stripeCheckoutMount').innerHTML = '';
+    safeDestroyCheckout();
     const stripe = Stripe(STRIPE_PK);
     stripeCheckout = await stripe.initEmbeddedCheckout({ clientSecret: data.clientSecret, locale: currentLang });
     closeCabinSheet();
@@ -2587,7 +2590,7 @@ async function handleCabinBook() {
   } catch (err) {
     console.error('Cabin booking error:', err);
     conf.style.color = 'rgba(200,50,30,0.7)';
-    conf.textContent = err.message || 'Something went wrong. Email us at konxion@icloud.com';
+    conf.textContent = err.message || 'Something went wrong. Email us at steve@konxion.us';
   } finally {
     btn.disabled = false; btn.textContent = (translations[currentLang] || {})['cb-btn'] || 'Book Cabin';
   }
