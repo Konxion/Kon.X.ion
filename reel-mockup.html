@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KonXion — Guatapé Reel Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;1,9..40,200&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Josefin+Sans:wght@100;200;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0a0a0a;
+    font-family: 'DM Sans', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+
+  h1 {
+    color: rgba(4,200,10,0.6);
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 200;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: -20px;
+  }
+
+  .carousel {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding: 10px 0;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(4,200,10,0.3) transparent;
+  }
+
+  /* Instagram 9:16 slide */
+  .slide {
+    position: relative;
+    width: 320px;
+    height: 568px;
+    flex-shrink: 0;
+    overflow: hidden;
+    background: #000;
+    border-radius: 4px;
+  }
+
+  .slide-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .slide-overlay {
+    position: absolute;
+    inset: 0;
+  }
+
+  .slide-content {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* Bottom brand bar — sits under everything */
+  .brand-bar {
+    position: absolute;
+    bottom: 14px;
+    left: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .brand-line {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 200;
+    font-size: 7.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+  }
+
+  .brand-presents {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 8px;
+    color: rgba(255,255,255,0.28);
+    letter-spacing: 0.08em;
+  }
+
+  .slide-num {
+    position: absolute;
+    top: 24px;
+    right: 22px;
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 200;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.45);
+  }
+
+  /* Slide 1 — Elevated collab card */
+
+  /* Corner registration marks */
+  .s1-frame {
+    position: absolute;
+    inset: 16px;
+    pointer-events: none;
+  }
+  .s1-frame::before, .s1-frame::after,
+  .s1-frame-inner::before, .s1-frame-inner::after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: rgba(4,200,10,0.4);
+    border-style: solid;
+  }
+  .s1-frame::before { top:0; left:0; border-width: 1px 0 0 1px; }
+  .s1-frame::after  { top:0; right:0; border-width: 1px 1px 0 0; }
+  .s1-frame-inner::before { bottom:0; left:0; border-width: 0 0 1px 1px; }
+  .s1-frame-inner::after  { bottom:0; right:0; border-width: 0 1px 1px 0; }
+
+  /* Glow bloom */
+  .s1-bloom {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 55%, rgba(4,200,10,0.09) 0%, transparent 70%),
+      radial-gradient(ellipse 30% 20% at 50% 55%, rgba(4,200,10,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* Presents tag */
+  .s1-presents {
+    position: absolute;
+    top: 28px;
+    left: 0; right: 0;
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.3);
+  }
+
+  /* Hero KonXion name */
+  .s1-hero {
+    position: absolute;
+    left: 0; right: 0;
+    top: 50%;
+    transform: translateY(-62%);
+    text-align: center;
+  }
+
+  .s1-hero-name {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    font-size: 52px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #fff;
+    line-height: 1;
+    display: block;
+    text-shadow: 0 0 60px rgba(4,200,10,0.15);
+  }
+
+  .s1-hero-logo {
+    width: 54px;
+    height: auto;
+    opacity: 0.9;
+    margin-bottom: 10px;
+  }
+
+  /* Collab row */
+  .s1-collab-band {
+    position: absolute;
+    left: 28px; right: 28px;
+    top: 50%;
+    transform: translateY(40%);
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .s1-rule {
+    flex: 1;
+    height: 0.5px;
+    background: rgba(255,255,255,0.12);
+  }
+
+  .s1-x-connector {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    font-size: 14px;
+    color: rgba(4,200,10,0.9);
+    text-shadow: 0 0 12px rgba(4,200,10,0.6);
+    padding: 0 12px;
+    flex-shrink: 0;
+  }
+
+  .s1-bethel-block {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .s1-bethel-logo-ph {
+    width: 28px;
+    height: 28px;
+    border: 0.5px solid rgba(255,255,255,0.25);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .s1-bethel-logo-ph span {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 5px;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+  }
+
+  .s1-bethel-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .s1-bethel-name-main {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 200;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    line-height: 1;
+  }
+
+  .s1-bethel-name-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 9px;
+    color: rgba(4,200,10,0.65);
+    letter-spacing: 0.1em;
+  }
+
+  /* Bottom info */
+  .s1-bottom {
+    position: absolute;
+    bottom: 42px;
+    left: 0; right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .s1-bottom-location {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.08em;
+  }
+
+  .s1-bottom-date {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 200;
+    font-size: 8px;
+    letter-spacing: 0.38em;
+    text-transform: uppercase;
+    color: rgba(4,200,10,0.75);
+  }
+
+  /* Slide 2 — Save the Date */
+  .s2-center {
+    position: absolute;
+    bottom: 100px;
+    left: 22px;
+  }
+
+  .s2-brand-name {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    font-size: 42px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .s2-location {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: rgba(4,200,10,0.9);
+    letter-spacing: 0.15em;
+    margin-top: 8px;
+    display: block;
+  }
+
+  .s2-banner {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 14px 22px;
+    background: rgba(4,200,10,0.12);
+    border-top: 0.5px solid rgba(4,200,10,0.35);
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 300;
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(4,200,10,0.95);
+    text-align: center;
+  }
+
+  /* Slide 3 — Experience */
+  .s3-top-left {
+    position: absolute;
+    left: 22px;
+    top: 72px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 10px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.06em;
+  }
+
+  .s3-music {
+    position: absolute;
+    left: 22px;
+    bottom: 120px;
+  }
+
+  .s3-music-pre {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .s3-music-main {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    font-size: 38px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .s3-music-dot {
+    color: rgba(4,200,10,0.9);
+  }
+
+  .s3-right {
+    position: absolute;
+    right: 22px;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: right;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 200;
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.8;
+  }
+
+  .s3-date {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    white-space: nowrap;
+  }
+
+  /* Slide 4 — Closing */
+  .s4-center {
+    position: absolute;
+    left: 22px;
+    top: 50%;
+    transform: translateY(-55%);
+  }
+
+  .s4-brand-name {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    font-size: 46px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .s4-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 10px;
+    color: rgba(4,200,10,0.8);
+    letter-spacing: 0.14em;
+    margin-top: 10px;
+    display: block;
+  }
+
+  .s4-date {
+    position: absolute;
+    bottom: 28px;
+    left: 22px;
+  }
+
+  .s4-date-main {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 200;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    display: block;
+  }
+
+  .s4-date-year {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    font-size: 28px;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.9);
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* Caption section */
+  .caption-box {
+    width: 100%;
+    max-width: 700px;
+    background: rgba(4,200,10,0.05);
+    border: 0.5px solid rgba(4,200,10,0.2);
+    border-radius: 4px;
+    padding: 24px 28px;
+  }
+
+  .caption-label {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(4,200,10,0.6);
+    margin-bottom: 14px;
+  }
+
+  .caption-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    line-height: 1.75;
+    color: rgba(255,255,255,0.75);
+    white-space: pre-line;
+  }
+
+  .caption-hashtags {
+    margin-top: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: rgba(4,200,10,0.55);
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+
+<h1>KonXion × Guatapé — Reel Mockup</h1>
+
+<div class="carousel">
+
+  <!-- SLIDE 1 — Guatapé drone + KonXion logo -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('guatape-drone-preview.png'); background-position: center center;"></div>
+    <!-- Dark gradient overlay — heavier at top and bottom, lighter in middle to let the landscape show -->
+    <div class="slide-overlay" style="background: linear-gradient(180deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.18) 38%, rgba(0,0,0,0.18) 62%, rgba(0,0,0,0.78) 100%);"></div>
+
+    <!-- Corner marks -->
+    <div class="s1-frame"><div class="s1-frame-inner"></div></div>
+
+    <span class="slide-num">1/4</span>
+
+    <!-- Hero: KonXion logo + name centered -->
+    <div class="s1-hero">
+      <img src="konxion-logo.png" class="s1-hero-logo" alt="KonXion">
+      <span class="s1-hero-name">KonXion</span>
+    </div>
+
+    <!-- Collab band -->
+    <div class="s1-collab-band">
+      <div class="s1-rule"></div>
+      <div class="s1-x-connector">×</div>
+      <div class="s1-bethel-block">
+        <div class="s1-bethel-logo-ph"><span>logo</span></div>
+        <div class="s1-bethel-text">
+          <span class="s1-bethel-name-main">Bethel Lozana</span>
+          <span class="s1-bethel-name-sub">Guatapé, Colombia</span>
+        </div>
+      </div>
+      <div class="s1-rule"></div>
+    </div>
+
+    <!-- Bottom -->
+    <div class="s1-bottom">
+      <span class="s1-bottom-date">Julio 18 · 2026</span>
+    </div>
+
+    <div class="brand-bar">
+      <span class="brand-line">KonXion × Bethel Guatapé</span>
+      <span class="brand-presents">presents</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 — Save the Date -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('entorno-bethel2.jpeg'); background-position: center top;"></div>
+    <div class="slide-overlay" style="background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.7) 100%);"></div>
+    <span class="slide-num">2/4</span>
+
+    <div class="s2-center">
+      <div class="s2-brand-name">KonXion</div>
+      <span class="s2-location">Guatapé, Colombia</span>
+    </div>
+
+    <div class="s2-banner">Save the Date</div>
+    <div class="brand-bar">
+      <span class="brand-line">KonXion × Bethel Guatapé</span>
+      <span class="brand-presents">presents</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 — Experience -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('entorno-bethel1.jpeg');"></div>
+    <div class="slide-overlay" style="background: linear-gradient(135deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.55) 100%);"></div>
+    <span class="slide-num">3/4</span>
+
+    <div class="s3-top-left">
+      an intimate<br>curated experience
+    </div>
+
+    <div class="s3-music">
+      <span class="s3-music-pre">Exquisite</span>
+      <div class="s3-music-main">Music<span class="s3-music-dot">.</span></div>
+    </div>
+
+    <div class="s3-right">Guatapé · Colombia</div>
+
+    <div class="s3-date">Julio 18</div>
+    <div class="brand-bar">
+      <span class="brand-line">KonXion × Bethel Guatapé</span>
+      <span class="brand-presents">presents</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 — Closing -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image: url('entorno-bethel3.jpeg'); filter: brightness(0.7);"></div>
+    <div class="slide-overlay" style="background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.75) 100%);"></div>
+    <span class="slide-num">4/4</span>
+
+    <div class="s4-center">
+      <div class="s4-brand-name">KonXion</div>
+      <span class="s4-sub">an elevated festival experience</span>
+    </div>
+
+    <div class="s4-date">
+      <span class="s4-date-main">Julio 18</span>
+      <span class="s4-date-year">2026</span>
+    </div>
+    <div class="brand-bar">
+      <span class="brand-line">KonXion × Bethel Guatapé</span>
+      <span class="brand-presents">presents</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- CAPTION -->
+<div class="caption-box">
+  <div class="caption-label">Instagram Caption</div>
+  <div class="caption-text">Something is coming alive in Guatapé.
+
+KonXion × Bethel — July 18, 2026.
+1PM — 5AM · Guatapé, Colombia.
+
+An elevated festival experience unlike anything Colombia has seen. Limited capacity. Link in bio to reserve your stay.</div>
+  <div class="caption-hashtags">#KonXion #Guatape #Colombia #FestivalColombia #BethelGuatape #ElPenol #MedellínEvents #TechnoLatam #BeyondBorders</div>
+</div>
+
+</body>
+</html>
