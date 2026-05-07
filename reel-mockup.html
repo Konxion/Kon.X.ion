@@ -283,48 +283,132 @@
     color: rgba(4,200,10,0.75);
   }
 
-  /* Slide 2 — Save the Date */
-  .s2-center {
+  /* Slide 2 — The Event */
+  .s2e-block {
     position: absolute;
-    bottom: 100px;
+    bottom: 46px;
     left: 22px;
+    right: 22px;
   }
 
-  .s2-brand-name {
+  .s2e-eyebrow {
     font-family: 'Josefin Sans', sans-serif;
-    font-weight: 100;
-    font-size: 42px;
-    letter-spacing: 0.1em;
+    font-weight: 200;
+    font-size: 7.5px;
+    letter-spacing: 0.45em;
     text-transform: uppercase;
+    color: rgba(4,200,10,0.65);
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .s2e-date-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .s2e-day {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 80px;
     color: #fff;
+    line-height: 0.82;
+    letter-spacing: -0.02em;
+    text-shadow: 0 0 60px rgba(4,200,10,0.12);
+  }
+
+  .s2e-month-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding-bottom: 4px;
+  }
+
+  .s2e-month {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 200;
+    font-size: 15px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.88);
     line-height: 1;
   }
 
-  .s2-location {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 11px;
-    color: rgba(4,200,10,0.9);
-    letter-spacing: 0.15em;
-    margin-top: 8px;
-    display: block;
+  .s2e-year {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    font-size: 10px;
+    letter-spacing: 0.32em;
+    color: rgba(255,255,255,0.38);
   }
 
-  .s2-banner {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 14px 22px;
-    background: rgba(4,200,10,0.12);
-    border-top: 0.5px solid rgba(4,200,10,0.35);
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: 300;
+  .s2e-weekday {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
     font-size: 10px;
-    letter-spacing: 0.35em;
+    color: rgba(4,200,10,0.6);
+    letter-spacing: 0.08em;
+    padding-bottom: 5px;
+  }
+
+  .s2e-rule {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .s2e-rule-line {
+    flex: 1;
+    height: 0.5px;
+    background: linear-gradient(90deg, rgba(4,200,10,0.5), rgba(4,200,10,0.15));
+  }
+
+  .s2e-rule-line.right {
+    background: linear-gradient(90deg, rgba(4,200,10,0.15), rgba(4,200,10,0.5));
+  }
+
+  .s2e-rule-dot {
+    font-size: 6px;
+    color: rgba(4,200,10,0.75);
+    text-shadow: 0 0 8px rgba(4,200,10,0.6);
+  }
+
+  .s2e-name {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    font-size: 32px;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: rgba(4,200,10,0.95);
-    text-align: center;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 12px;
+    text-shadow: 0 0 40px rgba(4,200,10,0.08);
+  }
+
+  .s2e-details-row {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .s2e-time {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.05em;
+  }
+
+  .s2e-location {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 200;
+    font-size: 8px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.38);
   }
 
   /* Slide 3 — Experience */
