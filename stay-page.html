@@ -65,7 +65,7 @@
     display: inline-flex; align-items: center; justify-content: center;
     width: 16px; height: 16px; border-radius: 50%;
     border: 1px solid rgba(4,200,10,0.55);
-    color: rgba(4,200,10,0.85); font-size: 10px;
+    color: rgba(4,220,10,1); text-shadow: 0 0 6px rgba(4,255,10,0.9),0 0 14px rgba(4,220,10,0.7); font-size: 10px;
     font-family: 'DM Sans', sans-serif; font-style: normal;
     cursor: default; vertical-align: middle; position: relative;
     line-height: 1; font-weight: 400; letter-spacing: 0;
@@ -115,7 +115,7 @@
   <div style="position:fixed;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to bottom, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.72) 100%);"></div>
 
   <!-- Back button -->
-  <button onclick="history.back()" style="position:fixed;top:68px;left:24px;z-index:50;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:8px 16px;min-height:36px;color:rgba(4,200,10,0.8);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;" id="stayBack" data-i18n="back-btn">← Back</button>
+  <button onclick="history.back()" style="position:fixed;top:68px;left:24px;z-index:50;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:8px 16px;min-height:36px;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,0.8),0 0 20px rgba(4,200,10,0.5),0 0 45px rgba(4,200,10,0.2);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;" id="stayBack" data-i18n="back-btn">← Back</button>
 
   <!-- Language toggle -->
   <div class="lang-toggle">
@@ -128,18 +128,18 @@
   <div style="padding:120px 24px 60px;max-width:520px;margin:0 auto;position:relative;z-index:2;">
     <div style="text-align:center;margin-bottom:48px;">
       <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:52px;color:#fff;letter-spacing:0.06em;line-height:1;margin-bottom:10px;" data-i18n="stay-title">Stay</div>
-      <div style="font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(4,200,10,0.8);" data-i18n="stay-subtitle">Cabin Rentals · Guatapé</div>
+      <div style="font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,255,10,0.9),0 0 20px rgba(4,220,10,0.7),0 0 50px rgba(4,200,10,0.4),0 0 90px rgba(4,160,8,0.15);" data-i18n="stay-subtitle">Cabin Rentals · Guatapé</div>
     </div>
 
     <!-- CABIN DETAILS — first -->
     <div style="background:rgba(4,200,10,0.06);border:0.5px solid rgba(4,200,10,0.32);border-radius:20px;padding:24px;margin-bottom:14px;">
-      <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);margin-bottom:14px;" data-i18n="stay-details-label">Cabin Details</div>
-      <div data-i18n="stay-avail" style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 10px rgba(4,220,10,0.8),0 0 24px rgba(4,220,10,0.4);text-align:center;padding:9px 0;margin-bottom:16px;border-top:0.5px solid rgba(4,200,10,0.25);border-bottom:0.5px solid rgba(4,200,10,0.25);">⚡ Only 9 Cabins Available</div>
+      <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,255,10,0.9),0 0 20px rgba(4,220,10,0.8),0 0 50px rgba(4,200,10,0.5),0 0 90px rgba(4,160,8,0.2);margin-bottom:14px;" data-i18n="stay-details-label">Cabin Details</div>
+      <div data-i18n="stay-avail" style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 10px rgba(4,255,10,0.9),0 0 24px rgba(4,220,10,0.8),0 0 50px rgba(4,200,10,0.5),0 0 90px rgba(4,200,10,0.2);text-align:center;padding:9px 0;margin-bottom:16px;border-top:0.5px solid rgba(4,200,10,0.25);border-bottom:0.5px solid rgba(4,200,10,0.25);">⚡ Only 9 Cabins Available</div>
 
       <!-- Luxury cabin card -->
       <div onclick="openCabinLuxModal()" style="cursor:pointer;background:rgba(255,255,255,0.03);border:0.5px solid rgba(4,200,10,0.22);border-radius:14px;padding:16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
         <div style="flex:1;">
-          <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(4,200,10,0.8);margin-bottom:5px;" data-i18n="cabin-lux-label">Luxury · 4 Cabins</div>
+          <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 6px rgba(4,255,10,0.9),0 0 18px rgba(4,220,10,0.7),0 0 40px rgba(4,200,10,0.35);margin-bottom:5px;" data-i18n="cabin-lux-label">Luxury · 4 Cabins</div>
           <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:300;color:rgba(255,255,255,0.85);line-height:1.4;" data-i18n="cabin-lux-beds">1 California King or 2 Double Beds</div>
           <div style="font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:0.05em;margin-top:2px;" data-i18n="cabin-lux-sleeps">Sleeps 2 or 4</div>
           <div style="margin-top:11px;display:flex;align-items:baseline;gap:4px;">
@@ -150,13 +150,13 @@
             <span style="font-family:'DM Sans',sans-serif;font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.06em;">COP</span>
           </div>
         </div>
-        <div style="font-size:10px;letter-spacing:0.15em;color:rgba(4,220,10,1);font-family:'Josefin Sans',sans-serif;text-transform:uppercase;text-shadow:0 0 8px rgba(4,220,10,0.8);white-space:nowrap;flex-shrink:0;" data-i18n="view-label">View ›</div>
+        <div style="font-size:10px;letter-spacing:0.15em;color:rgba(4,220,10,1);font-family:'Josefin Sans',sans-serif;text-transform:uppercase;text-shadow:0 0 8px rgba(4,255,10,0.9),0 0 20px rgba(4,220,10,0.8),0 0 45px rgba(4,200,10,0.45);white-space:nowrap;flex-shrink:0;" data-i18n="view-label">View ›</div>
       </div>
 
       <!-- Premium cabin card -->
       <div onclick="openCabin4Modal()" style="cursor:pointer;background:rgba(255,255,255,0.03);border:0.5px solid rgba(4,200,10,0.22);border-radius:14px;padding:16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
         <div style="flex:1;">
-          <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(4,200,10,0.8);margin-bottom:5px;" data-i18n="cabin-prem-label">Premium · 5 Cabins</div>
+          <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 6px rgba(4,255,10,0.9),0 0 18px rgba(4,220,10,0.7),0 0 40px rgba(4,200,10,0.35);margin-bottom:5px;" data-i18n="cabin-prem-label">Premium · 5 Cabins</div>
           <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:300;color:rgba(255,255,255,0.85);line-height:1.4;" data-i18n="cabin-prem-beds">2 Double Beds</div>
           <div style="font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:0.05em;margin-top:2px;" data-i18n="cabin-prem-sleeps">Sleeps 4</div>
           <div style="margin-top:11px;display:flex;align-items:baseline;gap:4px;">
@@ -167,14 +167,14 @@
             <span style="font-family:'DM Sans',sans-serif;font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.06em;">COP</span>
           </div>
         </div>
-        <div style="font-size:10px;letter-spacing:0.15em;color:rgba(4,220,10,1);font-family:'Josefin Sans',sans-serif;text-transform:uppercase;text-shadow:0 0 8px rgba(4,220,10,0.8);white-space:nowrap;flex-shrink:0;" data-i18n="view-label">View ›</div>
+        <div style="font-size:10px;letter-spacing:0.15em;color:rgba(4,220,10,1);font-family:'Josefin Sans',sans-serif;text-transform:uppercase;text-shadow:0 0 8px rgba(4,255,10,0.9),0 0 20px rgba(4,220,10,0.8),0 0 45px rgba(4,200,10,0.45);white-space:nowrap;flex-shrink:0;" data-i18n="view-label">View ›</div>
       </div>
-      <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(4,220,10,0.7);text-align:center;" data-i18n="stay-inclusive">All-inclusive · Cabin + Party Entry</div>
+      <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 6px rgba(4,220,10,0.9),0 0 18px rgba(4,200,10,0.6),0 0 40px rgba(4,200,10,0.25);text-align:center;" data-i18n="stay-inclusive">All-inclusive · Cabin + Party Entry</div>
     </div>
 
     <!-- WHAT'S INCLUDED -->
     <div style="background:rgba(4,200,10,0.06);border:0.5px solid rgba(4,200,10,0.32);border-radius:20px;padding:24px;margin-bottom:14px;">
-      <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
+      <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,255,10,0.9),0 0 20px rgba(4,220,10,0.8),0 0 50px rgba(4,200,10,0.5),0 0 90px rgba(4,160,8,0.2);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
         <span data-i18n="stay-included-label">What's Included</span>
         <span data-i18n="stay-included-note" style="font-size:8px;letter-spacing:0.15em;color:rgba(4,220,10,1);text-transform:uppercase;text-shadow:0 0 4px rgba(4,220,10,1),0 0 10px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.9),0 0 48px rgba(4,220,10,0.6);">* * * With cabin rental * * *</span>
       </div>
@@ -183,13 +183,13 @@
 
     <!-- ABOUT -->
     <div style="background:rgba(4,200,10,0.06);border:0.5px solid rgba(4,200,10,0.32);border-radius:20px;padding:24px;margin-bottom:14px;">
-      <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);margin-bottom:10px;" data-i18n="stay-about-label">About</div>
+      <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,255,10,0.9),0 0 20px rgba(4,220,10,0.8),0 0 50px rgba(4,200,10,0.5),0 0 90px rgba(4,160,8,0.2);margin-bottom:10px;" data-i18n="stay-about-label">About</div>
       <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,1);line-height:1.75;" data-i18n="stay-about">We've reserved all the cabins in the resort for Kon.X.ion attendees. Wake up in the mountains of Guatapé, steps from the party.</div>
     </div>
 
     <!-- BOOK — Stripe -->
     <div style="background:rgba(4,200,10,0.06);border:0.5px solid rgba(4,200,10,0.32);border-radius:20px;padding:24px;margin-bottom:14px;">
-      <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);margin-bottom:10px;" data-i18n="stay-reserve-label">Reserve a Cabin</div>
+      <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,255,10,0.9),0 0 20px rgba(4,220,10,0.8),0 0 50px rgba(4,200,10,0.5),0 0 90px rgba(4,160,8,0.2);margin-bottom:10px;" data-i18n="stay-reserve-label">Reserve a Cabin</div>
       <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,1);line-height:1.75;margin-bottom:18px;" data-i18n="stay-reserve-body">Each cabin is all-inclusive — your stay and party entry in one. Spots are limited.</div>
       <button onclick="openBookingModal()" style="display:block;width:100%;text-align:center;background:rgba(4,200,10,0.9);color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;padding:16px 24px;border-radius:999px;border:none;cursor:pointer;" data-i18n="stay-cta">Book</button>
       <div id="bookErr" style="display:none;color:rgba(200,60,40,0.85);font-family:'DM Sans',sans-serif;font-size:12px;text-align:center;margin-top:12px;"></div>
@@ -201,7 +201,7 @@
 <!-- BOOKING MODAL -->
 <div id="bookingModal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:24px;">
   <div style="background:#0a1a0c;border:0.5px solid rgba(4,200,10,0.3);border-radius:20px;width:100%;max-width:400px;padding:28px 24px;">
-    <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(4,220,10,1);margin-bottom:6px;" data-i18n="stay-reserve-label">Reserve a Cabin</div>
+    <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,255,10,0.9),0 0 20px rgba(4,220,10,0.8),0 0 50px rgba(4,200,10,0.5);margin-bottom:6px;" data-i18n="stay-reserve-label">Reserve a Cabin</div>
     <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:0.05em;margin-bottom:20px;" data-i18n="cb-sub-stay">All-inclusive · Admission + Stay · July 18</div>
     <input id="bookName" type="text" autocomplete="name" placeholder="Full Name" style="display:block;width:100%;padding:14px 16px;border-radius:12px;border:0.5px solid rgba(4,200,10,0.3);background:rgba(4,200,10,0.06);color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;margin-bottom:12px;outline:none;">
     <select id="bookType" style="display:block;width:100%;padding:14px 16px;border-radius:12px;border:0.5px solid rgba(4,200,10,0.3);background:rgba(4,200,10,0.06);color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;margin-bottom:20px;outline:none;appearance:none;-webkit-appearance:none;cursor:pointer;">
@@ -230,7 +230,7 @@
 <div id="cabin4Modal" onclick="closeCabin4Modal()" style="position:fixed;inset:0;z-index:110;background:rgba(0,0,0,0.95);opacity:0;pointer-events:none;transition:opacity 0.3s ease;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;">
   <button id="cabin4CloseBtn" onclick="closeCabin4Modal()" style="position:absolute;top:24px;right:24px;background:none;border:none;color:rgba(255,255,255,0.6);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;">✕</button>
   <div onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;width:100%;max-width:480px;">
-    <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(4,200,10,0.8);margin-bottom:6px;" data-i18n="cabin4-label">4-Person Cabin</div>
+    <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 6px rgba(4,255,10,0.9),0 0 18px rgba(4,220,10,0.7),0 0 40px rgba(4,200,10,0.35);margin-bottom:6px;" data-i18n="cabin4-label">4-Person Cabin</div>
     <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(255,255,255,0.35);letter-spacing:0.08em;margin-bottom:24px;" data-i18n="cabin4-sub">2 Double Beds</div>
     <div style="position:relative;width:100%;">
       <div id="cabin4Track" style="width:100%;border-radius:16px;overflow:hidden;background:rgba(255,255,255,0.04);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;">
@@ -248,7 +248,7 @@
 <div id="cabin2Modal" onclick="closeCabin2Modal()" style="position:fixed;inset:0;z-index:110;background:rgba(0,0,0,0.95);opacity:0;pointer-events:none;transition:opacity 0.3s ease;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;">
   <button onclick="closeCabin2Modal()" style="position:absolute;top:24px;right:24px;background:none;border:none;color:rgba(255,255,255,0.6);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;">✕</button>
   <div onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;width:100%;max-width:480px;">
-    <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(4,200,10,0.8);margin-bottom:6px;">2-Person Cabin</div>
+    <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 6px rgba(4,255,10,0.9),0 0 18px rgba(4,220,10,0.7),0 0 40px rgba(4,200,10,0.35);margin-bottom:6px;">2-Person Cabin</div>
     <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(255,255,255,0.35);letter-spacing:0.08em;margin-bottom:24px;">1 California Queen Bed</div>
     <div style="position:relative;width:100%;">
       <div id="cabin2Track" style="width:100%;border-radius:16px;overflow:hidden;background:rgba(255,255,255,0.04);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;">
@@ -266,7 +266,7 @@
 <div id="cabinLuxModal" onclick="closeCabinLuxModal()" style="position:fixed;inset:0;z-index:110;background:rgba(0,0,0,0.95);opacity:0;pointer-events:none;transition:opacity 0.3s ease;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;">
   <button onclick="closeCabinLuxModal()" style="position:absolute;top:24px;right:24px;background:none;border:none;color:rgba(255,255,255,0.6);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;">✕</button>
   <div onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;width:100%;max-width:480px;">
-    <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(4,200,10,0.8);margin-bottom:6px;">Luxury · 4 Cabins</div>
+    <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 6px rgba(4,255,10,0.9),0 0 18px rgba(4,220,10,0.7),0 0 40px rgba(4,200,10,0.35);margin-bottom:6px;">Luxury · 4 Cabins</div>
     <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(255,255,255,0.35);letter-spacing:0.08em;margin-bottom:24px;">California King or 2 Double Beds</div>
     <div style="position:relative;width:100%;">
       <div id="cabinLuxTrack" style="width:100%;border-radius:16px;overflow:hidden;background:rgba(255,255,255,0.04);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;">
