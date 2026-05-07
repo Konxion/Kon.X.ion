@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;1,9..40,200&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Josefin+Sans:wght@100;200;300;400&display=swap" rel="stylesheet">
+<script src="https://js.stripe.com/v3/"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -58,6 +59,34 @@
     letter-spacing: 0.15em; text-transform: uppercase; font-weight: 300;
     padding: 6px 0;
   }
+
+  /* ── TOOLTIP ── */
+  .med-tip {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 16px; height: 16px; border-radius: 50%;
+    border: 1px solid rgba(4,200,10,0.55);
+    color: rgba(4,200,10,0.85); font-size: 10px;
+    font-family: 'DM Sans', sans-serif; font-style: normal;
+    cursor: default; vertical-align: middle; position: relative;
+    line-height: 1; font-weight: 400; letter-spacing: 0;
+  }
+  .med-tip::before {
+    content: attr(data-tip);
+    position: absolute; bottom: calc(100% + 8px); left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10,26,12,0.97); border: 0.5px solid rgba(4,200,10,0.3);
+    color: rgba(255,255,255,0.85); font-size: 12px; line-height: 1.5;
+    padding: 10px 14px; border-radius: 10px;
+    width: 230px; white-space: normal; text-align: left;
+    font-family: 'Cormorant Garamond', serif; font-weight: 300;
+    letter-spacing: 0.02em;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 999;
+  }
+  .med-tip:hover::before,
+  .med-tip:focus::before,
+  .med-tip.tip-open::before { opacity: 1; }
 </style>
 </head>
 <body>
@@ -102,24 +131,10 @@
       <div style="font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(4,200,10,0.8);" data-i18n="stay-subtitle">Cabin Rentals · Guatapé</div>
     </div>
 
-    <!-- About -->
+    <!-- CABIN DETAILS — first -->
     <div style="background:rgba(4,200,10,0.06);border:0.5px solid rgba(4,200,10,0.32);border-radius:20px;padding:24px;margin-bottom:14px;">
-      <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);margin-bottom:10px;" data-i18n="stay-about-label">About</div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,1);line-height:1.75;" data-i18n="stay-about">We've reserved all the cabins in the resort for Kon.X.ion attendees. Wake up in the mountains of Guatape, steps from the party.</div>
-    </div>
-
-    <!-- What's Included -->
-    <div style="background:rgba(4,200,10,0.06);border:0.5px solid rgba(4,200,10,0.32);border-radius:20px;padding:24px;margin-bottom:14px;">
-      <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
-        <span data-i18n="stay-included-label">What's Included</span>
-        <span data-i18n="stay-included-note" style="font-size:8px;letter-spacing:0.15em;color:rgba(4,220,10,1);text-transform:uppercase;text-shadow:0 0 4px rgba(4,220,10,1),0 0 10px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.9),0 0 48px rgba(4,220,10,0.6);">* * * With cabin rental * * *</span>
-      </div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,1);line-height:1.75;" data-i18n="stay-included-body">· Welcome drink when arrived at Bethel Lozana<br>· Free breakfast<br>· Electric meditation class (1.5 hours)<br>· Free padel class at <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 people)<br>· WiFi<br>· Room service<br>· Hot tub<br>· Kayak</div>
-    </div>
-
-    <!-- Cabin Details -->
-    <div style="background:rgba(4,200,10,0.06);border:0.5px solid rgba(4,200,10,0.32);border-radius:20px;padding:24px;margin-bottom:14px;">
-      <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);margin-bottom:16px;" data-i18n="stay-details-label">Cabin Details</div>
+      <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);margin-bottom:14px;" data-i18n="stay-details-label">Cabin Details</div>
+      <div data-i18n="stay-avail" style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 10px rgba(4,220,10,0.8),0 0 24px rgba(4,220,10,0.4);text-align:center;padding:9px 0;margin-bottom:16px;border-top:0.5px solid rgba(4,200,10,0.25);border-bottom:0.5px solid rgba(4,200,10,0.25);">⚡ Only 9 Cabins Available</div>
 
       <!-- Luxury cabin card -->
       <div onclick="openCabinLuxModal()" style="cursor:pointer;background:rgba(255,255,255,0.03);border:0.5px solid rgba(4,200,10,0.22);border-radius:14px;padding:16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
@@ -154,20 +169,61 @@
         </div>
         <div style="font-size:10px;letter-spacing:0.15em;color:rgba(4,220,10,1);font-family:'Josefin Sans',sans-serif;text-transform:uppercase;text-shadow:0 0 8px rgba(4,220,10,0.8);white-space:nowrap;flex-shrink:0;" data-i18n="view-label">View ›</div>
       </div>
-
-      <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(4,220,10,0.7);text-align:center;margin-bottom:6px;" data-i18n="stay-inclusive">All-inclusive · Cabin + Party Entry</div>
-      <div style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.18);text-align:center;" data-i18n="stay-avail">· Availability Limited ·</div>
+      <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(4,220,10,0.7);text-align:center;" data-i18n="stay-inclusive">All-inclusive · Cabin + Party Entry</div>
     </div>
 
-    <!-- Reserve a Cabin -->
+    <!-- WHAT'S INCLUDED -->
+    <div style="background:rgba(4,200,10,0.06);border:0.5px solid rgba(4,200,10,0.32);border-radius:20px;padding:24px;margin-bottom:14px;">
+      <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
+        <span data-i18n="stay-included-label">What's Included</span>
+        <span data-i18n="stay-included-note" style="font-size:8px;letter-spacing:0.15em;color:rgba(4,220,10,1);text-transform:uppercase;text-shadow:0 0 4px rgba(4,220,10,1),0 0 10px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.9),0 0 48px rgba(4,220,10,0.6);">* * * With cabin rental * * *</span>
+      </div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,1);line-height:1.75;" data-i18n="stay-included-body">· Welcome drink upon arrival<br>· Free breakfast<br>· Electric meditation class (1.5 hours) <span class="med-tip" data-tip="A guided breathwork and sound healing session using binaural frequencies. Leaves you energized and mentally clear." tabindex="0" ontouchstart="this.classList.toggle('tip-open')">i</span><br>· Free padel class at <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 people)<br>· WiFi<br>· Room service<br>· Hot tub<br>· Kayak</div>
+    </div>
+
+    <!-- ABOUT -->
+    <div style="background:rgba(4,200,10,0.06);border:0.5px solid rgba(4,200,10,0.32);border-radius:20px;padding:24px;margin-bottom:14px;">
+      <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);margin-bottom:10px;" data-i18n="stay-about-label">About</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,1);line-height:1.75;" data-i18n="stay-about">We've reserved all the cabins in the resort for Kon.X.ion attendees. Wake up in the mountains of Guatapé, steps from the party.</div>
+    </div>
+
+    <!-- BOOK — Stripe -->
     <div style="background:rgba(4,200,10,0.06);border:0.5px solid rgba(4,200,10,0.32);border-radius:20px;padding:24px;margin-bottom:14px;">
       <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);margin-bottom:10px;" data-i18n="stay-reserve-label">Reserve a Cabin</div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,1);line-height:1.75;margin-bottom:18px;" data-i18n="stay-reserve-body">Each cabin is all-inclusive — your stay and party entry in one. Spots are limited. Email us to lock in your cabin.</div>
-      <a href="mailto:konxion@icloud.com?subject=Cabin%20Rental%20—%20KON.X.ION&body=Name%2FNombre%3A%0AWhat%20type%20of%20cabin%2FQue%20tipo%20de%20caba%C3%B1a%3F%0ANumber%20of%20Guests%2FN%C3%BAmero%20de%20hu%C3%A9spedes%3A%0APhone%20Number%2FEmail%2FN%C3%BAmero%20de%20tel%C3%A9fono%2FCorreo%20Electr%C3%B3nico%3A" style="display:block;text-align:center;background:rgba(4,200,10,0.9);color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;padding:16px 24px;border-radius:999px;text-decoration:none;" data-i18n="stay-cta">Book</a>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,1);line-height:1.75;margin-bottom:18px;" data-i18n="stay-reserve-body">Each cabin is all-inclusive — your stay and party entry in one. Spots are limited.</div>
+      <button onclick="openBookingModal()" style="display:block;width:100%;text-align:center;background:rgba(4,200,10,0.9);color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;padding:16px 24px;border-radius:999px;border:none;cursor:pointer;" data-i18n="stay-cta">Book</button>
+      <div id="bookErr" style="display:none;color:rgba(200,60,40,0.85);font-family:'DM Sans',sans-serif;font-size:12px;text-align:center;margin-top:12px;"></div>
     </div>
 
   </div>
 </div><!-- end #stayPage -->
+
+<!-- BOOKING MODAL -->
+<div id="bookingModal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:24px;">
+  <div style="background:#0a1a0c;border:0.5px solid rgba(4,200,10,0.3);border-radius:20px;width:100%;max-width:400px;padding:28px 24px;">
+    <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(4,220,10,1);margin-bottom:6px;" data-i18n="stay-reserve-label">Reserve a Cabin</div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:0.05em;margin-bottom:20px;" data-i18n="cb-sub-stay">All-inclusive · Admission + Stay · July 18</div>
+    <input id="bookName" type="text" autocomplete="name" placeholder="Full Name" style="display:block;width:100%;padding:14px 16px;border-radius:12px;border:0.5px solid rgba(4,200,10,0.3);background:rgba(4,200,10,0.06);color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;margin-bottom:12px;outline:none;">
+    <select id="bookType" style="display:block;width:100%;padding:14px 16px;border-radius:12px;border:0.5px solid rgba(4,200,10,0.3);background:rgba(4,200,10,0.06);color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;margin-bottom:20px;outline:none;appearance:none;-webkit-appearance:none;cursor:pointer;">
+      <option value="" disabled selected data-i18n="cb-select-prompt">Select cabin type</option>
+      <option value="luxury" data-i18n="cb-opt-lux">Luxury Cabin — $419 (sleeps 2–4)</option>
+      <option value="premium" data-i18n="cb-opt-prem">Premium Cabin — $249 (sleeps 4)</option>
+    </select>
+    <button id="bookBtn" onclick="submitCabinBooking()" style="display:block;width:100%;padding:15px;border-radius:999px;border:none;background:rgba(4,200,10,0.9);color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;cursor:pointer;margin-bottom:10px;" data-i18n="stay-cta">Book</button>
+    <button onclick="closeBookingModal()" style="display:block;width:100%;padding:12px;border-radius:999px;border:0.5px solid rgba(255,255,255,0.15);background:transparent;color:rgba(255,255,255,0.45);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;" data-i18n="modal-cancel">Cancel</button>
+    <div id="bookModalErr" style="display:none;color:rgba(200,60,40,0.85);font-family:'DM Sans',sans-serif;font-size:12px;text-align:center;margin-top:10px;"></div>
+  </div>
+</div>
+
+<!-- STRIPE CHECKOUT MODAL -->
+<div id="stripeModal" style="display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);">
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;">
+    <div style="background:#0d0d0d;border:1px solid rgba(4,200,10,0.25);border-radius:18px;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;position:relative;">
+      <button onclick="closeStripeModal()" style="position:sticky;top:0;float:right;margin:14px 14px 0 0;background:rgba(255,255,255,0.06);border:none;border-radius:50%;width:32px;height:32px;color:rgba(255,255,255,0.55);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:1;">✕</button>
+      <div style="clear:both;padding:0 20px 24px;" id="stripeMount"></div>
+    </div>
+  </div>
+</div>
 
 
 <!-- ═══ CABIN 4 PHOTO MODAL ═══ -->
@@ -241,10 +297,14 @@ function startStayBg() {
 
 // ── Cabin 4 photo modal ──
 var cabin4Photos = [
+  '1-cama-1.jpeg',
+  '1-cama-2.jpeg',
+  '1-cama-3.jpeg',
+  '1-cama-4.jpeg',
+  'dos-camas-1.jpeg',
   '2-beds.jpeg',
   '2-beds-2.jpeg',
-  '2-beds4.jpeg',
-  'jacuzzi-premiere.jpeg'
+  '2-beds4.jpeg'
 ];
 var cabin4Index = 0;
 
@@ -345,7 +405,8 @@ var cabinLuxPhotos = [
   'luxury2.jpeg',
   'luxury3.jpeg',
   'luxury4.jpeg',
-  'luxury5.jpeg'
+  'luxury5.jpeg',
+  'jacuzzi-premiere.jpeg'
 ];
 var cabinLuxIndex = 0;
 function openCabinLuxModal() {
@@ -402,7 +463,7 @@ const translations = {
     'stay-about': "We've reserved all the cabins in the resort for Kon.X.ion attendees. Wake up in the mountains of Guatapé, steps from the party.",
     'stay-included-label': "What's Included",
     'stay-included-note': '* * * With cabin rental * * *',
-    'stay-included-body': '· Welcome drink when arrived at Bethel Lozana<br>· Free breakfast<br>· Electric meditation class (1.5 hours)<br>· Free padel class at <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 people)<br>· WiFi<br>· Room service<br>· Hot tub<br>· Kayak',
+    'stay-included-body': '· Welcome drink upon arrival<br>· Free breakfast<br>· Electric meditation class (1.5 hours) <span class="med-tip" data-tip="A guided breathwork and sound healing session using binaural frequencies. Leaves you energized and mentally clear." tabindex="0" ontouchstart="this.classList.toggle(\'tip-open\')">i</span><br>· Free padel class at <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 people)<br>· WiFi<br>· Room service<br>· Hot tub<br>· Kayak',
     'stay-details-label': 'Cabin Details',
     'cabin-lux-label': 'Luxury · 4 Cabins',
     'cabin-lux-beds': '1 California King or 2 Double Beds',
@@ -412,12 +473,17 @@ const translations = {
     'cabin-prem-sleeps': 'Sleeps 4',
     'view-label': 'View ›',
     'stay-inclusive': 'All-inclusive · Cabin + Party Entry',
-    'stay-avail': '· Availability Limited ·',
+    'stay-avail': '⚡ Only 9 Cabins Available',
     'cabin4-label': '4-Person Cabin',
     'cabin4-sub': '2 Double Beds',
     'stay-reserve-label': 'Reserve a Cabin',
-    'stay-reserve-body': 'Each cabin is all-inclusive — your stay and party entry in one. Spots are limited. Email us to lock in your cabin.',
-    'stay-cta': 'Book'
+    'stay-reserve-body': 'Each cabin is all-inclusive — your stay and party entry in one. Spots are limited.',
+    'stay-cta': 'Book',
+    'cb-sub-stay': 'All-inclusive · Admission + Stay · July 18',
+    'cb-select-prompt': 'Select cabin type',
+    'cb-opt-lux': 'Luxury Cabin — $419 (sleeps 2–4)',
+    'cb-opt-prem': 'Premium Cabin — $249 (sleeps 4)',
+    'modal-cancel': 'Cancel'
   },
   es: {
     'back-btn': '← Volver',
@@ -427,7 +493,7 @@ const translations = {
     'stay-about': 'Hemos reservado todas las cabañas del resort para los asistentes de Kon.X.ion. Despierta en las montañas de Guatapé, a pasos del party.',
     'stay-included-label': 'Qué Incluye',
     'stay-included-note': '* * * Con renta de cabaña * * *',
-    'stay-included-body': '· Bebida de bienvenida al llegar a Bethel Lozana<br>· Desayuno gratis<br>· Clase de meditación eléctrica (1.5 horas)<br>· Clase gratuita de pádel en <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 personas)<br>· WiFi<br>· Servicio a la habitación<br>· Jacuzzi<br>· Kayak',
+    'stay-included-body': '· Bebida de bienvenida a la llegada<br>· Desayuno gratis<br>· Clase de meditación eléctrica (1.5 horas) <span class="med-tip" data-tip="Una sesión guiada de respiración y sanación sonora con frecuencias binaurales. Te deja con energía y mente clara." tabindex="0" ontouchstart="this.classList.toggle(\'tip-open\')">i</span><br>· Clase gratuita de pádel en <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 personas)<br>· WiFi<br>· Servicio a la habitación<br>· Jacuzzi<br>· Kayak',
     'stay-details-label': 'Detalles de la Cabaña',
     'cabin-lux-label': 'Lujo · 4 Cabañas',
     'cabin-lux-beds': '1 California King o 2 Camas Dobles',
@@ -437,12 +503,17 @@ const translations = {
     'cabin-prem-sleeps': '4 personas',
     'view-label': 'Ver ›',
     'stay-inclusive': 'Todo incluido · Cabaña + Entrada al party',
-    'stay-avail': '· Disponibilidad Limitada ·',
+    'stay-avail': '⚡ Solo 9 Cabañas Disponibles',
     'cabin4-label': 'Cabaña para 4',
     'cabin4-sub': '2 Camas Dobles',
     'stay-reserve-label': 'Reserva una Cabaña',
-    'stay-reserve-body': 'Cada cabaña es todo incluido — tu estadía y entrada al party en uno. Los cupos son limitados. Escríbenos para asegurar tu cabaña.',
-    'stay-cta': 'Reservar'
+    'stay-reserve-body': 'Cada cabaña es todo incluido — tu estadía y entrada al party en uno. Los cupos son limitados.',
+    'stay-cta': 'Reservar',
+    'cb-sub-stay': 'Todo incluido · Admisión + Estadía · 18 de julio',
+    'cb-select-prompt': 'Selecciona tipo de cabaña',
+    'cb-opt-lux': 'Cabaña Lujo — $419 (2–4 personas)',
+    'cb-opt-prem': 'Cabaña Premium — $249 (4 personas)',
+    'modal-cancel': 'Cancelar'
   }
 };
 
@@ -462,6 +533,76 @@ function applyLanguage(lang) {
   document.querySelectorAll('.lang-opt-es').forEach(function(el) {
     el.style.color = isEN ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.9)';
   });
+}
+
+// ── Stripe cabin booking ──
+const STRIPE_PK = 'pk_live_51TPA19R3l2fbjjXGWciQiRYRrmvY40TGeGm8dQpSXxIPX0WpI0rCBT1phW7eJ3y22QBYRrw1f38lfNJbyPaDI5mS00y606AFaX';
+const CABIN_CHECKOUT_ENDPOINT = '/api/create-cabin-checkout';
+
+function openBookingModal() {
+  const m = document.getElementById('bookingModal');
+  m.style.display = 'flex';
+  document.getElementById('bookName').value = '';
+  document.getElementById('bookType').value = '';
+  document.getElementById('bookModalErr').style.display = 'none';
+}
+
+function closeBookingModal() {
+  document.getElementById('bookingModal').style.display = 'none';
+}
+
+async function submitCabinBooking() {
+  const name = document.getElementById('bookName').value.trim();
+  const cabinType = document.getElementById('bookType').value;
+  const errEl = document.getElementById('bookModalErr');
+  const btn = document.getElementById('bookBtn');
+
+  errEl.style.display = 'none';
+  if (!name) { errEl.textContent = 'Please enter your name.'; errEl.style.display = 'block'; return; }
+  if (!cabinType) { errEl.textContent = 'Please select a cabin type.'; errEl.style.display = 'block'; return; }
+
+  btn.disabled = true;
+  btn.textContent = '...';
+
+  try {
+    const res = await fetch(CABIN_CHECKOUT_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, cabinType }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Error');
+
+    closeBookingModal();
+    openStripeModal(data.clientSecret);
+  } catch (e) {
+    errEl.textContent = e.message || 'Something went wrong. Please try again.';
+    errEl.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = currentLang === 'es' ? 'Reservar' : 'Book';
+  }
+}
+
+function openStripeModal(clientSecret) {
+  const modal = document.getElementById('stripeModal');
+  const mount = document.getElementById('stripeMount');
+  mount.innerHTML = '';
+  modal.style.display = 'block';
+
+  const stripe = Stripe(STRIPE_PK);
+  const checkout = stripe.initEmbeddedCheckout({ clientSecret });
+  checkout.then(function(c) {
+    c.mount('#stripeMount');
+    modal._checkout = c;
+  });
+}
+
+function closeStripeModal() {
+  const modal = document.getElementById('stripeModal');
+  if (modal._checkout) { modal._checkout.destroy(); modal._checkout = null; }
+  document.getElementById('stripeMount').innerHTML = '';
+  modal.style.display = 'none';
 }
 
 // ── Init ──
