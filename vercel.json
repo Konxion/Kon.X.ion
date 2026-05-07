@@ -1,1 +1,5 @@
-{}
+{
+  "rewrites": [
+    { "source": "/stay", "destination": "/index.html" }
+  ]
+}
