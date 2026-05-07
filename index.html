@@ -1425,6 +1425,9 @@
     transition: text-shadow 0.2s;
   }
   html.entry-stay #hero { visibility: hidden !important; }
+  html.entry-stay #stayPage { opacity: 1 !important; pointer-events: all !important; transition: none !important; }
+  html.entry-stay #tabBar { opacity: 1 !important; pointer-events: all !important; }
+  html.entry-stay #langBtn { opacity: 1 !important; pointer-events: all !important; }
 </style>
 <script>if (location.pathname === '/stay') document.documentElement.classList.add('entry-stay');</script>
 </head>
@@ -3681,6 +3684,7 @@ function openStay() {
   if (tabBar) { tabBar.style.opacity = '1'; tabBar.style.pointerEvents = 'all'; }
   const lb = document.getElementById('langBtn');
   if (lb) { lb.style.opacity = '1'; lb.style.pointerEvents = ''; }
+  document.documentElement.classList.remove('entry-stay');
   if (location.pathname === '/stay') {
     history.replaceState({ stay: true }, '', '/stay');
   } else {
