@@ -3675,6 +3675,10 @@ function openStay() {
   });
   setTimeout(() => { back.style.opacity = '1'; }, 300);
   startStayBg();
+  const tabBar = document.getElementById('tabBar');
+  if (tabBar) { tabBar.style.opacity = '1'; tabBar.style.pointerEvents = 'all'; }
+  const lb = document.getElementById('langBtn');
+  if (lb) { lb.style.opacity = '1'; lb.style.pointerEvents = ''; }
   history.pushState({ stay: true }, '', '/stay');
 }
 function closeStay() {
