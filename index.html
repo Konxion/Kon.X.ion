@@ -2324,7 +2324,7 @@ function openJourney() {
     const lb = document.getElementById('langBtn');
     if (lb) { lb.style.opacity = '1'; lb.style.pointerEvents = ''; }
     const hlb = document.getElementById('homeLogoBtn');
-    if (hlb) { hlb.style.opacity = '1'; hlb.style.pointerEvents = ''; }
+    if (hlb && window.innerWidth >= 768) { hlb.style.opacity = '1'; hlb.style.pointerEvents = ''; }
   }, 2200));
 }
 
