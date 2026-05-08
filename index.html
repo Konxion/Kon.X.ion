@@ -1432,10 +1432,13 @@
   html.entry-eventinfo #festivalInfoPage { opacity: 1 !important; pointer-events: all !important; transition: none !important; }
   html.entry-gettinghere #hero { visibility: hidden !important; }
   html.entry-gettinghere #gettingHerePage { opacity: 1 !important; pointer-events: all !important; transition: none !important; }
+  html.entry-shop #hero { visibility: hidden !important; }
+  html.entry-shop #shopPage { opacity: 1 !important; pointer-events: all !important; transition: none !important; }
 </style>
 <script>if (location.pathname === '/stay') document.documentElement.classList.add('entry-stay');</script>
 <script>if (location.pathname === '/eventinfo') document.documentElement.classList.add('entry-eventinfo');</script>
 <script>if (location.pathname === '/gettinghere') document.documentElement.classList.add('entry-gettinghere');</script>
+<script>if (location.pathname === '/shop') document.documentElement.classList.add('entry-shop');</script>
 </head>
 <body>
 
@@ -3481,6 +3484,12 @@ function openShop() {
   const back = document.getElementById('shopBack');
   page.style.opacity = '1'; page.style.pointerEvents = 'all';
   setTimeout(() => { back.style.opacity = '1'; }, 300);
+  document.documentElement.classList.remove('entry-shop');
+  if (location.pathname === '/shop') {
+    history.replaceState({ shop: true }, '', '/shop');
+  } else {
+    history.pushState({ shop: true }, '', '/shop');
+  }
 }
 function closeShop() {
   const page = document.getElementById('shopPage');
@@ -3488,6 +3497,7 @@ function closeShop() {
   if (!page) return;
   back.style.opacity = '0'; page.style.opacity = '0';
   setTimeout(() => { page.style.pointerEvents = 'none'; }, 400);
+  if (location.pathname === '/shop') history.pushState({}, '', '/');
 }
 function toggleShopDrop(e) {
   e.stopPropagation();
@@ -3719,6 +3729,10 @@ window.addEventListener('popstate', e => {
   if (location.pathname !== '/gettinghere') {
     const page = document.getElementById('gettingHerePage');
     if (page && page.style.opacity === '1') closeGettingHere();
+  }
+  if (location.pathname !== '/shop') {
+    const page = document.getElementById('shopPage');
+    if (page && page.style.opacity === '1') closeShop();
   }
 });
 function startStayBg() {
@@ -4398,6 +4412,9 @@ if (location.pathname === '/eventinfo') {
 }
 if (location.pathname === '/gettinghere') {
   document.addEventListener('DOMContentLoaded', openGettingHere);
+}
+if (location.pathname === '/shop') {
+  document.addEventListener('DOMContentLoaded', openShop);
 }
 
 </script>
