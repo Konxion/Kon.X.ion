@@ -1428,12 +1428,16 @@
   html.entry-stay #stayPage { opacity: 1 !important; pointer-events: all !important; transition: none !important; }
   html.entry-stay #tabBar { opacity: 1 !important; pointer-events: all !important; }
   html.entry-stay #langBtn { opacity: 1 !important; pointer-events: all !important; }
+  html.entry-stay #homeLogoBtn { opacity: 1 !important; pointer-events: all !important; }
   html.entry-eventinfo #hero { visibility: hidden !important; }
   html.entry-eventinfo #festivalInfoPage { opacity: 1 !important; pointer-events: all !important; transition: none !important; }
+  html.entry-eventinfo #homeLogoBtn { opacity: 1 !important; pointer-events: all !important; }
   html.entry-gettinghere #hero { visibility: hidden !important; }
   html.entry-gettinghere #gettingHerePage { opacity: 1 !important; pointer-events: all !important; transition: none !important; }
+  html.entry-gettinghere #homeLogoBtn { opacity: 1 !important; pointer-events: all !important; }
   html.entry-shop #hero { visibility: hidden !important; }
   html.entry-shop #shopPage { opacity: 1 !important; pointer-events: all !important; transition: none !important; }
+  html.entry-shop #homeLogoBtn { opacity: 1 !important; pointer-events: all !important; }
 </style>
 <script>if (location.pathname === '/stay') document.documentElement.classList.add('entry-stay');</script>
 <script>if (location.pathname === '/eventinfo') document.documentElement.classList.add('entry-eventinfo');</script>
@@ -1500,6 +1504,9 @@
   @media (min-width: 768px) { #langBtnMobile { display:none !important; } }
   @media (min-width: 768px) { #cabin4CloseBtn { top: 72px !important; } }
 </style>
+<button id="homeLogoBtn" onclick="goHome()" style="position:fixed;top:10px;left:12px;z-index:350;background:none;border:none;padding:4px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity 0.4s ease;line-height:0;">
+  <img src="konxion-logo.png" alt="KonXion" style="height:28px;filter:invert(1) drop-shadow(0 0 6px rgba(4,220,10,0.45));opacity:0.88;display:block;">
+</button>
 <div id="langBtn" style="position:fixed;top:10px;right:12px;z-index:350;display:flex;align-items:center;gap:7px;opacity:0;pointer-events:none;transition:opacity 0.4s ease;">
   <span class="lang-opt-en" style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.1em;font-weight:400;color:rgba(255,255,255,0.92);transition:color 0.3s;display:flex;align-items:center;gap:4px;white-space:nowrap;">🇺🇸 EN</span>
   <div onclick="toggleLang()" style="width:36px;height:20px;border-radius:999px;background:rgba(4,200,10,0.12);border:0.5px solid rgba(4,200,10,0.45);position:relative;cursor:pointer;flex-shrink:0;">
@@ -2315,7 +2322,19 @@ function openJourney() {
     if (tabBar) { tabBar.style.opacity = '1'; tabBar.style.pointerEvents = 'all'; }
     const lb = document.getElementById('langBtn');
     if (lb) { lb.style.opacity = '1'; lb.style.pointerEvents = ''; }
+    const hlb = document.getElementById('homeLogoBtn');
+    if (hlb) { hlb.style.opacity = '1'; hlb.style.pointerEvents = ''; }
   }, 2200));
+}
+
+function goHome() {
+  ['stayPage','shopPage','festivalInfoPage','gettingHerePage','lineupPage'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) { el.style.opacity = '0'; el.style.pointerEvents = 'none'; }
+  });
+  if (location.pathname !== '/') history.pushState({}, '', '/');
+  closeAllDropdowns();
+  closeJourney();
 }
 
 function closeJourney() {
@@ -2341,6 +2360,8 @@ function closeJourney() {
   if (tabBar) { tabBar.style.opacity = '0'; tabBar.style.pointerEvents = 'none'; }
   const lb = document.getElementById('langBtn');
   if (lb) { lb.style.opacity = '0'; lb.style.pointerEvents = 'none'; }
+  const hlb = document.getElementById('homeLogoBtn');
+  if (hlb) { hlb.style.opacity = '0'; hlb.style.pointerEvents = 'none'; }
   const lbm = document.getElementById('langBtnMobile');
   if (lbm) { lbm.style.opacity = '0'; lbm.style.pointerEvents = 'none'; }
 
