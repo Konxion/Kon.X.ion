@@ -1430,9 +1430,12 @@
   html.entry-stay #langBtn { opacity: 1 !important; pointer-events: all !important; }
   html.entry-eventinfo #hero { visibility: hidden !important; }
   html.entry-eventinfo #festivalInfoPage { opacity: 1 !important; pointer-events: all !important; transition: none !important; }
+  html.entry-gettinghere #hero { visibility: hidden !important; }
+  html.entry-gettinghere #gettingHerePage { opacity: 1 !important; pointer-events: all !important; transition: none !important; }
 </style>
 <script>if (location.pathname === '/stay') document.documentElement.classList.add('entry-stay');</script>
 <script>if (location.pathname === '/eventinfo') document.documentElement.classList.add('entry-eventinfo');</script>
+<script>if (location.pathname === '/gettinghere') document.documentElement.classList.add('entry-gettinghere');</script>
 </head>
 <body>
 
@@ -3713,6 +3716,10 @@ window.addEventListener('popstate', e => {
     const page = document.getElementById('festivalInfoPage');
     if (page && page.style.opacity === '1') closeFestivalInfo();
   }
+  if (location.pathname !== '/gettinghere') {
+    const page = document.getElementById('gettingHerePage');
+    if (page && page.style.opacity === '1') closeGettingHere();
+  }
 });
 function startStayBg() {
   const slides = document.getElementById('stayBgSlides').querySelectorAll('.stay-slide');
@@ -3995,6 +4002,12 @@ function openGettingHere() {
   const back = document.getElementById('gettingHereBack');
   page.style.opacity = '1'; page.style.pointerEvents = 'all';
   setTimeout(() => { back.style.opacity = '1'; }, 300);
+  document.documentElement.classList.remove('entry-gettinghere');
+  if (location.pathname === '/gettinghere') {
+    history.replaceState({ gettinghere: true }, '', '/gettinghere');
+  } else {
+    history.pushState({ gettinghere: true }, '', '/gettinghere');
+  }
 }
 function closeGettingHere() {
   stopGettingHereBg();
@@ -4002,6 +4015,7 @@ function closeGettingHere() {
   const back = document.getElementById('gettingHereBack');
   back.style.opacity = '0'; page.style.opacity = '0';
   setTimeout(() => { page.style.pointerEvents = 'none'; }, 400);
+  if (location.pathname === '/gettinghere') history.pushState({}, '', '/');
 }
 
 // ── Lineup page ──
@@ -4381,6 +4395,9 @@ if (location.pathname === '/stay') {
 }
 if (location.pathname === '/eventinfo') {
   document.addEventListener('DOMContentLoaded', openFestivalInfo);
+}
+if (location.pathname === '/gettinghere') {
+  document.addEventListener('DOMContentLoaded', openGettingHere);
 }
 
 </script>

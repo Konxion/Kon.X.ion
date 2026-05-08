@@ -1,6 +1,7 @@
 {
   "rewrites": [
     { "source": "/stay", "destination": "/index.html" },
-    { "source": "/eventinfo", "destination": "/index.html" }
+    { "source": "/eventinfo", "destination": "/index.html" },
+    { "source": "/gettinghere", "destination": "/index.html" }
   ]
 }
