@@ -1428,8 +1428,11 @@
   html.entry-stay #stayPage { opacity: 1 !important; pointer-events: all !important; transition: none !important; }
   html.entry-stay #tabBar { opacity: 1 !important; pointer-events: all !important; }
   html.entry-stay #langBtn { opacity: 1 !important; pointer-events: all !important; }
+  html.entry-eventinfo #hero { visibility: hidden !important; }
+  html.entry-eventinfo #festivalInfoPage { opacity: 1 !important; pointer-events: all !important; transition: none !important; }
 </style>
 <script>if (location.pathname === '/stay') document.documentElement.classList.add('entry-stay');</script>
+<script>if (location.pathname === '/eventinfo') document.documentElement.classList.add('entry-eventinfo');</script>
 </head>
 <body>
 
@@ -3706,6 +3709,10 @@ window.addEventListener('popstate', e => {
     const page = document.getElementById('stayPage');
     if (page && page.style.opacity === '1') closeStay();
   }
+  if (location.pathname !== '/eventinfo') {
+    const page = document.getElementById('festivalInfoPage');
+    if (page && page.style.opacity === '1') closeFestivalInfo();
+  }
 });
 function startStayBg() {
   const slides = document.getElementById('stayBgSlides').querySelectorAll('.stay-slide');
@@ -3961,6 +3968,12 @@ function openFestivalInfo() {
   const back = document.getElementById('festivalInfoBack');
   page.style.opacity = '1'; page.style.pointerEvents = 'all';
   setTimeout(() => { back.style.opacity = '1'; }, 300);
+  document.documentElement.classList.remove('entry-eventinfo');
+  if (location.pathname === '/eventinfo') {
+    history.replaceState({ eventinfo: true }, '', '/eventinfo');
+  } else {
+    history.pushState({ eventinfo: true }, '', '/eventinfo');
+  }
 }
 function closeFestivalInfo() {
   stopFestivalBg();
@@ -3968,6 +3981,7 @@ function closeFestivalInfo() {
   const back = document.getElementById('festivalInfoBack');
   back.style.opacity = '0'; page.style.opacity = '0';
   setTimeout(() => { page.style.pointerEvents = 'none'; }, 400);
+  if (location.pathname === '/eventinfo') history.pushState({}, '', '/');
 }
 
 // ── Getting Here page ──
@@ -4364,6 +4378,9 @@ function pickMap(type) {
 
 if (location.pathname === '/stay') {
   document.addEventListener('DOMContentLoaded', openStay);
+}
+if (location.pathname === '/eventinfo') {
+  document.addEventListener('DOMContentLoaded', openFestivalInfo);
 }
 
 </script>
