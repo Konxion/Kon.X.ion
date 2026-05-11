@@ -72,15 +72,15 @@
   /* ── BACKGROUND ── */
   #bg {
     position: fixed; inset: 0; z-index: 0;
-    background: #ffffff;
+    background: #000;
   }
   #bg::after {
     content: '';
     position: absolute; inset: 0;
     background: linear-gradient(to bottom,
-      rgba(255,255,255,0.04) 0%,
-      rgba(0,0,0,0.08) 60%,
-      rgba(0,0,0,0.22) 100%);
+      rgba(0,0,0,0) 0%,
+      rgba(0,0,0,0.15) 60%,
+      rgba(0,0,0,0.35) 100%);
   }
 
   /* ── CANVAS (particles) ── */
@@ -131,7 +131,7 @@
     font-weight: 200;
     letter-spacing: 0.28em;
     text-transform: uppercase;
-    color: rgba(0,0,0,1);
+    color: rgba(255,255,255,0.88);
     text-shadow: 0 0 8px rgba(4,255,10,0.9), 0 0 20px rgba(4,220,10,0.7), 0 0 50px rgba(4,200,10,0.45), 0 0 90px rgba(4,160,8,0.2);
     text-align: center;
     margin: -8px 0 0;
@@ -161,7 +161,7 @@
     font-weight: 200;
     font-size: 28px;
     line-height: 1;
-    color: rgba(0,0,0,0.9);
+    color: rgba(255,255,255,0.92);
     text-shadow: 0 0 8px rgba(4,255,10,0.9), 0 0 20px rgba(4,220,10,0.7), 0 0 50px rgba(4,200,10,0.45);
     letter-spacing: 0.04em;
     font-variant-numeric: tabular-nums;
@@ -172,7 +172,7 @@
     font-size: 8px;
     letter-spacing: 0.28em;
     text-transform: uppercase;
-    color: rgba(0,0,0,0.7);
+    color: rgba(255,255,255,0.65);
     text-shadow: 0 0 8px rgba(4,255,10,0.9), 0 0 20px rgba(4,220,10,0.7);
   }
   .cd-sep {
@@ -1453,11 +1453,9 @@
     <button class="tab-btn" id="musicTabBtn" onclick="toggleMusicDrop(event)" aria-expanded="false" aria-haspopup="true"><span data-i18n="music-nav">Music</span> <span id="musicArrow" aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;color:rgba(4,200,10,0.75);">▼</span></button>
     <div id="musicDropMenu" style="display:none;position:absolute;top:52px;left:0;z-index:200;display:none;flex-direction:column;gap:8px;padding:12px;background:rgba(5,10,5,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(4,200,10,0.22);border-radius:14px;min-width:160px;box-shadow:0 8px 32px rgba(0,0,0,0.6);">
       <button class="music-drop-item" onclick="openLineup();closeMusicDrop();">
-        <span style="font-size:16px;">🎧</span>
         <span data-i18n="nav-lineup">Lineup</span>
       </button>
       <button class="music-drop-item" onclick="(function(){ var app='youtube://www.youtube.com/@OFCkonxion'; var web='https://www.youtube.com/@OFCkonxion'; var start=Date.now(); var t=setTimeout(function(){ if(Date.now()-start<2000) window.location=web; },500); window.location=app; })();closeMusicDrop();">
-        <span style="font-size:16px;">▶</span>
         <span data-i18n="nav-youtube">YouTube Channel</span>
       </button>
       <button class="music-drop-item" onclick="window.open('https://soundcloud.com/konxion','_blank');closeMusicDrop();">
@@ -1474,15 +1472,12 @@
     <button class="tab-btn" id="planTabBtn" onclick="togglePlanDrop(event)" aria-expanded="false" aria-haspopup="true"><span data-i18n="plan-nav">Plan</span> <span id="planArrow" aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;color:rgba(4,200,10,0.75);">▼</span></button>
     <div id="planDropMenu" style="display:none;position:absolute;top:52px;left:50%;transform:translateX(-50%);z-index:200;flex-direction:column;gap:8px;padding:12px;background:rgba(5,10,5,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(4,200,10,0.22);border-radius:14px;min-width:160px;box-shadow:0 8px 32px rgba(0,0,0,0.6);">
       <button class="music-drop-item" onclick="openFestivalInfo();closePlanDrop();">
-        <span style="font-size:16px;">🎪</span>
         <span data-i18n="nav-festival">Event Info</span>
       </button>
       <button class="music-drop-item" onclick="openGettingHere();closePlanDrop();">
-        <span style="font-size:16px;">📍</span>
         <span data-i18n="nav-getting">Getting Here</span>
       </button>
       <button class="music-drop-item" onclick="openStay();closePlanDrop();">
-        <span style="font-size:16px;">🛖</span>
         <span data-i18n="nav-stay">Stay</span>
       </button>
     </div>
@@ -1491,7 +1486,6 @@
     <button class="tab-btn" id="shopTabBtn" onclick="toggleShopDrop(event)" aria-expanded="false" aria-haspopup="true"><span data-i18n="shop-nav">Shop</span> <span id="shopArrow" aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;color:rgba(4,200,10,0.75);">▼</span></button>
     <div id="shopDropMenu" style="display:none;position:absolute;top:52px;right:0;z-index:200;flex-direction:column;gap:8px;padding:12px;background:rgba(5,10,5,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(4,200,10,0.22);border-radius:14px;min-width:160px;box-shadow:0 8px 32px rgba(0,0,0,0.6);">
       <button class="music-drop-item" onclick="openShop();closeShopDrop();">
-        <span style="font-size:16px;">🛍️</span>
         <span>Shop</span>
       </button>
     </div>
@@ -2061,7 +2055,7 @@
     <div class="cd-cell"><span class="cd-num" id="cdSecs">--</span><span class="cd-label">Sec</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px;pointer-events:none;user-select:none;">
-    <span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:0.22em;text-transform:uppercase;color:rgba(0,0,0,0.8);text-shadow:0 0 8px rgba(4,255,10,0.7),0 0 16px rgba(4,220,10,0.5);">Limited to 120</span>
+    <span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.85);text-shadow:0 0 8px rgba(4,255,10,0.7),0 0 16px rgba(4,220,10,0.5);">$35 · Limited to 120</span>
   </div>
   <button id="beginBtn" data-i18n="begin-btn">Begin Journey</button>
 </section>
@@ -2231,7 +2225,6 @@
     </div>
     </div><!-- /max-width wrapper -->
   </div>
-  <button id="journeyBack" onclick="closeJourney()" class="back-btn" style="position:absolute;z-index:10;">← Back</button>
   <div style="position:absolute;bottom:0;left:0;right:0;z-index:5;height:36px;border-top:0.5px solid rgba(4,200,10,0.2);overflow:hidden;background:rgba(0,0,0,0.5);">
     <div style="display:inline-block;white-space:nowrap;line-height:36px;animation:jTicker 100s linear infinite;will-change:transform;font-size:12px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(4,200,10,0.7);font-weight:200;font-family:DM Sans,sans-serif;">Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · </div>
   </div>
@@ -2276,7 +2269,6 @@ function openJourney() {
 
   const journey   = document.getElementById('journey');
   const content   = document.getElementById('journeyContent');
-  const back      = document.getElementById('journeyBack');
   const blackFade = document.getElementById('blackFade');
   const bg        = document.getElementById('bg');
   const heroEl    = document.getElementById('hero');
@@ -2318,7 +2310,6 @@ function openJourney() {
   _journeyOpenTimers.push(setTimeout(() => {
     content.style.opacity = '1';
     content.style.pointerEvents = 'auto';
-    back.style.opacity    = '1';
     const tabBar = document.getElementById('tabBar');
     if (tabBar) { tabBar.style.opacity = '1'; tabBar.style.pointerEvents = 'all'; }
     const lb = document.getElementById('langBtn');
@@ -2345,14 +2336,12 @@ function closeJourney() {
 
   const journey   = document.getElementById('journey');
   const content   = document.getElementById('journeyContent');
-  const back      = document.getElementById('journeyBack');
   const blackFade = document.getElementById('blackFade');
   const heroEl    = document.getElementById('hero');
   const heartCanvas = document.getElementById('heartCanvas');
 
   content.style.opacity      = '0';
   content.style.pointerEvents = 'none';
-  back.style.opacity    = '0';
   const rsvpBtn = document.getElementById('rsvpBtn');
   if (rsvpBtn) rsvpBtn.style.opacity = '0';
   const contactBtn = document.getElementById('contactBtn');
@@ -2874,7 +2863,7 @@ let heartExplodeVels = [];
 (function() {
   const canvas  = document.getElementById('heartCanvas');
   const ctx     = canvas.getContext('2d');
-  const EMERALD = { r: 4, g: 99, b: 7 };
+  const EMERALD = { r: 4, g: 200, b: 10 };
   let W, H, cx, cy, heartScale;
 
   const HEART_SVG_PATH =
