@@ -58,6 +58,15 @@
     background-position: center;
   }
 
+  .slide-video-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
   .slide-overlay {
     position: absolute;
     inset: 0;
@@ -96,14 +105,7 @@
   }
 
   .slide-num {
-    position: absolute;
-    top: 24px;
-    right: 22px;
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: 200;
-    font-size: 8px;
-    letter-spacing: 0.15em;
-    color: rgba(255,255,255,0.45);
+    display: none;
   }
 
   /* Slide 1 — Elevated collab card */
@@ -163,8 +165,8 @@
   .s1-hero-name {
     font-family: 'Josefin Sans', sans-serif;
     font-weight: 100;
-    font-size: 52px;
-    letter-spacing: 0.14em;
+    font-size: 46px;
+    letter-spacing: 0.10em;
     text-transform: uppercase;
     color: #fff;
     line-height: 1;
@@ -177,6 +179,22 @@
     height: auto;
     opacity: 0.9;
     margin-bottom: 10px;
+  }
+
+  .s1-bethel-sub {
+    display: block;
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 200;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+    margin-top: 8px;
+  }
+
+  .s1-date-under {
+    margin-top: 22px;
+    text-align: center;
   }
 
   /* Collab row */
@@ -283,78 +301,41 @@
     color: rgba(4,200,10,0.75);
   }
 
-  /* Slide 2 — KonXion × Bethel Guatapé */
-  .s2-brand-hero {
+  /* Slide 2 — Save the Date */
+  .s2-name {
     position: absolute;
     left: 22px;
-    bottom: 78px;
-  }
-
-  .s2-brand-big {
+    bottom: 95px;
     font-family: 'Josefin Sans', sans-serif;
     font-weight: 100;
-    font-size: 66px;
-    letter-spacing: 0.06em;
+    font-size: 46px;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: #fff;
     line-height: 1;
-    display: block;
   }
 
   .s2-location {
+    position: absolute;
+    left: 22px;
+    bottom: 62px;
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
-    font-size: 16px;
+    font-size: 14px;
     color: rgba(4,200,10,0.9);
-    letter-spacing: 0.06em;
-    margin-top: 8px;
-    display: block;
+    letter-spacing: 0.1em;
   }
 
-  /* Bottom bar */
-  .s2-bottom-bar {
+  .s2-save-the-date {
     position: absolute;
-    bottom: 0;
-    left: 0; right: 0;
-    background: rgba(0,0,0,0.84);
-    padding: 12px 22px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-  }
-
-  .s2-bottom-left {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-  }
-
-  .s2-bottom-collab {
+    bottom: 20px;
+    right: 22px;
     font-family: 'Josefin Sans', sans-serif;
     font-weight: 200;
-    font-size: 7px;
-    letter-spacing: 0.24em;
+    font-size: 8px;
+    letter-spacing: 0.32em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.55);
-  }
-
-  .s2-bottom-presents {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 9px;
-    color: rgba(4,200,10,0.7);
-    letter-spacing: 0.08em;
-  }
-
-  .s2-bottom-std {
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: 300;
-    font-size: 11px;
-    letter-spacing: 0.34em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.88);
-    white-space: nowrap;
+    color: rgba(4,200,10,0.85);
   }
 
   /* Slide 3 — Experience */
@@ -462,7 +443,9 @@
   .s4-date {
     position: absolute;
     bottom: 28px;
-    left: 22px;
+    left: 0;
+    right: 0;
+    text-align: center;
   }
 
   .s4-date-main {
@@ -483,6 +466,114 @@
     color: rgba(255,255,255,0.9);
     display: block;
     margin-top: 2px;
+  }
+
+  /* Collab footer — all slides */
+  .collab-footer {
+    position: absolute;
+    bottom: 8px;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .collab-footer img {
+    height: 20px;
+    width: auto;
+    object-fit: contain;
+    opacity: 0.85;
+    filter: brightness(0) invert(1);
+  }
+
+  .collab-footer img:last-child {
+    height: 28px;
+  }
+
+  .collab-x {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    font-size: 12px;
+    color: rgba(4,200,10,0.9);
+    text-shadow: 0 0 10px rgba(4,200,10,0.5);
+    line-height: 1;
+  }
+
+  /* Solo KonXion logo at bottom — slides 3 & 4 */
+  .logo-bottom {
+    position: absolute;
+    bottom: 14px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .logo-bottom img {
+    height: 30px;
+    width: auto;
+    filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(4,200,10,1)) drop-shadow(0 0 30px rgba(4,200,10,0.8));
+    opacity: 1;
+  }
+
+  /* Slide 4 center hero */
+  .s4-hero {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+  }
+
+  .s4-konxion-name {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    font-size: 48px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(4,200,10,1);
+    text-shadow: 0 0 20px rgba(4,200,10,0.9), 0 0 50px rgba(4,200,10,0.45);
+    display: block;
+    line-height: 1;
+  }
+
+  .s4-entradas {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.08em;
+    display: block;
+    margin-top: 12px;
+  }
+
+  .s4-website {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 200;
+    font-size: 8px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: rgba(4,200,10,0.7);
+    display: block;
+    margin-top: 8px;
+  }
+
+  /* Top date — slides 2, 3, 4 */
+  .top-date {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 300;
+    font-size: 10px;
+    letter-spacing: 0.38em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.9);
   }
 
   /* Caption section */
@@ -528,112 +619,88 @@
 
 <div class="carousel">
 
-  <!-- SLIDE 1 — Guatapé drone + KonXion logo -->
+  <!-- SLIDE 1 — Video background + KonXion logo -->
   <div class="slide">
-    <div class="slide-bg" style="background-image: url('guatape-drone-preview.png'); background-position: center center;"></div>
-    <!-- Dark gradient overlay — heavier at top and bottom, lighter in middle to let the landscape show -->
+    <video class="slide-video-bg" autoplay muted loop playsinline>
+      <source src="slide1-bg.mp4" type="video/mp4">
+    </video>
     <div class="slide-overlay" style="background: linear-gradient(180deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.18) 38%, rgba(0,0,0,0.18) 62%, rgba(0,0,0,0.78) 100%);"></div>
-
-    <!-- Corner marks -->
-    <div class="s1-frame"><div class="s1-frame-inner"></div></div>
 
     <span class="slide-num">1/4</span>
 
-    <!-- Hero: KonXion logo + name centered -->
     <div class="s1-hero">
       <img src="konxion-logo.png" class="s1-hero-logo" alt="KonXion">
-      <span class="s1-hero-name">KonXion</span>
-    </div>
-
-    <!-- Collab band -->
-    <div class="s1-collab-band">
-      <div class="s1-rule"></div>
-      <div class="s1-x-connector">×</div>
-      <div class="s1-bethel-block">
-        <div class="s1-bethel-logo-ph"><span>logo</span></div>
-        <div class="s1-bethel-text">
-          <span class="s1-bethel-name-main">Bethel Lozana</span>
-          <span class="s1-bethel-name-sub">Guatapé, Colombia</span>
-        </div>
-      </div>
-      <div class="s1-rule"></div>
-    </div>
-
-    <!-- Bottom -->
-    <div class="s1-bottom">
-      <span class="s1-bottom-date">Julio 18 · 2026</span>
-    </div>
-
-    <div class="brand-bar">
-      <span class="brand-line">KonXion × Bethel Guatapé</span>
-      <span class="brand-presents">presents</span>
-    </div>
-  </div>
-
-  <!-- SLIDE 2 — KonXion × Bethel Guatapé -->
-  <div class="slide">
-    <div class="slide-bg" style="background-image: url('guatape-road.jpg'); background-position: center center;"></div>
-    <div class="slide-overlay" style="background: linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.04) 38%, rgba(0,0,0,0.48) 68%, rgba(0,0,0,0.78) 88%, rgba(0,0,0,0.92) 100%);"></div>
-
-    <span class="slide-num">2/4</span>
-
-    <div class="s2-brand-hero">
-      <span class="s2-brand-big">KonXion</span>
-      <span class="s2-location">Guatapé, Colombia</span>
-    </div>
-
-    <div class="s2-bottom-bar">
-      <div class="s2-bottom-left">
-        <span class="s2-bottom-collab">KonXion × Bethel Guatapé</span>
-        <span class="s2-bottom-presents">presents</span>
-      </div>
-      <span class="s2-bottom-std">Save the Date</span>
-    </div>
-  </div>
-
-  <!-- SLIDE 3 — Experience -->
-  <div class="slide">
-    <div class="slide-bg" style="background-image: url('entorno-bethel1.jpeg');"></div>
-    <div class="slide-overlay" style="background: linear-gradient(135deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.55) 100%);"></div>
-    <span class="slide-num">3/4</span>
-
-    <div class="s3-top-left">
-      an intimate<br>curated experience
-    </div>
-
-    <div class="s3-music">
-      <span class="s3-music-pre">Exquisite</span>
-      <div class="s3-music-main">Music<span class="s3-music-dot">.</span></div>
-    </div>
-
-    <div class="s3-right">Guatapé · Colombia</div>
-
-    <div class="s3-date">Julio 18</div>
-    <div class="brand-bar">
-      <span class="brand-line">KonXion × Bethel Guatapé</span>
-      <span class="brand-presents">presents</span>
-    </div>
-  </div>
-
-  <!-- SLIDE 4 — Closing -->
-  <div class="slide">
-    <div class="slide-bg" style="background-image: url('entorno-bethel3.jpeg'); filter: brightness(0.7);"></div>
-    <div class="slide-overlay" style="background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.75) 100%);"></div>
-    <span class="slide-num">4/4</span>
-
-    <div class="s4-center">
-      <div class="s4-brand-name">KonXion</div>
-      <span class="s4-sub">an elevated festival experience</span>
     </div>
 
     <div class="s4-date">
       <span class="s4-date-main">Julio 18</span>
       <span class="s4-date-year">2026</span>
     </div>
-    <div class="brand-bar">
-      <span class="brand-line">KonXion × Bethel Guatapé</span>
-      <span class="brand-presents">presents</span>
+
+  </div>
+
+  <!-- SLIDE 2 — Experience -->
+  <div class="slide">
+    <video class="slide-video-bg" autoplay muted loop playsinline>
+      <source src="slide2-bg.mp4" type="video/mp4">
+    </video>
+    <div class="slide-overlay" style="background: linear-gradient(135deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.55) 100%);"></div>
+    <span class="top-date">Julio 18 · 2026</span>
+
+    <div class="s3-top-left">
+      una noche con<br>Dj's internacionales<br>y nacionales
     </div>
+
+    <div class="logo-bottom" style="bottom: 32px;">
+      <img src="konxion-logo.png" alt="KonXion">
+    </div>
+
+    <span style="position:absolute; bottom: 12px; left: 0; right: 0; text-align: center; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 11px; letter-spacing: 0.08em; color: rgba(255,255,255,0.55);">Guatapé</span>
+
+  </div>
+
+  <!-- SLIDE 3 -->
+  <div class="slide">
+    <video class="slide-video-bg" autoplay muted loop playsinline>
+      <source src="slide3-bg.mp4" type="video/mp4">
+    </video>
+    <div class="slide-overlay" style="background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 30%, rgba(0,0,0,0.65) 65%, rgba(0,0,0,0.92) 100%);"></div>
+
+    <span class="top-date">Julio 18 · 2026</span>
+
+    <div class="s4-hero">
+      <span class="s4-entradas">cupos limitados</span>
+    </div>
+
+    <div class="logo-bottom">
+      <img src="konxion-logo.png" alt="KonXion">
+    </div>
+
+  </div>
+
+  <!-- SLIDE 4 — Closing -->
+  <div class="slide">
+    <video class="slide-video-bg" autoplay muted loop playsinline>
+      <source src="slide4-bg.mp4" type="video/mp4">
+    </video>
+    <div class="slide-overlay" style="background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.75) 100%);"></div>
+
+    <span class="top-date">Julio 18 · 2026</span>
+
+    <div style="position:absolute; top: 50%; left: 0; right: 0; transform: translateY(-50%); text-align: center;">
+      <img src="konxion-logo.png" alt="KonXion" style="height: 78px; width: auto; filter: brightness(0) invert(1) drop-shadow(0 0 12px rgba(4,220,10,1)) drop-shadow(0 0 30px rgba(4,200,10,0.8)) drop-shadow(0 0 60px rgba(4,180,10,0.45));">
+    </div>
+
+    <span style="position:absolute; bottom: 138px; left: 0; right: 0; text-align: center; font-family: 'Josefin Sans', sans-serif; font-weight: 200; font-size: 7px; letter-spacing: 0.32em; text-transform: uppercase; color: rgba(255,255,255,0.55);">cabañas disponibles</span>
+
+    <div style="position:absolute; bottom: 112px; left: 0; right: 0; display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 18px;">
+      <span style="font-family: 'Josefin Sans', sans-serif; font-weight: 200; font-size: 8px; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(4,200,10,0.7);">🌐 konxion.us</span>
+      <span style="display:flex; align-items: center; gap: 5px; font-family: 'Josefin Sans', sans-serif; font-weight: 200; font-size: 8px; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,255,255,0.7);">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(255,255,255,0.7)" style="width:11px;height:11px;flex-shrink:0;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        kon.x.ion
+      </span>
+    </div>
+
   </div>
 
 </div>
