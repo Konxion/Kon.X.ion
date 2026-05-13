@@ -233,6 +233,75 @@
   }
   #location.hidden { opacity: 0; }
 
+  /* ── EMAIL SUBSCRIBE (hero) ── */
+  #heroSubscribe {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-top: -4px;
+  }
+  .sub-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: rgba(255,255,255,0.04);
+    border: 0.5px solid rgba(4,200,10,0.22);
+    border-radius: 999px;
+    padding: 0 4px 0 14px;
+    height: 38px;
+    width: clamp(200px, 62vw, 270px);
+    transition: border-color 0.2s ease;
+  }
+  .sub-row:focus-within { border-color: rgba(4,200,10,0.55); }
+  .sub-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: rgba(255,255,255,0.85);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    min-width: 0;
+  }
+  .sub-input::placeholder { color: rgba(255,255,255,0.3); }
+  .sub-btn {
+    background: rgba(4,200,10,0.15);
+    border: none;
+    border-radius: 999px;
+    width: 30px; height: 30px;
+    cursor: pointer;
+    color: rgba(4,220,10,0.85);
+    font-size: 16px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.18s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .sub-btn:active { background: rgba(4,200,10,0.3); }
+  .sub-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px;
+    font-weight: 300;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.28);
+  }
+  .sub-confirm {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(4,220,10,0.8);
+    text-shadow: 0 0 8px rgba(4,220,10,0.4);
+    display: none;
+  }
+
   /* ── BOTTOM SHEET ── */
   #sheet {
     position: fixed;
@@ -2059,6 +2128,14 @@
     <span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.85);text-shadow:0 0 8px rgba(4,255,10,0.7),0 0 16px rgba(4,220,10,0.5);">Limited to 120</span>
   </div>
   <button id="beginBtn" data-i18n="begin-btn">Begin Journey</button>
+  <div id="heroSubscribe">
+    <div class="sub-row" id="subRow">
+      <input class="sub-input" id="subEmail" type="email" placeholder="your@email.com" autocomplete="email" aria-label="Email for updates" onkeydown="if(event.key==='Enter')handleSubscribe()">
+      <button class="sub-btn" onclick="handleSubscribe()" aria-label="Get updates">›</button>
+    </div>
+    <span class="sub-label" id="subLabel">get updates</span>
+    <span class="sub-confirm" id="subConfirm">You're on the list ✓</span>
+  </div>
 </section>
 
 
@@ -2498,8 +2575,35 @@ cabinSheet.addEventListener('touchend', e => { if (e.changedTouches[0].clientY -
 
 // ── FORM ──
 const CONTACT_ENDPOINT        = '/api/contact';
+const SUBSCRIBE_ENDPOINT      = '/api/subscribe';
 const CHECKOUT_ENDPOINT       = '/api/create-checkout';
 const CABIN_CHECKOUT_ENDPOINT = '/api/create-cabin-checkout';
+
+async function handleSubscribe() {
+  const email = document.getElementById('subEmail').value.trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    document.getElementById('subEmail').focus();
+    return;
+  }
+  const btn = document.querySelector('.sub-btn');
+  btn.disabled = true;
+  try {
+    const r = await fetch(SUBSCRIBE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    if (r.ok) {
+      document.getElementById('subRow').style.display = 'none';
+      document.getElementById('subLabel').style.display = 'none';
+      document.getElementById('subConfirm').style.display = 'block';
+    } else {
+      btn.disabled = false;
+    }
+  } catch {
+    btn.disabled = false;
+  }
+}
 
 function handleSend() {
   const name  = document.getElementById('fname').value.trim();
