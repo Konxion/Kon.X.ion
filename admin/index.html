@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KON.X.ION — Command Center</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+@font-face { font-family: 'Josefin'; src: url('../JosefinSans-300.ttf'); font-weight: 300; }
+@font-face { font-family: 'Cormorant'; src: url('../CormorantGaramond-300.ttf'); font-weight: 300; }
+@font-face { font-family: 'CormorantI'; src: url('../CormorantGaramond-300i.ttf'); font-weight: 300; font-style: italic; }
+
+:root {
+  --green: #04c80a;
+  --green-dim: rgba(4,200,10,0.18);
+  --green-glow: rgba(4,200,10,0.08);
+  --green-border: rgba(4,200,10,0.22);
+  --bg: #020504;
+  --panel: rgba(4,200,10,0.04);
+  --panel-hover: rgba(4,200,10,0.07);
+  --text: rgba(255,255,255,0.88);
+  --text-dim: rgba(255,255,255,0.42);
+  --text-faint: rgba(255,255,255,0.18);
+  --border: rgba(255,255,255,0.07);
+  --sidebar-w: 220px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Josefin', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── PASSWORD GATE ─────────────────────────────────── */
+#gate {
+  position: fixed; inset: 0; z-index: 1000;
+  background: var(--bg);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 0;
+}
+#gate::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 60%, rgba(4,200,10,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.gate-logo {
+  font-family: 'Josefin', sans-serif;
+  font-size: 28px;
+  letter-spacing: 0.28em;
+  color: var(--green);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.gate-sub {
+  font-size: 9px;
+  letter-spacing: 0.35em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 52px;
+}
+.gate-label {
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.gate-row {
+  display: flex;
+  border: 1px solid var(--green-border);
+  border-radius: 3px;
+  overflow: hidden;
+  width: 300px;
+}
+#pwInput {
+  flex: 1;
+  background: rgba(4,200,10,0.04);
+  border: none;
+  outline: none;
+  padding: 14px 18px;
+  color: var(--text);
+  font-family: 'Josefin', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+}
+#pwInput::placeholder { color: var(--text-faint); letter-spacing: 0.1em; }
+#pwBtn {
+  background: rgba(4,200,10,0.12);
+  border: none;
+  border-left: 1px solid var(--green-border);
+  padding: 14px 20px;
+  color: var(--green);
+  font-family: 'Josefin', sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#pwBtn:hover { background: rgba(4,200,10,0.22); }
+#pwError {
+  margin-top: 14px;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: rgba(200,40,40,0.8);
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+#pwError.show { opacity: 1; }
+
+/* ─── MAIN LAYOUT ────────────────────────────────────── */
+#app { display: none; min-height: 100vh; }
+#app.visible { display: flex; }
+
+/* SIDEBAR */
+#sidebar {
+  width: var(--sidebar-w);
+  min-height: 100vh;
+  background: rgba(4,200,10,0.025);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+.sb-logo {
+  padding: 28px 24px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.sb-logo-text {
+  font-size: 14px;
+  letter-spacing: 0.25em;
+  color: var(--green);
+}
+.sb-logo-sub {
+  font-size: 8px;
+  letter-spacing: 0.3em;
+  color: var(--text-faint);
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+.sb-nav { padding: 16px 0; flex: 1; }
+.sb-section {
+  font-size: 7.5px;
+  letter-spacing: 0.35em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  padding: 14px 24px 6px;
+}
+.sb-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 24px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+  text-decoration: none;
+}
+.sb-link:hover { color: var(--text); background: var(--panel); }
+.sb-link.active { color: var(--green); border-left-color: var(--green); background: var(--green-glow); }
+.sb-dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: 0.6; flex-shrink: 0; }
+.sb-countdown {
+  padding: 20px 24px;
+  border-top: 1px solid var(--border);
+}
+.sb-cd-label { font-size: 7.5px; letter-spacing: 0.3em; color: var(--text-faint); text-transform: uppercase; margin-bottom: 6px; }
+.sb-cd-days { font-family: 'Cormorant', serif; font-size: 42px; color: var(--green); line-height: 1; }
+.sb-cd-unit { font-size: 8px; letter-spacing: 0.3em; color: var(--text-dim); text-transform: uppercase; margin-top: 2px; }
+
+/* MAIN CONTENT */
+#main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+.page { display: none; padding: 40px 48px 80px; }
+.page.active { display: block; }
+
+/* ─── SHARED COMPONENTS ──────────────────────────────── */
+.page-header {
+  margin-bottom: 36px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.page-title {
+  font-family: 'CormorantI', serif;
+  font-size: 38px;
+  font-weight: 300;
+  color: var(--text);
+  line-height: 1;
+}
+.page-desc {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border-radius: 2px;
+}
+.badge-green { background: rgba(4,200,10,0.15); color: var(--green); border: 1px solid rgba(4,200,10,0.3); }
+.badge-amber { background: rgba(200,160,10,0.15); color: #c8a00a; border: 1px solid rgba(200,160,10,0.3); }
+.badge-red { background: rgba(200,40,40,0.12); color: #c82828; border: 1px solid rgba(200,40,40,0.3); }
+.badge-dim { background: rgba(255,255,255,0.04); color: var(--text-dim); border: 1px solid var(--border); }
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 24px 28px;
+  margin-bottom: 16px;
+}
+.card:hover { background: var(--panel-hover); }
+
+.section-label {
+  font-size: 8px;
+  letter-spacing: 0.35em;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+/* copy button */
+.copy-btn {
+  background: none;
+  border: 1px solid var(--green-border);
+  color: var(--green);
+  font-family: 'Josefin', sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.copy-btn:hover { background: var(--green-dim); }
+.copy-btn.copied { background: var(--green-dim); color: #fff; border-color: var(--green); }
+
+/* checkbox */
+.check-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+.check-row:last-child { border-bottom: none; }
+.check-row input[type=checkbox] { display: none; }
+.custom-check {
+  width: 14px; height: 14px;
+  border: 1px solid var(--green-border);
+  border-radius: 2px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.check-row.done .custom-check {
+  background: var(--green);
+  border-color: var(--green);
+}
+.check-row.done .custom-check::after { content: '✓'; font-size: 9px; color: #000; }
+.check-row.done .check-text { color: var(--text-faint); text-decoration: line-through; }
+.check-text { font-size: 12px; letter-spacing: 0.04em; line-height: 1.5; }
+.check-meta { font-size: 9px; color: var(--text-dim); margin-top: 2px; }
+
+/* table */
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th {
+  font-size: 8px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.data-table td {
+  font-size: 11px;
+  padding: 11px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  vertical-align: top;
+  line-height: 1.5;
+}
+.data-table tr:hover td { background: var(--panel); }
+.data-table tr.phase-1 td:first-child { border-left: 2px solid rgba(4,200,10,0.5); }
+.data-table tr.phase-2 td:first-child { border-left: 2px solid rgba(200,160,10,0.5); }
+.data-table tr.phase-3 td:first-child { border-left: 2px solid rgba(200,100,10,0.5); }
+.data-table tr.phase-4 td:first-child { border-left: 2px solid rgba(200,40,40,0.5); }
+
+/* tabs */
+.tabs { display: flex; gap: 2px; margin-bottom: 24px; border-bottom: 1px solid var(--border); }
+.tab-btn {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-dim);
+  font-family: 'Josefin', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: -1px;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--green); border-bottom-color: var(--green); }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* caption box */
+.caption-block {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 18px 20px;
+  font-size: 12px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  font-family: 'Josefin', sans-serif;
+  color: rgba(255,255,255,0.75);
+  letter-spacing: 0.02em;
+}
+
+/* email cards */
+.email-card {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.email-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 22px;
+  background: var(--panel);
+  cursor: pointer;
+  gap: 16px;
+}
+.email-num {
+  font-family: 'CormorantI', serif;
+  font-size: 22px;
+  color: var(--green);
+  opacity: 0.5;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.email-info { flex: 1; }
+.email-subject { font-size: 13px; letter-spacing: 0.04em; margin-bottom: 3px; }
+.email-date { font-size: 9px; letter-spacing: 0.2em; color: var(--text-dim); text-transform: uppercase; }
+.email-body {
+  padding: 22px;
+  border-top: 1px solid var(--border);
+  display: none;
+  white-space: pre-wrap;
+  font-size: 12px;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.7);
+  background: rgba(0,0,0,0.2);
+}
+.email-body.open { display: block; }
+.email-toggle { color: var(--text-faint); font-size: 16px; transition: transform 0.2s; }
+.email-header.open .email-toggle { transform: rotate(180deg); }
+
+/* overview stats */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 36px;
+}
+.stat-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 22px 20px;
+  text-align: center;
+}
+.stat-num {
+  font-family: 'CormorantI', serif;
+  font-size: 44px;
+  color: var(--green);
+  line-height: 1;
+}
+.stat-label {
+  font-size: 8px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: 6px;
+}
+
+/* phase indicator */
+.phase-bar {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 36px;
+}
+.phase-seg {
+  flex: 1;
+  padding: 12px 0;
+  text-align: center;
+  font-size: 8.5px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  transition: all 0.2s;
+}
+.phase-seg:last-child { border-right: none; }
+.phase-seg.current {
+  background: rgba(4,200,10,0.12);
+  color: var(--green);
+}
+.phase-seg .phase-dates { font-size: 7.5px; opacity: 0.6; margin-top: 3px; }
+
+/* time schedule */
+.time-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.time-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 20px 22px;
+}
+.time-priority {
+  font-size: 7.5px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+.time-pdt {
+  font-family: 'CormorantI', serif;
+  font-size: 32px;
+  color: var(--green);
+  line-height: 1;
+}
+.time-cot {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+.time-note {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+/* whatsapp */
+.wa-block {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+.wa-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 18px;
+  background: var(--panel);
+}
+.wa-title { font-size: 11px; letter-spacing: 0.08em; }
+.wa-send { font-size: 9px; letter-spacing: 0.18em; color: var(--text-dim); text-transform: uppercase; }
+.wa-tabs { display: flex; border-top: 1px solid var(--border); }
+.wa-tab {
+  flex: 1;
+  padding: 8px;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  color: var(--text-dim);
+  border-right: 1px solid var(--border);
+  transition: all 0.15s;
+}
+.wa-tab:last-child { border-right: none; }
+.wa-tab.active { color: var(--green); background: var(--green-glow); }
+.wa-body { padding: 16px 18px; display: none; }
+.wa-body.active { display: block; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(4,200,10,0.2); border-radius: 2px; }
+
+/* grid layout helpers */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+/* ─── SCANLINE TEXTURE ────────────────────────── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+  pointer-events: none;
+  z-index: 9999;
+}
+</style>
+</head>
+<body>
+
+<!-- ─── PASSWORD GATE ─── -->
+<div id="gate">
+  <div class="gate-logo">KON.X.ION</div>
+  <div class="gate-sub">Command Center · Private Access</div>
+  <div class="gate-label">Enter password</div>
+  <div class="gate-row">
+    <input type="password" id="pwInput" placeholder="············" autocomplete="off" spellcheck="false">
+    <button id="pwBtn" onclick="checkPassword()">›</button>
+  </div>
+  <div id="pwError">Incorrect password</div>
+</div>
+
+<!-- ─── APP ─── -->
+<div id="app">
+
+  <!-- SIDEBAR -->
+  <nav id="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logo-text">KON.X.ION</div>
+      <div class="sb-logo-sub">Command Center</div>
+    </div>
+    <div class="sb-nav">
+      <div class="sb-section">Overview</div>
+      <a class="sb-link active" onclick="nav('overview')"><span class="sb-dot"></span>HQ Overview</a>
+
+      <div class="sb-section">Content</div>
+      <a class="sb-link" onclick="nav('calendar')"><span class="sb-dot"></span>90-Day Calendar</a>
+      <a class="sb-link" onclick="nav('schedule')"><span class="sb-dot"></span>Post Schedule</a>
+      <a class="sb-link" onclick="nav('captions')"><span class="sb-dot"></span>Captions</a>
+      <a class="sb-link" onclick="nav('whatsapp')"><span class="sb-dot"></span>WhatsApp</a>
+
+      <div class="sb-section">Campaigns</div>
+      <a class="sb-link" onclick="nav('email')"><span class="sb-dot"></span>Email Sequence</a>
+      <a class="sb-link" onclick="nav('actions')"><span class="sb-dot"></span>Action Items</a>
+      <a class="sb-link" onclick="nav('cro')"><span class="sb-dot"></span>CRO & Psychology</a>
+    </div>
+    <div class="sb-countdown">
+      <div class="sb-cd-label">Days to Event</div>
+      <div class="sb-cd-days" id="daysLeft">—</div>
+      <div class="sb-cd-unit">July 18 · Bethel Lozana</div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main id="main">
+
+    <!-- ── HQ OVERVIEW ── -->
+    <div id="page-overview" class="page active">
+      <div class="page-header">
+        <div>
+          <div class="page-title">HQ Overview</div>
+          <div class="page-desc">KonXion × Bethel Lozana · July 18, 2026 · Guatapé, Colombia</div>
+        </div>
+        <span class="badge badge-green" id="phaseLabel">Phase 1 — World Building</span>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-num" id="statDays">—</div><div class="stat-label">Days Remaining</div></div>
+        <div class="stat-card"><div class="stat-num">120</div><div class="stat-label">Total Capacity</div></div>
+        <div class="stat-card"><div class="stat-num">6</div><div class="stat-label">Emails Queued</div></div>
+        <div class="stat-card"><div class="stat-num">5</div><div class="stat-label">Reels Ready</div></div>
+      </div>
+
+      <div class="phase-bar">
+        <div class="phase-seg current">
+          Phase 1<br>World Building
+          <div class="phase-dates">May 13 – Jun 2</div>
+        </div>
+        <div class="phase-seg">
+          Phase 2<br>Momentum
+          <div class="phase-dates">Jun 3 – Jun 22</div>
+        </div>
+        <div class="phase-seg">
+          Phase 3<br>Urgency
+          <div class="phase-dates">Jun 23 – Jul 7</div>
+        </div>
+        <div class="phase-seg">
+          Phase 4<br>Final Push
+          <div class="phase-dates">Jul 8 – Jul 18</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="section-label">This Week</div>
+          <div class="card">
+            <label class="check-row" onclick="toggleCheck(this)">
+              <input type="checkbox"><div class="custom-check"></div>
+              <div><div class="check-text">Post Reel 3 (El Peñol aerials) — IG + TikTok + YT</div><div class="check-meta">May 13 · 4:00 PM PDT / 6:00 PM COT</div></div>
+            </label>
+            <label class="check-row" onclick="toggleCheck(this)">
+              <input type="checkbox"><div class="custom-check"></div>
+              <div><div class="check-text">DM Bethel Lozana for co-post</div><div class="check-meta">Send outreach message from SOCIAL_POSTS</div></div>
+            </label>
+            <label class="check-row" onclick="toggleCheck(this)">
+              <input type="checkbox"><div class="custom-check"></div>
+              <div><div class="check-text">Set RESEND_AUDIENCE_ID in Vercel</div><div class="check-meta">Vercel dashboard → Environment Variables · 5 min</div></div>
+            </label>
+            <label class="check-row" onclick="toggleCheck(this)">
+              <input type="checkbox"><div class="custom-check"></div>
+              <div><div class="check-text">Reorder ticket sheet: Luxury → Premium → GA</div><div class="check-meta">Anchoring/decoy effect · ~20 min</div></div>
+            </label>
+          </div>
+        </div>
+        <div>
+          <div class="section-label">Event Details</div>
+          <div class="card">
+            <table class="data-table">
+              <tr><td style="color:var(--text-dim);width:40%">Date</td><td>Saturday, July 18 · 2026</td></tr>
+              <tr><td style="color:var(--text-dim)">Hours</td><td>1:00 PM – 5:00 AM COT</td></tr>
+              <tr><td style="color:var(--text-dim)">Venue</td><td>Bethel Lozana, Guatapé</td></tr>
+              <tr><td style="color:var(--text-dim)">Capacity</td><td>Limited to 120</td></tr>
+              <tr><td style="color:var(--text-dim)">GA Ticket</td><td style="color:var(--green)">$35 USD</td></tr>
+              <tr><td style="color:var(--text-dim)">Premium Cabin</td><td style="color:var(--green)">$249 USD</td></tr>
+              <tr><td style="color:var(--text-dim)">Luxury Cabin</td><td style="color:var(--green)">$419 USD</td></tr>
+              <tr><td style="color:var(--text-dim)">Tickets Live</td><td>Phase 2 · June 8</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-top:32px">Optimal Post Times (Confirmed by Data)</div>
+      <div class="time-grid">
+        <div class="time-card">
+          <div class="time-priority">🥇 Primary</div>
+          <div class="time-pdt">4:00 PM PDT</div>
+          <div class="time-cot">6:00 PM COT</div>
+          <div class="time-note">Evening peak in Colombia, post-work scroll LA. Captures both markets simultaneously.</div>
+        </div>
+        <div class="time-card">
+          <div class="time-priority">🥈 Secondary</div>
+          <div class="time-pdt">9:00 AM PDT</div>
+          <div class="time-cot">11:00 AM COT</div>
+          <div class="time-note">Morning commute LA + mid-morning break Colombia. Good for Stories.</div>
+        </div>
+        <div class="time-card">
+          <div class="time-priority">🥉 Reels Hack</div>
+          <div class="time-pdt">Mon 12 AM PDT</div>
+          <div class="time-cot">Mon 2:00 AM COT</div>
+          <div class="time-note">Lowest competition. Feed clears after weekend. LA sees it fresh Monday morning. — Later study (6M+ posts)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 90-DAY CALENDAR ── -->
+    <div id="page-calendar" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">90-Day Calendar</div>
+          <div class="page-desc">May 13 – July 18, 2026 · Content release schedule</div>
+        </div>
+      </div>
+      <div class="section-label">Phase Legend</div>
+      <div style="display:flex;gap:16px;margin-bottom:28px;flex-wrap:wrap">
+        <span class="badge badge-green">Phase 1 · World Building · May 13 – Jun 2</span>
+        <span class="badge badge-amber">Phase 2 · Momentum · Jun 3 – Jun 22</span>
+        <span style="display:inline-block;padding:3px 10px;font-size:8px;letter-spacing:0.2em;border-radius:2px;background:rgba(200,100,10,0.15);color:#c8640a;border:1px solid rgba(200,100,10,0.3);">Phase 3 · Urgency · Jun 23 – Jul 7</span>
+        <span class="badge badge-red">Phase 4 · Final Push · Jul 8 – Jul 18</span>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Week of</th><th>Post / Content</th><th>Platform</th><th>Format</th><th>Hook</th><th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="phase-1"><td>May 13</td><td><strong>Reel 3 — El Peñol aerials</strong><br><span style="color:var(--text-dim);font-size:10px">Caption #1 · "There are places that don't look real"</span></td><td>IG + TikTok + YT</td><td>Reel</td><td>El Peñol pull-back</td><td><span class="badge badge-green">Today</span></td></tr>
+          <tr class="phase-1"><td>May 20</td><td><strong>Reel 1 — Compound + Jacuzzi dome</strong><br><span style="color:var(--text-dim);font-size:10px">Caption #2 · "Private compound. Jungle hillside."</span></td><td>IG + TikTok + YT</td><td>Reel</td><td>Jacuzzi dome interior</td><td><span class="badge badge-dim">Pending</span></td></tr>
+          <tr class="phase-1"><td>May 27</td><td><strong>Reel 2 — Lakeside drone orbit</strong><br><span style="color:var(--text-dim);font-size:10px">Caption #3 · "The compound from the water."</span></td><td>IG + TikTok + YT</td><td>Reel</td><td>Compound from lake level</td><td><span class="badge badge-dim">Pending</span></td></tr>
+          <tr class="phase-2"><td>Jun 3</td><td><strong>Reel 1 Recut — Jacuzzi-first version</strong><br><span style="color:var(--text-dim);font-size:10px">Open on dome interior, then aerial. Max scroll-stop.</span></td><td>IG + TikTok</td><td>Reel</td><td>Jacuzzi dome first 2s</td><td><span class="badge badge-amber">Recut needed</span></td></tr>
+          <tr class="phase-2"><td>Jun 8</td><td><strong>Ticket Launch Post</strong><br><span style="color:var(--text-dim);font-size:10px">Caption #4 · "Tickets are live." + all 3 tiers</span></td><td>IG + Stories</td><td>Reel + Story</td><td>El Peñol or jacuzzi dome</td><td><span class="badge badge-dim">Pending</span></td></tr>
+          <tr class="phase-2"><td>Jun 15</td><td><strong>Best moment compile (20s)</strong><br><span style="color:var(--text-dim);font-size:10px">Strongest cross-reel frame sequence</span></td><td>IG Reel + TikTok</td><td>Reel</td><td>Strongest cross-reel frame</td><td><span class="badge badge-dim">Pending</span></td></tr>
+          <tr class="phase-2"><td>Jun 18</td><td><strong>Story Sequence 3 — Cabin Reveal</strong><br><span style="color:var(--text-dim);font-size:10px">"Two ways in" — GA $35 vs Cabin $249/$419</span></td><td>IG Stories</td><td>Story</td><td>Jacuzzi dome interior</td><td><span class="badge badge-dim">Pending</span></td></tr>
+          <tr class="phase-3"><td>Jun 22–Jul 12</td><td><strong>Daily Countdown Stories</strong><br><span style="color:var(--text-dim);font-size:10px">Countdown sticker · JULIO 18 · KON.X.ION</span></td><td>IG Stories daily</td><td>Story</td><td>Countdown sticker</td><td><span class="badge badge-dim">Pending</span></td></tr>
+          <tr class="phase-3"><td>Jun 29</td><td><strong>Email 4 — Ticket Push</strong><br><span style="color:var(--text-dim);font-size:10px">Subject: "[X] spots left" · Broadcast to full list</span></td><td>Email</td><td>Broadcast</td><td>Scarcity drives opens</td><td><span class="badge badge-dim">Pending</span></td></tr>
+          <tr class="phase-4"><td>Jul 5</td><td><strong>Reel 5 — Final Urgency</strong><br><span style="color:var(--text-dim);font-size:10px">"6 days. This is the place. This is the night."</span></td><td>IG + TikTok</td><td>Reel</td><td>Emerald water → compound → jacuzzi</td><td><span class="badge badge-dim">Pending</span></td></tr>
+          <tr class="phase-4"><td>Jul 12</td><td><strong>Email 5 — Final Call</strong><br><span style="color:var(--text-dim);font-size:10px">Subject: "Last week." · Broadcast to full list</span></td><td>Email</td><td>Broadcast</td><td>Last call urgency</td><td><span class="badge badge-dim">Pending</span></td></tr>
+          <tr class="phase-4"><td>Jul 17</td><td><strong>"Tomorrow." — Single El Peñol frame</strong><br><span style="color:var(--text-dim);font-size:10px">One word. El Peñol panorama. All platforms.</span></td><td>All</td><td>Post</td><td>El Peñol panorama</td><td><span class="badge badge-dim">Pending</span></td></tr>
+          <tr class="phase-4"><td>Jul 18</td><td><strong>Live Day-of Stories</strong><br><span style="color:var(--text-dim);font-size:10px">8AM · 1PM · Peak hours · Raw atmosphere</span></td><td>IG Stories</td><td>Live</td><td>Raw venue atmosphere</td><td><span class="badge badge-dim">Pending</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── POST SCHEDULE ── -->
+    <div id="page-schedule" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Post Schedule</div>
+          <div class="page-desc">Data-backed timing · Sprout Social 2026 · Later 6M+ posts · Buffer 9.6M posts</div>
+        </div>
+      </div>
+
+      <div class="section-label">Optimal Post Windows · Both Timezones</div>
+      <div class="time-grid">
+        <div class="time-card">
+          <div class="time-priority">🥇 Primary — All Content</div>
+          <div class="time-pdt">4:00 PM PDT</div>
+          <div class="time-cot">6:00 PM COT</div>
+          <div class="time-note">Evening peak Colombia + post-work LA. Best dual-timezone overlap. Use for all major Reel posts.</div>
+        </div>
+        <div class="time-card">
+          <div class="time-priority">🥈 Secondary — Stories / Updates</div>
+          <div class="time-pdt">9:00 AM PDT</div>
+          <div class="time-cot">11:00 AM COT</div>
+          <div class="time-note">Morning commute LA, mid-morning Colombia. Use for Stories, reminders, and secondary content.</div>
+        </div>
+        <div class="time-card">
+          <div class="time-priority">🥉 Reels Hack — Maximum Reach</div>
+          <div class="time-pdt">Mon 12:00 AM PDT</div>
+          <div class="time-cot">Mon 2:00 AM COT</div>
+          <div class="time-note">Lowest competition slot. Feed clears after weekend. LA opens to fresh reel Monday AM. — Later study.</div>
+        </div>
+      </div>
+
+      <div class="section-label">Best Days by Platform</div>
+      <table class="data-table">
+        <thead><tr><th>Rank</th><th>Day</th><th>Best For</th><th>Data Source</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge badge-green">1st</span></td><td>Wednesday</td><td>Major Reel posts — highest overall engagement</td><td>Sprout Social 2026, Buffer 9.6M posts</td></tr>
+          <tr><td><span class="badge badge-green">2nd</span></td><td>Tuesday</td><td>Strong secondary — good for venue reveals</td><td>RecurPost 2M+ post study</td></tr>
+          <tr><td><span class="badge badge-amber">3rd</span></td><td>Thursday</td><td>Deep-dive content, higher saves</td><td>Hootsuite 2025</td></tr>
+          <tr><td><span class="badge badge-amber">4th</span></td><td>Monday 12AM</td><td>Reels-specific hack — empty feed, less competition</td><td>Later 6M+ posts analysis</td></tr>
+          <tr><td><span class="badge badge-red">Avoid</span></td><td>Fri · Sat · Sun</td><td>Lowest engagement across all studies</td><td>Sprout Social / Buffer / Hootsuite consensus</td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-label" style="margin-top:32px">Weekly Posting Pattern</div>
+      <table class="data-table">
+        <thead><tr><th>Phase</th><th>Freq</th><th>Days</th><th>Primary Time</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge badge-green">Phase 1 — May 13–Jun 2</span></td><td>2/week</td><td>Wed + one other</td><td>4:00 PM PDT</td></tr>
+          <tr><td><span class="badge badge-amber">Phase 2 — Jun 3–Jun 22</span></td><td>3/week</td><td>Tue + Wed + Thu</td><td>4:00 PM PDT</td></tr>
+          <tr><td style="color:#c8640a">Phase 3 — Jun 23–Jul 7</td><td>4/week</td><td>Tue–Thu + Sat Stories</td><td>4:00 PM PDT</td></tr>
+          <tr><td><span class="badge badge-red">Phase 4 — Jul 8–Jul 18</span></td><td>Daily</td><td>Every day</td><td>4:00 PM PDT + morning</td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-label" style="margin-top:32px">Timezone Quick Reference</div>
+      <table class="data-table">
+        <thead><tr><th>LA PDT</th><th>Colombia COT</th><th>Window Type</th></tr></thead>
+        <tbody>
+          <tr><td>12:00 AM PDT</td><td>2:00 AM COT</td><td>Reels hack (Monday only)</td></tr>
+          <tr><td>9:00 AM PDT</td><td>11:00 AM COT</td><td>Secondary — morning</td></tr>
+          <tr><td>12:00 PM PDT</td><td>2:00 PM COT</td><td>Midday lunch scroll</td></tr>
+          <tr><td><strong style="color:var(--green)">4:00 PM PDT</strong></td><td><strong style="color:var(--green)">6:00 PM COT</strong></td><td><strong style="color:var(--green)">Primary — peak window</strong></td></tr>
+          <tr><td>7:00 PM PDT</td><td>9:00 PM COT</td><td>Late evening — secondary</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── CAPTIONS ── -->
+    <div id="page-captions" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Social Captions</div>
+          <div class="page-desc">Ready-to-post · 5-hashtag IG cap · No cross-platform watermarks</div>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab(this,'ig')">Instagram</button>
+        <button class="tab-btn" onclick="switchTab(this,'tiktok')">TikTok</button>
+        <button class="tab-btn" onclick="switchTab(this,'stories')">Stories</button>
+      </div>
+
+      <div id="tab-ig" class="tab-pane active">
+        <div class="section-label">Instagram Reels</div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+            <div><span class="badge badge-green" style="margin-right:8px">Reel 1</span><span style="font-size:10px;color:var(--text-dim);letter-spacing:0.15em">May 13 · El Peñol Aerials</span></div>
+            <button class="copy-btn" onclick="copyText(this,'ig1')">Copy</button>
+          </div>
+          <div class="caption-block" id="ig1">There are places that don't look real until you're standing in them.
+
+This is one of them.
+
+Guatapé, Colombia · July 18 · KonXion × Bethel Lozana
+
+Tickets → link in bio
+
+#KonXion #Guatape #BethelLozana #ColombiaEvents #DroneFootage</div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+            <div><span class="badge badge-dim" style="margin-right:8px">Reel 2</span><span style="font-size:10px;color:var(--text-dim);letter-spacing:0.15em">May 20 · Compound + Jacuzzi</span></div>
+            <button class="copy-btn" onclick="copyText(this,'ig2')">Copy</button>
+          </div>
+          <div class="caption-block" id="ig2">Private compound. Jungle hillside. Bamboo dome jacuzzi.
+
+Bethel Lozana, Guatapé — this is the venue.
+
+Saturday, July 18 · 1PM to 5AM · Limited to 120
+
+Link in bio for tickets.
+
+#KonXion #KonXion2026 #BethelLozana #LuxuryEvent #VisitColombia</div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+            <div><span class="badge badge-dim" style="margin-right:8px">Reel 3</span><span style="font-size:10px;color:var(--text-dim);letter-spacing:0.15em">May 27 · Lakeside Orbit</span></div>
+            <button class="copy-btn" onclick="copyText(this,'ig3')">Copy</button>
+          </div>
+          <div class="caption-block" id="ig3">The compound from the water.
+
+Every cabin looks out over this.
+
+July 18 · Guatapé, Colombia · konxion.us
+
+#KonXion #Guatape #ColombiaEvents #BethelLozana #LuxuryTravel</div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+            <div><span class="badge badge-amber" style="margin-right:8px">Reel 4</span><span style="font-size:10px;color:var(--text-dim);letter-spacing:0.15em">Jun 8 · Ticket Launch</span></div>
+            <button class="copy-btn" onclick="copyText(this,'ig4')">Copy</button>
+          </div>
+          <div class="caption-block" id="ig4">Tickets are live.
+
+$35 General Admission.
+$249 · $419 Cabin stays — accommodation included.
+
+120 spots. Bethel Lozana, Guatapé, Colombia.
+Saturday, July 18 · 1PM–5AM.
+
+→ Link in bio.
+
+#KonXion #KonXion2026 #BethelLozana #EventesColombia #Guatape</div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+            <div><span class="badge badge-red" style="margin-right:8px">Reel 5</span><span style="font-size:10px;color:var(--text-dim);letter-spacing:0.15em">Jul 5 · Final Urgency</span></div>
+            <button class="copy-btn" onclick="copyText(this,'ig5')">Copy</button>
+          </div>
+          <div class="caption-block" id="ig5">6 days.
+
+This is the place. This is the night.
+
+After July 17, this closes.
+
+→ konxion.us
+
+#KonXion #BethelLozana #Guatape #Colombia #LastChance</div>
+        </div>
+
+        <div class="section-label" style="margin-top:32px">Bethel Lozana Outreach DM</div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+            <div><span style="font-size:10px;color:var(--text-dim);letter-spacing:0.15em">Send after posting Reel 3 · Spanish</span></div>
+            <button class="copy-btn" onclick="copyText(this,'outreach_es')">Copy</button>
+          </div>
+          <div class="caption-block" id="outreach_es">Hola equipo de Bethel Lozana 👋
+
+Somos KonXion — estamos organizando un evento privado en su venue el 18 de julio.
+Acabamos de lanzar este video del lugar y la respuesta está siendo increíble.
+
+¿Estarían dispuestos a compartirlo desde su cuenta? Les daría visibilidad a ambos —
+su venue llega a nuestra audiencia en Colombia y en Los Ángeles, y nuestros
+seguidores descubren Bethel Lozana.
+
+Si quieren ajustar el caption o preguntar algo, con mucho gusto.
+
+Gracias,
+KonXion</div>
+        </div>
+      </div>
+
+      <div id="tab-tiktok" class="tab-pane">
+        <div class="section-label">TikTok Captions</div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+            <div><span class="badge badge-green" style="margin-right:8px">TikTok 1</span><span style="font-size:10px;color:var(--text-dim);letter-spacing:0.15em">May 13 · El Peñol</span></div>
+            <button class="copy-btn" onclick="copyText(this,'tt1')">Copy</button>
+          </div>
+          <div class="caption-block" id="tt1">You don't know this place exists. Most people never will.
+
+Guatapé, Colombia 🌿
+
+#Colombia #Guatape #TravelColombia #KonXion</div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+            <div><span class="badge badge-dim" style="margin-right:8px">TikTok 2</span><span style="font-size:10px;color:var(--text-dim);letter-spacing:0.15em">May 20 · Compound</span></div>
+            <button class="copy-btn" onclick="copyText(this,'tt2')">Copy</button>
+          </div>
+          <div class="caption-block" id="tt2">POV: you just arrived at the jungle compound 🛖
+
+#BethelLozana #Colombia #LuxuryTravel #KonXion</div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+            <div><span class="badge badge-dim" style="margin-right:8px">TikTok 3</span><span style="font-size:10px;color:var(--text-dim);letter-spacing:0.15em">Jun 8 · Jacuzzi Dome</span></div>
+            <button class="copy-btn" onclick="copyText(this,'tt3')">Copy</button>
+          </div>
+          <div class="caption-block" id="tt3">A bamboo dome jacuzzi above an emerald lake. At midnight.
+
+Yeah we're doing this. July 18.
+
+#KonXion #Guatape #Colombia #EventColombia</div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+            <div><span class="badge badge-dim" style="margin-right:8px">TikTok 4</span><span style="font-size:10px;color:var(--text-dim);letter-spacing:0.15em">May 27 · Lakeside</span></div>
+            <button class="copy-btn" onclick="copyText(this,'tt4')">Copy</button>
+          </div>
+          <div class="caption-block" id="tt4">This is what the venue looks like from the water.
+
+Bethel Lozana, Guatapé 🌊
+
+#Colombia #Guatape #KonXion #DroneView</div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+            <div><span class="badge badge-red" style="margin-right:8px">TikTok 5</span><span style="font-size:10px;color:var(--text-dim);letter-spacing:0.15em">Jul 5 · Urgency</span></div>
+            <button class="copy-btn" onclick="copyText(this,'tt5')">Copy</button>
+          </div>
+          <div class="caption-block" id="tt5">This closes July 17. After that, the 120 spots are taken.
+
+Guatapé, Colombia · July 18
+
+#KonXion #Colombia #EventesColombia #Guatape</div>
+        </div>
+      </div>
+
+      <div id="tab-stories" class="tab-pane">
+        <div class="section-label">Instagram Stories — Slide Sequences</div>
+
+        <div class="card">
+          <div style="margin-bottom:14px;display:flex;justify-content:space-between;align-items:center">
+            <div><strong>Sequence 1 — "The Place"</strong> <span style="color:var(--text-dim);font-size:10px;margin-left:8px">May 13–20 · 4 slides · Background: Reel 3 frames</span></div>
+          </div>
+          <div class="caption-block" style="font-size:11px">SLIDE 1: GUATAPÉ, COLOMBIA [Drone aerial of reservoir]
+
+SLIDE 2: EL PEÑOL RESERVOIR · 2,000 km² of emerald water [El Peñol from above]
+
+SLIDE 3: BETHEL LOZANA — A private compound on the hillside. Not a resort. Not a hotel. Something else. [Compound from drone]
+
+SLIDE 4: JULY 18 · KON.X.ION [CTA sticker — Link in bio]</div>
+        </div>
+
+        <div class="card">
+          <div style="margin-bottom:14px;display:flex;justify-content:space-between;align-items:center">
+            <div><strong>Sequence 3 — Cabin Reveal</strong> <span style="color:var(--text-dim);font-size:10px;margin-left:8px">Jun 18 · 3 slides · Background: Jacuzzi dome</span></div>
+          </div>
+          <div class="caption-block" style="font-size:11px">SLIDE 1: TWO WAYS IN
+
+SLIDE 2: General Admission · $35 · arrive. experience. leave.
+
+SLIDE 3: Cabin Stay · $249 · $419 · arrive. experience. don't leave.
+Admission included. Bamboo dome. Cedar floors. Jacuzzi.
+→ Book at konxion.us</div>
+        </div>
+
+        <div class="card">
+          <div style="margin-bottom:14px">
+            <strong>Sequence 4 — Scarcity</strong> <span style="color:var(--text-dim);font-size:10px;margin-left:8px">Jul 8–12 · Daily · Update numbers each day</span>
+          </div>
+          <div class="caption-block" style="font-size:11px">[X] SPOTS LEFT
+JULY 18
+KON.X.ION
+→ konxion.us</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── WHATSAPP ── -->
+    <div id="page-whatsapp" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">WhatsApp Broadcasts</div>
+          <div class="page-desc">Personal tone · Attach 1080p reel MP4 (under 16MB) · Send to warm contacts</div>
+        </div>
+      </div>
+
+      <div class="section-label">Broadcast Messages</div>
+
+      <div class="wa-block">
+        <div class="wa-header">
+          <div><div class="wa-title">Broadcast 1 — Venue Reveal</div><div class="wa-send">Send: May 21 · Attach: konxion_reel1_1080.mp4 or reel3</div></div>
+        </div>
+        <div class="wa-tabs">
+          <div class="wa-tab active" onclick="waTab(this,'wa1en')">English</div>
+          <div class="wa-tab" onclick="waTab(this,'wa1es')">Español</div>
+        </div>
+        <div class="wa-body active" id="wa1en">
+          <div class="caption-block" style="margin-bottom:10px">Hey 👋 — wanted you to see this before it goes public.
+
+This is the venue for July 18. Bethel Lozana, Guatapé, Colombia.
+
+Bamboo dome cabins above an emerald reservoir. Music from 1PM to 5AM. Limited to 120 people.
+
+Tickets are at konxion.us if you want to get in early.</div>
+          <button class="copy-btn" onclick="copyText(this,'wa1en')">Copy English</button>
+        </div>
+        <div class="wa-body" id="wa1es">
+          <div class="caption-block" style="margin-bottom:10px">Hola 👋 — quería que vieras esto antes de que lo publiquemos.
+
+Este es el lugar para el 18 de julio. Bethel Lozana, Guatapé.
+
+Cabañas de domo de bambú sobre el embalse. Música de 1PM a 5AM. Solo 120 personas.
+
+Las entradas están en konxion.us</div>
+          <button class="copy-btn" onclick="copyText(this,'wa1es')">Copy Español</button>
+        </div>
+      </div>
+
+      <div class="wa-block">
+        <div class="wa-header">
+          <div><div class="wa-title">Broadcast 2 — Ticket Availability Update</div><div class="wa-send">Send: Jun 29 · Attach: Best still from jacuzzi dome or El Peñol</div></div>
+        </div>
+        <div class="wa-tabs">
+          <div class="wa-tab active" onclick="waTab(this,'wa2en')">English</div>
+          <div class="wa-tab" onclick="waTab(this,'wa2es')">Español</div>
+        </div>
+        <div class="wa-body active" id="wa2en">
+          <div class="caption-block" style="margin-bottom:10px">Quick update — luxury cabin packages are almost gone for July 18.
+
+19 days out. If you were thinking about a stay package, this week is the time.
+
+GA tickets ($35) still available. Stay packages at konxion.us</div>
+          <button class="copy-btn" onclick="copyText(this,'wa2en')">Copy English</button>
+        </div>
+        <div class="wa-body" id="wa2es">
+          <div class="caption-block" style="margin-bottom:10px">Actualización rápida — los paquetes de cabaña de lujo para el 18 de julio están casi agotados.
+
+Quedan 19 días. Si estabas pensando en el paquete de hospedaje, esta semana es el momento.
+
+Entradas GA ($35) aún disponibles. konxion.us</div>
+          <button class="copy-btn" onclick="copyText(this,'wa2es')">Copy Español</button>
+        </div>
+      </div>
+
+      <div class="wa-block">
+        <div class="wa-header">
+          <div><div class="wa-title">Broadcast 3 — Final Call</div><div class="wa-send">Send: Jul 12 · Attach: konxion_reel3_1080.mp4 (El Peñol panorama)</div></div>
+        </div>
+        <div class="wa-tabs">
+          <div class="wa-tab active" onclick="waTab(this,'wa3en')">English</div>
+          <div class="wa-tab" onclick="waTab(this,'wa3es')">Español</div>
+        </div>
+        <div class="wa-body active" id="wa3en">
+          <div class="caption-block" style="margin-bottom:10px">Last week for KonXion tickets — July 18, Bethel Lozana, Guatapé.
+
+After July 17, this closes. No door sales.
+
+→ konxion.us</div>
+          <button class="copy-btn" onclick="copyText(this,'wa3en')">Copy English</button>
+        </div>
+        <div class="wa-body" id="wa3es">
+          <div class="caption-block" style="margin-bottom:10px">Última semana para las entradas de KonXion — 18 de julio, Bethel Lozana, Guatapé.
+
+Después del 17 de julio, se cierra. No hay ventas en la puerta.
+
+→ konxion.us</div>
+          <button class="copy-btn" onclick="copyText(this,'wa3es')">Copy Español</button>
+        </div>
+      </div>
+
+      <div class="wa-block">
+        <div class="wa-header">
+          <div><div class="wa-title">Broadcast 4 — Day-of Logistics</div><div class="wa-send">Send: Jul 17 evening · Confirmed buyers only</div></div>
+        </div>
+        <div class="wa-tabs">
+          <div class="wa-tab active" onclick="waTab(this,'wa4en')">English</div>
+          <div class="wa-tab" onclick="waTab(this,'wa4es')">Español</div>
+        </div>
+        <div class="wa-body active" id="wa4en">
+          <div class="caption-block" style="margin-bottom:10px">Tomorrow. ✔
+
+Doors open 1PM, Bethel Lozana.
+Check-in for cabins from 12PM.
+Bring your confirmation email.
+
+Directions: konxion.us/getting-here
+
+See you there.</div>
+          <button class="copy-btn" onclick="copyText(this,'wa4en')">Copy English</button>
+        </div>
+        <div class="wa-body" id="wa4es">
+          <div class="caption-block" style="margin-bottom:10px">Mañana. ✔
+
+Puertas abren 1PM, Bethel Lozana.
+Check-in para cabañas desde las 12PM.
+Traigan el email de confirmación.
+
+Cómo llegar: konxion.us/getting-here
+
+Nos vemos allá.</div>
+          <button class="copy-btn" onclick="copyText(this,'wa4es')">Copy Español</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── EMAIL SEQUENCE ── -->
+    <div id="page-email" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Email Sequence</div>
+          <div class="page-desc">6 emails · Resend · Auto-welcome live · Broadcasts manual</div>
+        </div>
+      </div>
+
+      <div class="section-label">Sequence Architecture</div>
+      <table class="data-table" style="margin-bottom:32px">
+        <thead><tr><th>#</th><th>Email</th><th>Send Date</th><th>Subject</th><th>Expected Open</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Welcome</td><td>Auto on subscribe</td><td>You're on the list — KON.X.ION · July 18</td><td>55–70%</td><td><span class="badge badge-green">Live</span></td></tr>
+          <tr><td>2</td><td>The Place</td><td>June 1</td><td>Have you seen this place?</td><td>38–48%</td><td><span class="badge badge-dim">Pending</span></td></tr>
+          <tr><td>3</td><td>The Feeling</td><td>June 15</td><td>What it actually feels like</td><td>35–45%</td><td><span class="badge badge-dim">Pending</span></td></tr>
+          <tr><td>4</td><td>Ticket Push</td><td>June 29</td><td>[X] spots left</td><td>42–52%</td><td><span class="badge badge-dim">Pending</span></td></tr>
+          <tr><td>5</td><td>Final Call</td><td>July 12</td><td>Last week.</td><td>45–55%</td><td><span class="badge badge-dim">Pending</span></td></tr>
+          <tr><td>6</td><td>Event Week</td><td>July 14</td><td>We're ready. Are you?</td><td>60–72%</td><td><span class="badge badge-dim">Pending</span></td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-label">Email Bodies</div>
+
+      <div class="email-card">
+        <div class="email-header" onclick="toggleEmail(this)">
+          <div class="email-num">02</div>
+          <div class="email-info">
+            <div class="email-subject">Have you seen this place?</div>
+            <div class="email-date">Send: June 1 · Preview: "Guatapé from above looks like this"</div>
+          </div>
+          <span class="badge badge-dim">Pending</span>
+          <div class="email-toggle">›</div>
+        </div>
+        <div class="email-body">Subject: Have you seen this place?
+Preview: Guatapé from above looks like this
+
+───────────────────────────
+
+KON.X.ION
+
+Saturday, July 18 · Bethel Lozana, Guatapé
+
+───────────────────────────
+
+The Embalse Peñol-Guatapé is one of the most
+photographed reservoirs in South America.
+
+Emerald water. Jungle islands. El Peñol rising
+700 meters out of the lake.
+
+Bethel Lozana sits above all of it — bamboo-dome
+cabins on a hillside, a private compound you can't
+access unless you're staying or attending KonXion.
+
+This is the world you're entering July 18.
+
+[ Explore the Venue → ]   konxion.us
+
+───────────────────────────
+
+47 days · Limited to 120 · Guatapé, Colombia
+
+SUBJECT ALT B: "This is where July 18 happens"
+SUBJECT ALT C: "El Peñol. Bamboo domes. 5AM."</div>
+      </div>
+
+      <div class="email-card">
+        <div class="email-header" onclick="toggleEmail(this)">
+          <div class="email-num">03</div>
+          <div class="email-info">
+            <div class="email-subject">What it actually feels like</div>
+            <div class="email-date">Send: June 15 · Preview: "Inside the bamboo dome at midnight"</div>
+          </div>
+          <span class="badge badge-dim">Pending</span>
+          <div class="email-toggle">›</div>
+        </div>
+        <div class="email-body">Subject: What it actually feels like
+Preview: Inside the bamboo dome at midnight
+
+───────────────────────────
+
+You arrive by boat or car through the mountains.
+The compound reveals itself slowly —
+terraced domes on a hillside above the water.
+
+You check into your cabin.
+Cedar floors. Bamboo ribs arching overhead.
+A soaking tub you'll use at 2AM.
+
+By sunset, the music has started.
+By midnight, you're dancing on a terrace
+with the reservoir below you and El Peñol
+lit up behind you.
+
+By 5AM, you'll understand why we built this.
+
+───────────────────────────
+
+This is the experience.
+$35 gets you in.
+$249 or $419 keeps you there all night.
+
+[ Get Tickets → ]     konxion.us
+[ Book a Cabin → ]    konxion.us
+
+───────────────────────────
+
+33 days · [X] cabins remaining · konxion.us
+
+SUBJECT ALT B: "2AM in a bamboo jacuzzi above a lake"
+SUBJECT ALT C: "The part that's hard to describe"</div>
+      </div>
+
+      <div class="email-card">
+        <div class="email-header" onclick="toggleEmail(this)">
+          <div class="email-num">04</div>
+          <div class="email-info">
+            <div class="email-subject">[X] spots left</div>
+            <div class="email-date">Send: June 29 · Preview: "The stay packages are almost gone" · Fill in real numbers from Stripe</div>
+          </div>
+          <span class="badge badge-dim">Pending</span>
+          <div class="email-toggle">›</div>
+        </div>
+        <div class="email-body">Subject: [X] spots left  ← replace with actual number
+Preview: The stay packages are almost gone
+
+───────────────────────────
+
+KON.X.ION · 19 days.
+
+Quick update on availability:
+
+· General Admission — still open
+· Premium Cabin ($249) — [X] remaining  ← check Stripe
+· Luxury Cabin ($419) — [X] remaining   ← check Stripe
+
+The cabin stays sell out before GA every time.
+If you're planning to stay, this is the week to do it.
+
+───────────────────────────
+
+"The venue alone is worth the trip.
+The music makes it unforgettable."
+— [Add real testimonial if available, otherwise remove]
+
+───────────────────────────
+
+[ Reserve Your Spot → ]    konxion.us
+
+NOTE: After sending, suppress confirmed buyers from Email 5.
+In Resend: tag buyers "confirmed", exclude from Email 5 broadcast.</div>
+      </div>
+
+      <div class="email-card">
+        <div class="email-header" onclick="toggleEmail(this)">
+          <div class="email-num">05</div>
+          <div class="email-info">
+            <div class="email-subject">Last week.</div>
+            <div class="email-date">Send: July 12 · Preview: "July 18 is 6 days away" · Suppress confirmed buyers</div>
+          </div>
+          <span class="badge badge-dim">Pending</span>
+          <div class="email-toggle">›</div>
+        </div>
+        <div class="email-body">Subject: Last week.
+Preview: July 18 is 6 days away
+
+───────────────────────────
+
+KON.X.ION · July 18
+
+───────────────────────────
+
+Six days from now, 120 people will be
+on a hillside above the Embalse Peñol-Guatapé,
+listening to music until 5AM.
+
+You're either there or you're not.
+
+No late registrations.
+No door ticket sales.
+No second chance at this specific night.
+
+If you've been waiting — this is the last week
+we can confirm your spot.
+
+[ I'm In → ]    konxion.us
+
+───────────────────────────
+
+Questions? Reply to this email.
+We respond within 24 hours.
+
+SUBJECT ALT B: "6 days left. Final availability."
+SUBJECT ALT C: "This closes July 17."</div>
+      </div>
+
+      <div class="email-card">
+        <div class="email-header" onclick="toggleEmail(this)">
+          <div class="email-num">06</div>
+          <div class="email-info">
+            <div class="email-subject">We're ready. Are you?</div>
+            <div class="email-date">Send: July 14 · Full list including confirmed buyers · Logistics focus</div>
+          </div>
+          <span class="badge badge-dim">Pending</span>
+          <div class="email-toggle">›</div>
+        </div>
+        <div class="email-body">Subject: We're ready. Are you?
+Preview: 4 days · Arrival info · What to bring
+
+───────────────────────────
+
+KON.X.ION · July 18 · Four days.
+
+GETTING THERE
+Guatapé is 1.5–2 hours from Medellín by car.
+Private transfers available from El Dorado International Airport.
+Full directions and map: konxion.us/getting-here
+
+ARRIVAL
+Doors open: 1:00 PM COT
+Music ends: 5:00 AM COT (July 19)
+Bring your confirmation email for entry.
+Cabin guests: check-in begins at 12:00 PM.
+
+WHAT TO BRING
+· Confirmation email (screenshot is fine)
+· Cash COP for vendors (some onsite)
+· Light layers — reservoir nights are cool
+· A willingness to not leave
+
+[ View Full Event Info → ]    konxion.us
+
+See you Saturday.
+— KonXion</div>
+      </div>
+    </div>
+
+    <!-- ── ACTION ITEMS ── -->
+    <div id="page-actions" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Action Items</div>
+          <div class="page-desc">Prioritized · From marketing intelligence audit · May 12, 2026</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="section-label">Do This Week</div>
+          <div class="card">
+            <label class="check-row" onclick="toggleCheck(this)"><input type="checkbox"><div class="custom-check"></div>
+              <div><div class="check-text">Post Reel 3 to IG + TikTok + YouTube</div><div class="check-meta">May 13 · 4:00 PM PDT / 6:00 PM COT</div></div>
+            </label>
+            <label class="check-row" onclick="toggleCheck(this)"><input type="checkbox"><div class="custom-check"></div>
+              <div><div class="check-text">Set RESEND_AUDIENCE_ID in Vercel env vars</div><div class="check-meta">Vercel dashboard → Project → Settings → Environment Variables · 5 min</div></div>
+            </label>
+            <label class="check-row" onclick="toggleCheck(this)"><input type="checkbox"><div class="custom-check"></div>
+              <div><div class="check-text">DM Bethel Lozana for co-post (Spanish + English)</div><div class="check-meta">Use outreach DM from Captions section · Today</div></div>
+            </label>
+            <label class="check-row" onclick="toggleCheck(this)"><input type="checkbox"><div class="custom-check"></div>
+              <div><div class="check-text">Reorder ticket sheet: Luxury $419 → Premium $249 → GA $35</div><div class="check-meta">Anchoring + decoy effect · ~20 min</div></div>
+            </label>
+          </div>
+
+          <div class="section-label">This Month</div>
+          <div class="card">
+            <label class="check-row" onclick="toggleCheck(this)"><input type="checkbox"><div class="custom-check"></div>
+              <div><div class="check-text">Recut Reel 1: open on jacuzzi dome first</div><div class="check-meta">Creates stronger 0–3s hook · ~30 min ffmpeg</div></div>
+            </label>
+            <label class="check-row" onclick="toggleCheck(this)"><input type="checkbox"><div class="custom-check"></div>
+              <div><div class="check-text">Add dynamic "[X] remaining" to scarcity display</div><div class="check-meta">Activates loss aversion as count drops · ~1 hr</div></div>
+            </label>
+            <label class="check-row" onclick="toggleCheck(this)"><input type="checkbox"><div class="custom-check"></div>
+              <div><div class="check-text">Add secondary "Get Tickets — $35 →" CTA to hero</div><div class="check-meta">Direct-to-tickets CTA below Begin Journey · When Phase 2 (Jun 8)</div></div>
+            </label>
+            <label class="check-row" onclick="toggleCheck(this)"><input type="checkbox"><div class="custom-check"></div>
+              <div><div class="check-text">Add meta robots tag to head</div><div class="check-meta">Ensure Guatapé SEO terms indexed · LOW priority</div></div>
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-label">Phase 2 — June 8 Launch</div>
+          <div class="card">
+            <label class="check-row" onclick="toggleCheck(this)"><input type="checkbox"><div class="custom-check"></div>
+              <div><div class="check-text">Enable Stripe ticket sales</div><div class="check-meta">Phase 2 opens June 8 — confirm Stripe products live</div></div>
+            </label>
+            <label class="check-row" onclick="toggleCheck(this)"><input type="checkbox"><div class="custom-check"></div>
+              <div><div class="check-text">Post Reel 4 — Ticket launch post</div><div class="check-meta">June 8 · "Tickets are live." · All 3 price tiers</div></div>
+            </label>
+            <label class="check-row" onclick="toggleCheck(this)"><input type="checkbox"><div class="custom-check"></div>
+              <div><div class="check-text">Post Story Sequence 3 — Cabin reveal</div><div class="check-meta">June 18 · 3 slides · $35 vs $249/$419</div></div>
+            </label>
+            <label class="check-row" onclick="toggleCheck(this)"><input type="checkbox"><div class="custom-check"></div>
+              <div><div class="check-text">Send Email 2 — "The Place"</div><div class="check-meta">June 1 broadcast · Manual via Resend dashboard</div></div>
+            </label>
+          </div>
+
+          <div class="section-label">Before Event</div>
+          <div class="card">
+            <label class="check-row" onclick="toggleCheck(this)"><input type="checkbox"><div class="custom-check"></div>
+              <div><div class="check-text">Send Email 3 — "The Feeling" · June 15</div><div class="check-meta">Strongest emotional email · $35 / $249 / $419 CTAs</div></div>
+            </label>
+            <label class="check-row" onclick="toggleCheck(this)"><input type="checkbox"><div class="custom-check"></div>
+              <div><div class="check-text">Send Email 4 — Ticket Push · June 29</div><div class="check-meta">Fill in real numbers from Stripe · Suppress confirmed buyers from Email 5</div></div>
+            </label>
+            <label class="check-row" onclick="toggleCheck(this)"><input type="checkbox"><div class="custom-check"></div>
+              <div><div class="check-text">Start daily countdown Stories · June 28</div><div class="check-meta">Countdown sticker · JULIO 18 · Link in bio</div></div>
+            </label>
+            <label class="check-row" onclick="toggleCheck(this)"><input type="checkbox"><div class="custom-check"></div>
+              <div><div class="check-text">Send Emails 5 + 6 · July 12 + 14</div><div class="check-meta">Final call + event logistics · Check suppression list</div></div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CRO & PSYCHOLOGY ── -->
+    <div id="page-cro" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">CRO & Psychology</div>
+          <div class="page-desc">Marketing intelligence audit · May 12, 2026 · Data-backed conversion principles</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="section-label">Quick Wins — CRO Audit</div>
+          <table class="data-table">
+            <thead><tr><th>Fix</th><th>Impact</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>"From $35" on hero</td><td>HIGH — removes price anxiety</td><td><span class="badge badge-green">Done</span></td></tr>
+              <tr><td>Price in welcome email</td><td>MEDIUM — reinforces value</td><td><span class="badge badge-green">Done</span></td></tr>
+              <tr><td>RESEND_AUDIENCE_ID env var</td><td>HIGH — enables list mgmt</td><td><span class="badge badge-amber">Do now</span></td></tr>
+              <tr><td>meta robots tag</td><td>LOW — Guatapé SEO indexing</td><td><span class="badge badge-dim">Pending</span></td></tr>
+              <tr><td>Reorder tickets: Luxury first</td><td>HIGH — anchoring effect</td><td><span class="badge badge-dim">Pending</span></td></tr>
+              <tr><td>"[X] remaining" dynamic count</td><td>HIGH — loss aversion</td><td><span class="badge badge-dim">Pending</span></td></tr>
+            </tbody>
+          </table>
+
+          <div class="section-label" style="margin-top:28px">Psychology Principles Active</div>
+          <table class="data-table">
+            <thead><tr><th>Principle</th><th>Where</th><th>Strength</th></tr></thead>
+            <tbody>
+              <tr><td>Scarcity</td><td>"Limited to 120" hero</td><td><span class="badge badge-amber">🟡 Medium</span></td></tr>
+              <tr><td>Anchoring</td><td>$419 tier exists</td><td><span class="badge badge-red">🔴 Weak — only inside sheet</span></td></tr>
+              <tr><td>Loss Aversion</td><td>Countdown timer</td><td><span class="badge badge-green">🟢 Strong</span></td></tr>
+              <tr><td>Commitment</td><td>Email capture → confirmation</td><td><span class="badge badge-green">🟢 Good</span></td></tr>
+              <tr><td>Aesthetic-Usability</td><td>Premium design</td><td><span class="badge badge-green">🟢 Strong</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div>
+          <div class="section-label">Missing — High Impact</div>
+          <div class="card">
+            <div style="font-size:11px;color:var(--green);letter-spacing:0.08em;margin-bottom:8px">Loss Aversion Copy</div>
+            <div style="font-size:11px;line-height:1.7;color:var(--text-dim);margin-bottom:12px">People feel losses 2× more intensely than gains. Every copy should frame what you'll MISS.</div>
+            <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px"><strong style="color:var(--text)">Current:</strong> "The energy is real. The experience is unique."</div>
+            <div style="font-size:11px;color:var(--text-dim)"><strong style="color:var(--green)">Better:</strong> "120 people will be at Bethel Lozana July 18. The question is whether you're one of them."</div>
+          </div>
+
+          <div class="card">
+            <div style="font-size:11px;color:var(--green);letter-spacing:0.08em;margin-bottom:8px">Decoy Pricing Order</div>
+            <div style="font-size:11px;line-height:1.7;color:var(--text-dim);margin-bottom:8px">$249 Premium is the decoy — makes both $35 and $419 look rational.</div>
+            <div style="font-size:10px;letter-spacing:0.12em;color:var(--text-dim)">WRONG ORDER → GA $35 · Premium $249 · Luxury $419</div>
+            <div style="font-size:10px;letter-spacing:0.12em;color:var(--green);margin-top:4px">RIGHT ORDER → Luxury $419 [RECOMMENDED] · Premium $249 · GA $35</div>
+          </div>
+
+          <div class="card">
+            <div style="font-size:11px;color:var(--green);letter-spacing:0.08em;margin-bottom:8px">Psychological Copy Templates</div>
+            <div style="font-size:10px;line-height:1.7;color:var(--text-dim);margin-bottom:8px"><strong style="color:var(--text)">Hero tagline (loss aversion):</strong><br>"120 people. Guatapé reservoir. One night in July."</div>
+            <div style="font-size:10px;line-height:1.7;color:var(--text-dim);margin-bottom:8px"><strong style="color:var(--text)">WhatsApp broadcast:</strong><br>"La lista de este evento cierra el 17 de julio. Después de eso no hay más cupos. → konxion.us"</div>
+            <div style="font-size:10px;line-height:1.7;color:var(--text-dim)"><strong style="color:var(--text)">Subject line (scarcity):</strong><br>"Last week to claim your spot" not "Tickets available"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ─── AUTH ─────────────────────────────────────────────
+const HASH = 'c1a618fe423ea64321a437435f5f70d0586c471bf4218f075c9f06e7a833c594'; // konxion2026
+
+async function sha256(msg) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+async function checkPassword() {
+  const val = document.getElementById('pwInput').value;
+  const hash = await sha256(val);
+  if (hash === HASH) {
+    sessionStorage.setItem('kx_auth', '1');
+    unlockApp();
+  } else {
+    const err = document.getElementById('pwError');
+    err.classList.add('show');
+    document.getElementById('pwInput').value = '';
+    setTimeout(() => err.classList.remove('show'), 2500);
+  }
+}
+
+function unlockApp() {
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('app').classList.add('visible');
+  initCountdown();
+}
+
+document.getElementById('pwInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') checkPassword();
+});
+
+// Check if already authed this session
+if (sessionStorage.getItem('kx_auth') === '1') unlockApp();
+
+// ─── COUNTDOWN ────────────────────────────────────────
+function initCountdown() {
+  function update() {
+    const event = new Date('2026-07-18T13:00:00-05:00');
+    const now = new Date();
+    const diff = Math.max(0, Math.floor((event - now) / 86400000));
+    document.getElementById('daysLeft').textContent = diff;
+    document.getElementById('statDays').textContent = diff;
+    const label = document.getElementById('phaseLabel');
+    if (diff > 46) label.textContent = 'Phase 1 — World Building';
+    else if (diff > 26) { label.textContent = 'Phase 2 — Momentum'; label.className = 'badge badge-amber'; }
+    else if (diff > 11) { label.textContent = 'Phase 3 — Urgency'; label.style.cssText = 'display:inline-block;padding:3px 10px;font-size:8px;letter-spacing:0.2em;border-radius:2px;background:rgba(200,100,10,0.15);color:#c8640a;border:1px solid rgba(200,100,10,0.3);text-transform:uppercase;'; }
+    else { label.textContent = 'Phase 4 — Final Push'; label.className = 'badge badge-red'; }
+  }
+  update();
+  setInterval(update, 60000);
+}
+
+// ─── NAVIGATION ───────────────────────────────────────
+function nav(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  document.getElementById('main').scrollTop = 0;
+}
+
+// ─── TABS ─────────────────────────────────────────────
+function switchTab(btn, id) {
+  const parent = btn.closest('.page');
+  parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  parent.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  parent.querySelector('#tab-' + id).classList.add('active');
+}
+
+// ─── WHATSAPP TABS ────────────────────────────────────
+function waTab(tab, id) {
+  const block = tab.closest('.wa-block');
+  block.querySelectorAll('.wa-tab').forEach(t => t.classList.remove('active'));
+  block.querySelectorAll('.wa-body').forEach(b => { b.classList.remove('active'); });
+  tab.classList.add('active');
+  block.querySelector('#' + id).classList.add('active');
+}
+
+// ─── EMAIL ACCORDION ──────────────────────────────────
+function toggleEmail(header) {
+  const body = header.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  header.classList.toggle('open', !isOpen);
+}
+
+// ─── COPY BUTTON ──────────────────────────────────────
+function copyText(btn, id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+    btn.textContent = 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// ─── CHECKBOXES ───────────────────────────────────────
+function toggleCheck(row) {
+  row.classList.toggle('done');
+  const cb = row.querySelector('input[type=checkbox]');
+  cb.checked = !cb.checked;
+}
+</script>
+</body>
+</html>
