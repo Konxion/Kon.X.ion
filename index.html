@@ -1509,6 +1509,136 @@
   html.entry-shop #hero { visibility: hidden !important; }
   html.entry-shop #shopPage { opacity: 1 !important; pointer-events: all !important; transition: none !important; }
   html.entry-shop #homeLogoBtn { opacity: 1 !important; pointer-events: all !important; }
+
+/* ─── Email Capture Popup ─── */
+#kxPopupOverlay {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.45s ease;
+}
+#kxPopupOverlay.active { opacity: 1; pointer-events: all; }
+#kxPopupCard {
+  position: relative;
+  background: rgba(6,6,6,0.94);
+  border: 0.5px solid rgba(4,200,10,0.3);
+  border-radius: 24px;
+  padding: 44px 36px 32px;
+  max-width: 400px; width: 100%;
+  box-shadow: 0 0 80px rgba(4,200,10,0.1), inset 0 0 60px rgba(4,200,10,0.03), 0 32px 80px rgba(0,0,0,0.8);
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.45s cubic-bezier(0.32,0.72,0,1);
+  text-align: center;
+}
+#kxPopupOverlay.active #kxPopupCard { transform: scale(1) translateY(0); }
+#kxPopupClose {
+  position: absolute; top: 18px; right: 20px;
+  background: none; border: none;
+  color: rgba(255,255,255,0.3);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  cursor: pointer; padding: 6px 8px;
+  transition: color 0.2s;
+}
+#kxPopupClose:hover { color: rgba(255,255,255,0.65); }
+.kx-popup-tag {
+  display: inline-block;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px; letter-spacing: 0.5em; text-transform: uppercase;
+  color: rgba(4,200,10,0.65);
+  border: 0.5px solid rgba(4,200,10,0.25);
+  border-radius: 100px; padding: 5px 14px;
+  margin-bottom: 22px;
+}
+#kxPopupCard h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 6vw, 34px);
+  font-weight: 300; font-style: italic;
+  color: #fff; line-height: 1.2;
+  margin: 0 0 12px;
+}
+#kxPopupCard .kx-popup-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 300;
+  color: rgba(255,255,255,0.45);
+  margin: 0 0 28px;
+  line-height: 1.65;
+}
+.kx-popup-field {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 0.5px solid rgba(4,200,10,0.18);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px; color: #fff;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  margin-bottom: 10px;
+  display: block;
+}
+.kx-popup-field::placeholder { color: rgba(255,255,255,0.28); }
+.kx-popup-field:focus { border-color: rgba(4,200,10,0.45); background: rgba(4,200,10,0.03); }
+#kxPopupSubmit {
+  width: 100%;
+  background: rgba(4,200,10,0.92);
+  border: none; border-radius: 100px;
+  color: #000;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase;
+  padding: 16px 32px;
+  cursor: pointer;
+  margin-top: 4px; margin-bottom: 18px;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+#kxPopupSubmit:hover { background: rgb(4,220,10); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(4,200,10,0.3); }
+#kxPopupSubmit:active { transform: translateY(0); box-shadow: none; }
+#kxPopupSubmit:disabled { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: none; }
+#kxPopupDecline {
+  background: none; border: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px; color: rgba(255,255,255,0.22);
+  cursor: pointer; padding: 4px;
+  transition: color 0.2s;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(255,255,255,0.12);
+}
+#kxPopupDecline:hover { color: rgba(255,255,255,0.42); }
+#kxPopupSuccess {
+  display: none;
+  text-align: center;
+  padding: 12px 0 8px;
+}
+.kx-success-icon {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  border: 1px solid rgba(4,200,10,0.35);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 18px;
+  font-size: 22px;
+  color: rgba(4,200,10,0.85);
+  box-shadow: 0 0 20px rgba(4,200,10,0.15);
+}
+#kxPopupSuccess h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px; font-weight: 300; font-style: italic;
+  color: #fff; margin: 0 0 10px;
+}
+#kxPopupSuccess .kx-popup-sub { margin-bottom: 0; }
+#kxPopupError {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px; color: rgba(255,100,100,0.8);
+  text-align: center; margin-top: 6px;
+  display: none;
+}
+@media (max-width: 480px) {
+  #kxPopupCard { padding: 40px 22px 28px; border-radius: 20px; }
+}
 </style>
 <script>if (location.pathname === '/stay') document.documentElement.classList.add('entry-stay');</script>
 <script>if (location.pathname === '/eventinfo') document.documentElement.classList.add('entry-eventinfo');</script>
@@ -1886,6 +2016,15 @@
         </div>
         <div class="dj-name-v">P.I.N.E.A.L Live</div>
         <div style="display:flex;gap:8px;justify-content:center;margin-top:auto;"><a class="dj-icon-btn" href="https://instagram.com/Pineal.live_" target="_blank" title="Instagram" aria-label="Instagram" rel="noopener noreferrer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></a><a class="dj-icon-btn" href="https://soundcloud.com/pineal_live" target="_blank" title="SoundCloud" aria-label="SoundCloud" rel="noopener noreferrer"><svg width="30" height="30" viewBox="0 0 100 48" fill="currentColor"><rect x="0" y="30" width="8" height="18" rx="4"/><rect x="12" y="23" width="8" height="25" rx="4"/><rect x="24" y="16" width="8" height="32" rx="4"/><rect x="36" y="9" width="8" height="39" rx="4"/><rect x="48" y="4" width="8" height="44" rx="4"/><path d="M60 48 H80 C91 48 100 39 100 28 C100 18 93 10 83 9 C82 4 77 0 70 0 C63 0 57 5 56 12 C54 10 51 9 48 10 L48 48 Z"/></svg></a><a class="dj-icon-btn" href="https://open.spotify.com/artist/7vDLDGXOxvwPrQfuizyiTr" target="_blank" title="Spotify" aria-label="Spotify" rel="noopener noreferrer"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg></a></div>
+      </div>
+
+      <!-- KAYA NEWTON -->
+      <div class="dj-card-v" id="djKaya">
+        <div class="dj-photo-wrap-v">
+          <img id="kayaPhoto" src="kaya-newton.jpg" loading="lazy" alt="Kaya Newton" style="width:100%;height:100%;object-fit:cover;object-position:50% 15%;display:block;border-radius:12px;">
+        </div>
+        <div class="dj-name-v">Kaya Newton</div>
+        <div style="display:flex;gap:8px;justify-content:center;margin-top:auto;"><a class="dj-icon-btn" href="https://www.instagram.com/kaya_newton/" target="_blank" title="Instagram" aria-label="Instagram" rel="noopener noreferrer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></a><a class="dj-icon-btn" href="https://open.spotify.com/artist/04jjccGA2KuSei9CWSVrtj" target="_blank" title="Spotify" aria-label="Spotify" rel="noopener noreferrer"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg></a></div>
       </div>
 
       </div><!-- end DJ ROW -->
@@ -4537,6 +4676,100 @@ if (location.pathname === '/shop') {
 
 </script>
 </main>
+
+<!-- ═══ EMAIL CAPTURE POPUP ═══ -->
+<div id="kxPopupOverlay" onclick="kxPopupHandleOverlayClick(event)">
+  <div id="kxPopupCard">
+    <button id="kxPopupClose" onclick="kxPopupDismiss()" aria-label="Close">✕</button>
+    <div class="kx-popup-tag">July 18 · Guatapé</div>
+
+    <div id="kxPopupFormState">
+      <h2>Don't miss<br>a single drop.</h2>
+      <p class="kx-popup-sub">Lineup reveals, early ticket access,<br>and updates from the mountain.</p>
+      <form id="kxPopupForm" onsubmit="kxPopupSubmit(event)">
+        <input type="text" id="kxPopupName" class="kx-popup-field" placeholder="Your name" autocomplete="given-name" />
+        <input type="email" id="kxPopupEmail" class="kx-popup-field" placeholder="Your email" autocomplete="email" required />
+        <button type="submit" id="kxPopupSubmit">I'm in →</button>
+      </form>
+      <div id="kxPopupError"></div>
+      <button id="kxPopupDecline" onclick="kxPopupDismiss()">No thanks, I'll miss out</button>
+    </div>
+
+    <div id="kxPopupSuccess">
+      <div class="kx-success-icon">✓</div>
+      <h3>You're on the list.</h3>
+      <p class="kx-popup-sub">Check your inbox — we'll be in touch<br>before tickets sell out.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var STORAGE_KEY = 'kx_popup_seen';
+  var DELAY_MS = 40000;
+
+  function kxPopupShow() {
+    if (localStorage.getItem(STORAGE_KEY)) return;
+    var overlay = document.getElementById('kxPopupOverlay');
+    if (!overlay) return;
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  window.kxPopupDismiss = function() {
+    localStorage.setItem(STORAGE_KEY, '1');
+    var overlay = document.getElementById('kxPopupOverlay');
+    if (!overlay) return;
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  };
+
+  window.kxPopupHandleOverlayClick = function(e) {
+    if (e.target.id === 'kxPopupOverlay') kxPopupDismiss();
+  };
+
+  window.kxPopupSubmit = async function(e) {
+    e.preventDefault();
+    var name  = document.getElementById('kxPopupName').value.trim();
+    var email = document.getElementById('kxPopupEmail').value.trim();
+    var btn   = document.getElementById('kxPopupSubmit');
+    var errEl = document.getElementById('kxPopupError');
+
+    errEl.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = '…';
+
+    try {
+      var res  = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, email: email })
+      });
+      var data = await res.json();
+      if (res.ok) {
+        localStorage.setItem(STORAGE_KEY, '1');
+        document.getElementById('kxPopupFormState').style.display = 'none';
+        document.getElementById('kxPopupSuccess').style.display = 'block';
+        setTimeout(kxPopupDismiss, 3200);
+      } else {
+        errEl.textContent = data.error || 'Something went wrong. Try again.';
+        errEl.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'I\'m in →';
+      }
+    } catch(err) {
+      errEl.textContent = 'Connection error. Please try again.';
+      errEl.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'I\'m in →';
+    }
+  };
+
+  window.addEventListener('load', function() {
+    setTimeout(kxPopupShow, DELAY_MS);
+  });
+})();
+</script>
 
 <!-- Map Picker Modal -->
 <div id="mapPickerOverlay" onclick="closeMapPicker()" style="position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.6);opacity:0;pointer-events:none;transition:opacity 0.25s ease;display:flex;align-items:flex-end;justify-content:center;"></div>
