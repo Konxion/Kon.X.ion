@@ -18,10 +18,11 @@ export default async function handler(req, res) {
   const ip = req.headers['x-forwarded-for']?.split(',')[0].trim() ?? 'unknown';
   if (isRateLimited(ip)) return res.status(429).json({ error: 'Too many requests' });
 
-  const { email } = req.body ?? {};
+  const { email, name } = req.body ?? {};
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({ error: 'Invalid email' });
   }
+  const safeName = name ? String(name).slice(0, 100).replace(/[<>]/g, '') : '';
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return res.status(500).json({ error: 'Server configuration error' });
@@ -33,7 +34,7 @@ export default async function handler(req, res) {
       await fetch(`https://api.resend.com/audiences/${audienceId}/contacts`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, unsubscribed: false }),
+        body: JSON.stringify({ email, first_name: safeName || undefined, unsubscribed: false }),
       });
     } catch (err) {
       console.error('Audience add error:', err);
@@ -47,11 +48,12 @@ export default async function handler(req, res) {
     body: JSON.stringify({
       from: 'KON.X.ION <events@konxion.us>',
       to: ['konxion@icloud.com'],
-      subject: `New subscriber — ${email}`,
+      subject: `New subscriber — ${safeName || email}`,
       html: `<div style="font-family:sans-serif;padding:24px;max-width:480px;">
         <h2 style="color:#046303;margin:0 0 16px;">New Email Subscriber</h2>
-        <p style="font-size:15px;margin:0;"><strong>${email}</strong></p>
-        <p style="color:#666;font-size:13px;margin:8px 0 0;">Subscribed via konxion.us hero</p>
+        ${safeName ? `<p style="font-size:15px;margin:0 0 4px;"><strong>${safeName}</strong></p>` : ''}
+        <p style="font-size:15px;margin:0;">${email}</p>
+        <p style="color:#666;font-size:13px;margin:8px 0 0;">Subscribed via konxion.us popup</p>
       </div>`,
     }),
   });
@@ -70,7 +72,7 @@ export default async function handler(req, res) {
           Saturday, July 18 · Bethel Lozana, Guatapé
         </p>
         <p style="font-size:16px;color:rgba(255,255,255,0.85);line-height:1.7;margin:0 0 24px;">
-          You're on the list. We'll be in touch with updates, lineup reveals, and early access before tickets sell out.
+          ${safeName ? `Hey ${safeName} — you're` : "You're"} on the list. We'll be in touch with updates, lineup reveals, and early access before tickets sell out.
         </p>
         <div style="border:1px solid rgba(4,200,10,0.25);border-radius:10px;padding:20px;margin:0 0 28px;">
           <div style="font-size:11px;color:rgba(4,200,10,0.6);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:10px;">What's Coming</div>
