@@ -2454,21 +2454,19 @@
   <div id="bethelCenter" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:4;opacity:0;transition:opacity 0.8s ease;pointer-events:none;display:flex;align-items:center;justify-content:center;">
     <img src="bethel-logo.jpg" alt="Bethel Lozana · Guatapé" style="width:clamp(100px,26vw,150px);height:auto;display:block;filter:invert(1);mix-blend-mode:screen;opacity:0.88;"/>
   </div>
-  <div id="journeyContent" style="position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:60px 20px 56px;gap:0;pointer-events:none;opacity:0;transition:opacity 0.8s ease;overflow:hidden;">
+  <div id="journeyContent" style="position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:clamp(80px,20vh,160px) 20px clamp(80px,20vh,160px);gap:0;pointer-events:none;opacity:0;transition:opacity 0.8s ease;overflow:hidden;">
     <!-- TOP: KonXion logo -->
     <img src="konxion-logo.png" alt="KON.X.ION" style="width:clamp(260px,65vw,480px);height:auto;display:block;filter:brightness(0) invert(1) drop-shadow(0 0 10px rgba(4,220,10,1)) drop-shadow(0 0 28px rgba(4,200,10,0.7)) drop-shadow(0 0 60px rgba(4,180,10,0.4));"/>
     <!-- BOTTOM: date · price · button -->
     <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
-      <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:16px;">
-        <div style="width:40px;height:0.5px;background:rgba(4,210,10,0.4);margin-bottom:6px;"></div>
-        <div style="font-size:18px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.9);font-weight:300;font-family:'DM Sans',sans-serif;" data-i18n="journey-date">Saturday, July 18</div>
-        <div style="font-size:18px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.9);font-weight:300;font-family:'DM Sans',sans-serif;">1PM — 5AM</div>
-        <div style="width:40px;height:0.5px;background:rgba(4,210,10,0.4);margin-top:6px;"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;margin-bottom:12px;">
+        <div style="font-size:16px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.9);font-weight:300;font-family:'DM Sans',sans-serif;" data-i18n="journey-date">Saturday, July 18</div>
+        <div style="font-size:16px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.9);font-weight:300;font-family:'DM Sans',sans-serif;">1PM — 5AM</div>
       </div>
-      <div style="margin-bottom:20px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;letter-spacing:0.12em;color:rgba(255,255,255,0.45);" data-i18n="journey-ticket">Ticket · $35</div>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+      <div style="margin-bottom:16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;letter-spacing:0.12em;color:rgba(255,255,255,0.45);" data-i18n="journey-ticket">Ticket · $35</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
         <button id="contactBtn" onclick="openRsvpSheet()" data-i18n="reserve-tickets-btn" style="background:rgba(4,200,10,0.9);border:none;border-radius:999px;padding:14px 48px;min-height:44px;color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;">Buy Tickets</button>
-        <div id="langBtnMobile" style="display:flex;align-items:center;gap:7px;margin-top:4px;">
+        <div id="langBtnMobile" style="display:flex;align-items:center;gap:7px;">
           <span class="lang-opt-en" style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.1em;font-weight:400;color:rgba(255,255,255,0.92);transition:color 0.3s;display:flex;align-items:center;gap:4px;white-space:nowrap;">🇺🇸 EN</span>
           <div onclick="toggleLang()" style="width:36px;height:20px;border-radius:999px;background:rgba(4,200,10,0.12);border:0.5px solid rgba(4,200,10,0.45);position:relative;cursor:pointer;flex-shrink:0;">
             <div class="lang-pill" style="position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:rgba(4,220,10,0.95);box-shadow:0 0 8px rgba(4,200,10,0.55);transition:transform 0.28s ease;"></div>
