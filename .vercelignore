@@ -1,0 +1,35 @@
+# Large media files — not needed for deployment
+*.mp4
+*.MP4
+*.mov
+*.MOV
+exports/
+admin/
+slide1-bg.mp4
+slide2-bg.mp4
+slide3-bg.mp4
+slide4-bg.mp4
+
+# Dev/render scripts
+*.py
+*.ttf
+
+# Marketing & social content
+social/
+marketing-context.md
+reel-mockup.html
+clean_overlay*.html
+ig_overlay*.html
+overlay*.html
+
+# Misc
+.superpowers/
+hero-preview.png
+journey-preview.png
+slide2-final-check.png
+slide4-check.png
+slide4-final.png
+slide4-preview.png
+slide4-wide.png
+slide2-preview.html
+render_slide4.py
