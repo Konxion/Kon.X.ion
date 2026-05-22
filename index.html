@@ -2454,39 +2454,39 @@
   <div id="bethelCenter" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:4;opacity:0;transition:opacity 0.8s ease;pointer-events:none;display:flex;align-items:center;justify-content:center;">
     <img src="bethel-logo.jpg" alt="Bethel Lozana · Guatapé" style="width:clamp(100px,26vw,150px);height:auto;display:block;filter:invert(1);mix-blend-mode:screen;opacity:0.88;"/>
   </div>
-  <div id="journeyContent" style="position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px 60px;gap:0;pointer-events:none;opacity:0;transition:opacity 0.8s ease;overflow:hidden;">
-    <div style="width:100%;max-width:480px;display:flex;flex-direction:column;align-items:center;">
+  <div id="journeyContent" style="position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:60px 20px 56px;gap:0;pointer-events:none;opacity:0;transition:opacity 0.8s ease;overflow:hidden;">
+    <!-- TOP: KonXion logo -->
     <img src="konxion-logo.png" alt="KON.X.ION" style="width:clamp(260px,65vw,480px);height:auto;display:block;filter:brightness(0) invert(1) drop-shadow(0 0 10px rgba(4,220,10,1)) drop-shadow(0 0 28px rgba(4,200,10,0.7)) drop-shadow(0 0 60px rgba(4,180,10,0.4));"/>
-    <div style="margin-top:48px;display:flex;flex-direction:column;align-items:center;gap:14px;">
-      <div style="width:40px;height:0.5px;background:rgba(4,210,10,0.4);"></div>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+    <!-- BOTTOM: date · price · button -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:16px;">
+        <div style="width:40px;height:0.5px;background:rgba(4,210,10,0.4);margin-bottom:6px;"></div>
         <div style="font-size:18px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.9);font-weight:300;font-family:'DM Sans',sans-serif;" data-i18n="journey-date">Saturday, July 18</div>
         <div style="font-size:18px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.9);font-weight:300;font-family:'DM Sans',sans-serif;">1PM — 5AM</div>
+        <div style="width:40px;height:0.5px;background:rgba(4,210,10,0.4);margin-top:6px;"></div>
       </div>
-      <div style="width:40px;height:0.5px;background:rgba(4,210,10,0.4);"></div>
-    </div>
-    <div style="margin-top:20px;display:flex;flex-direction:column;align-items:center;gap:0;">
-      <div style="font-family:'Josefin Sans',sans-serif;font-size:8px;letter-spacing:0.45em;text-transform:uppercase;color:rgba(4,200,10,0.6);margin-bottom:8px;">General Admission</div>
-      <div style="display:flex;align-items:baseline;gap:6px;">
-        <span style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;font-style:italic;color:#fff;line-height:1;">$35</span>
-        <span style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:4px;">USD</span>
-      </div>
-      <div style="display:flex;align-items:baseline;gap:5px;margin-top:5px;">
-        <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:rgba(255,255,255,0.35);">≈ $135,000</span>
-        <span style="font-family:'Josefin Sans',sans-serif;font-size:8px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.2);">COP</span>
-      </div>
-    </div>
-    <div style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:20px;">
-      <button id="contactBtn" onclick="openRsvpSheet()" data-i18n="reserve-tickets-btn" style="background:rgba(4,200,10,0.9);border:none;border-radius:999px;padding:14px 48px;min-height:44px;color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;">Buy Tickets</button>
-      <div id="langBtnMobile" style="display:flex;align-items:center;gap:7px;margin-top:4px;">
-        <span class="lang-opt-en" style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.1em;font-weight:400;color:rgba(255,255,255,0.92);transition:color 0.3s;display:flex;align-items:center;gap:4px;white-space:nowrap;">🇺🇸 EN</span>
-        <div onclick="toggleLang()" style="width:36px;height:20px;border-radius:999px;background:rgba(4,200,10,0.12);border:0.5px solid rgba(4,200,10,0.45);position:relative;cursor:pointer;flex-shrink:0;">
-          <div class="lang-pill" style="position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:rgba(4,220,10,0.95);box-shadow:0 0 8px rgba(4,200,10,0.55);transition:transform 0.28s ease;"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0;margin-bottom:20px;">
+        <div style="font-family:'Josefin Sans',sans-serif;font-size:8px;letter-spacing:0.45em;text-transform:uppercase;color:rgba(4,200,10,0.6);margin-bottom:8px;">General Admission</div>
+        <div style="display:flex;align-items:baseline;gap:6px;">
+          <span style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;font-style:italic;color:#fff;line-height:1;">$35</span>
+          <span style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:4px;">USD</span>
         </div>
-        <span class="lang-opt-es" style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.1em;font-weight:400;color:rgba(255,255,255,0.32);transition:color 0.3s;display:flex;align-items:center;gap:4px;white-space:nowrap;">ES 🇪🇸</span>
+        <div style="display:flex;align-items:baseline;gap:5px;margin-top:5px;">
+          <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:rgba(255,255,255,0.35);">≈ $135,000</span>
+          <span style="font-family:'Josefin Sans',sans-serif;font-size:8px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.2);">COP</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+        <button id="contactBtn" onclick="openRsvpSheet()" data-i18n="reserve-tickets-btn" style="background:rgba(4,200,10,0.9);border:none;border-radius:999px;padding:14px 48px;min-height:44px;color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;font-weight:500;cursor:pointer;white-space:nowrap;">Buy Tickets</button>
+        <div id="langBtnMobile" style="display:flex;align-items:center;gap:7px;margin-top:4px;">
+          <span class="lang-opt-en" style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.1em;font-weight:400;color:rgba(255,255,255,0.92);transition:color 0.3s;display:flex;align-items:center;gap:4px;white-space:nowrap;">🇺🇸 EN</span>
+          <div onclick="toggleLang()" style="width:36px;height:20px;border-radius:999px;background:rgba(4,200,10,0.12);border:0.5px solid rgba(4,200,10,0.45);position:relative;cursor:pointer;flex-shrink:0;">
+            <div class="lang-pill" style="position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:rgba(4,220,10,0.95);box-shadow:0 0 8px rgba(4,200,10,0.55);transition:transform 0.28s ease;"></div>
+          </div>
+          <span class="lang-opt-es" style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.1em;font-weight:400;color:rgba(255,255,255,0.32);transition:color 0.3s;display:flex;align-items:center;gap:4px;white-space:nowrap;">ES 🇪🇸</span>
+        </div>
       </div>
     </div>
-    </div><!-- /max-width wrapper -->
   </div>
   <div style="position:absolute;bottom:0;left:0;right:0;z-index:5;height:36px;border-top:0.5px solid rgba(4,200,10,0.2);overflow:hidden;background:rgba(0,0,0,0.5);">
     <div style="display:inline-block;white-space:nowrap;line-height:36px;animation:jTicker 100s linear infinite;will-change:transform;font-size:12px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(4,200,10,0.7);font-weight:200;font-family:DM Sans,sans-serif;">Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · Minimal · Afro House · Tech House · House · </div>
