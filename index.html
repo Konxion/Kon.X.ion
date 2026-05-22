@@ -1650,12 +1650,10 @@
 
 <!-- ═══ TAB BAR ═══ -->
 <nav id="tabBar" style="opacity:0;pointer-events:none;transition:opacity 0.5s ease;">
+  <button class="tab-btn" onclick="openLineup()"><span data-i18n="nav-lineup">Lineup</span></button>
   <div class="tab-dropdown-wrap" id="musicDropWrap">
     <button class="tab-btn" id="musicTabBtn" onclick="toggleMusicDrop(event)" aria-expanded="false" aria-haspopup="true"><span data-i18n="music-nav">Music</span> <span id="musicArrow" aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;color:rgba(4,200,10,0.75);">▼</span></button>
     <div id="musicDropMenu" style="display:none;position:absolute;top:52px;left:0;z-index:200;display:none;flex-direction:column;gap:8px;padding:12px;background:rgba(5,10,5,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(4,200,10,0.22);border-radius:14px;min-width:160px;box-shadow:0 8px 32px rgba(0,0,0,0.6);">
-      <button class="music-drop-item" onclick="openLineup();closeMusicDrop();">
-        <span data-i18n="nav-lineup">Lineup</span>
-      </button>
       <button class="music-drop-item" onclick="(function(){ var app='youtube://www.youtube.com/@OFCkonxion'; var web='https://www.youtube.com/@OFCkonxion'; var start=Date.now(); var t=setTimeout(function(){ if(Date.now()-start<2000) window.location=web; },500); window.location=app; })();closeMusicDrop();">
         <span data-i18n="nav-youtube">YouTube Channel</span>
       </button>
@@ -1751,7 +1749,7 @@
   </div>
   <div class="tab-card">
     <div class="tab-card-title" data-i18n="questions-title">Questions?</div>
-    <div style="color:rgba(255,255,255,0.7);font-size:12px;" data-i18n="questions-body"><a href="mailto:konxion@icloud.com" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">konxion@icloud.com</a></div>
+    <div style="color:rgba(255,255,255,0.7);font-size:12px;" data-i18n="questions-body"><a href="mailto:support@konxion.us" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">support@konxion.us</a></div>
   </div>
 </div>
 
@@ -2225,7 +2223,7 @@
     <!-- FOOTER CONTACT -->
     <div class="gh-footer-contact">
       <div class="gh-footer-qlabel gh-footer-glow" data-i18n="gh-q-title">Questions?</div>
-      <a href="mailto:konxion@icloud.com?subject=KON.X.ION%20Question" class="gh-footer-email gh-footer-glow">konxion@icloud.com</a>
+      <a href="mailto:support@konxion.us?subject=KON.X.ION%20Question" class="gh-footer-email gh-footer-glow">support@konxion.us</a>
     </div>
     <div style="text-align:center;margin-top:20px;">
       <a href="/terms.html" class="gh-footer-privacy gh-footer-glow" target="_blank" rel="noopener" style="margin-right:16px;">Terms of Sale</a><a href="/privacy.html" class="gh-footer-privacy gh-footer-glow" target="_blank" rel="noopener">Privacy Policy</a>
@@ -2750,9 +2748,9 @@ function handleSend() {
     if (data.ok) {
       conf.style.color='rgba(4,99,7,0.8)'; conf.textContent='Message sent! We\'ll be in touch.';
       document.getElementById('fname').value=''; document.getElementById('femail').value=''; document.getElementById('fmsg').value='';
-    } else { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Something went wrong. Email us directly at konxion@icloud.com'; }
+    } else { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Something went wrong. Email us directly at support@konxion.us'; }
   })
-  .catch(() => { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Connection error. Email us at konxion@icloud.com'; })
+  .catch(() => { conf.style.color='rgba(200,50,30,0.7)'; conf.textContent='Connection error. Email us at support@konxion.us'; })
   .finally(() => { btn.disabled = false; btn.textContent = 'Send'; });
 }
 
@@ -2822,7 +2820,7 @@ async function handleTickets() {
   } catch (err) {
     console.error('Ticket checkout error:', err);
     conf.style.color = 'rgba(200,50,30,0.7)';
-    conf.textContent = err.message || 'Something went wrong. Email us at konxion@icloud.com';
+    conf.textContent = err.message || 'Something went wrong. Email us at support@konxion.us';
   } finally {
     btn.disabled = false; btn.textContent = (translations[currentLang] || {})['reserve-tickets-btn'] || 'Buy Tickets →';
   }
@@ -2877,7 +2875,7 @@ async function handleCabinBook() {
   } catch (err) {
     console.error('Cabin booking error:', err);
     conf.style.color = 'rgba(200,50,30,0.7)';
-    conf.textContent = err.message || 'Something went wrong. Email us at konxion@icloud.com';
+    conf.textContent = err.message || 'Something went wrong. Email us at support@konxion.us';
   } finally {
     btn.disabled = false; btn.textContent = (translations[currentLang] || {})['cb-btn'] || 'Book Cabin';
   }
@@ -4507,7 +4505,7 @@ const translations = {
     'plan-tab-title':'Plan Your Visit','date-title':'Date &amp; Time','plan-date':'Saturday, July 18 · 1PM — 5AM',
     'venue-title':'Venue','transport':'Directions and transport details coming soon.',
     'bring-title':'What to Bring','bring-body':'· Valid ID (18+)<br>· RSVP confirmation<br>· Comfortable footwear<br>· Good energy',
-    'questions-title':'Questions?','questions-body':'Reach us at konxion@icloud.com',
+    'questions-title':'Questions?','questions-body':'Reach us at support@konxion.us',
     'shop-tab-title':'Shop','merch-soon':'Merch Coming Soon',
     'festival-page-title':'Event Info','fi-date-title':'Date &amp; Time','fi-date-body':'Saturday, July 18<br>1PM — 5AM',
     'fi-venue-title':'Venue','fi-map-tap':'Tap to open in Maps',
@@ -4542,7 +4540,14 @@ const translations = {
     'cb-select-prompt':'Select cabin type',
     'cb-opt-lux':'Luxury Cabin — $419 (sleeps 2–4, King or 2 doubles)',
     'cb-opt-prem':'Premium Cabin — $249 (sleeps 4, 2 double beds)',
-    'cb-btn':'Book Cabin'
+    'cb-btn':'Book Cabin',
+    'popup-tag':'July 18 · Guatapé',
+    'popup-headline':"Don't miss<br>a single drop.",
+    'popup-sub':'Lineup reveals, early ticket access,<br>and updates from KonXion.',
+    'popup-name-ph':'Your name','popup-email-ph':'Your email',
+    'popup-btn':"I'm in →",'popup-decline':"No thanks, I'll miss out",
+    'popup-success-h':"You're on the list.",
+    'popup-success-sub':"Check your inbox — we'll be in touch<br>before tickets sell out."
   },
   es: {
     'music-nav':'Música','plan-nav':'Plan','exp-nav':'Experiencia','shop-nav':'Tienda',
@@ -4554,7 +4559,7 @@ const translations = {
     'plan-tab-title':'Planifica tu Visita','date-title':'Fecha &amp; Hora','plan-date':'Sábado, 18 de julio · 1PM — 5AM',
     'venue-title':'Lugar','transport':'Detalles de transporte próximamente.',
     'bring-title':'Qué Traer','bring-body':'· Cédula 18+<br>· Confirmación de RSVP<br>· Calzado cómodo<br>· Buena energía',
-    'questions-title':'¿Preguntas?','questions-body':'Escríbenos a konxion@icloud.com',
+    'questions-title':'¿Preguntas?','questions-body':'Escríbenos a support@konxion.us',
     'shop-tab-title':'Tienda','merch-soon':'Merch Próximamente',
     'festival-page-title':'Info del Evento','fi-date-title':'Fecha &amp; Hora','fi-date-body':'Sábado, 18 de julio<br>1PM — 5AM',
     'fi-venue-title':'Lugar','fi-map-tap':'Toca para abrir en Maps',
@@ -4589,7 +4594,14 @@ const translations = {
     'cb-select-prompt':'Selecciona tipo de cabaña',
     'cb-opt-lux':'Cabaña de Lujo — COP 1,500,000 (2–4 pers., King o 2 dobles)',
     'cb-opt-prem':'Cabaña Premium — COP 900,000 (4 pers., 2 camas dobles)',
-    'cb-btn':'Rentar Cabaña'
+    'cb-btn':'Rentar Cabaña',
+    'popup-tag':'18 de julio · Guatapé',
+    'popup-headline':'No te pierdas<br>ni un momento.',
+    'popup-sub':'Revelación del lineup, acceso anticipado<br>y novedades de KonXion.',
+    'popup-name-ph':'Tu nombre','popup-email-ph':'Tu correo',
+    'popup-btn':'Quiero ir →','popup-decline':'No gracias, prefiero perderme esto',
+    'popup-success-h':'Estás en la lista.',
+    'popup-success-sub':'Revisa tu correo — te avisamos<br>antes de que se agoten.'
   }
 };
 
@@ -4681,24 +4693,24 @@ if (location.pathname === '/shop') {
 <div id="kxPopupOverlay" onclick="kxPopupHandleOverlayClick(event)">
   <div id="kxPopupCard">
     <button id="kxPopupClose" onclick="kxPopupDismiss()" aria-label="Close">✕</button>
-    <div class="kx-popup-tag">July 18 · Guatapé</div>
+    <div class="kx-popup-tag" data-i18n="popup-tag">July 18 · Guatapé</div>
 
     <div id="kxPopupFormState">
-      <h2>Don't miss<br>a single drop.</h2>
-      <p class="kx-popup-sub">Lineup reveals, early ticket access,<br>and updates from the mountain.</p>
+      <h2 data-i18n="popup-headline">Don't miss<br>a single drop.</h2>
+      <p class="kx-popup-sub" data-i18n="popup-sub">Lineup reveals, early ticket access,<br>and updates from KonXion.</p>
       <form id="kxPopupForm" onsubmit="kxPopupSubmit(event)">
-        <input type="text" id="kxPopupName" class="kx-popup-field" placeholder="Your name" autocomplete="given-name" />
-        <input type="email" id="kxPopupEmail" class="kx-popup-field" placeholder="Your email" autocomplete="email" required />
-        <button type="submit" id="kxPopupSubmit">I'm in →</button>
+        <input type="text" id="kxPopupName" class="kx-popup-field" placeholder="Your name" autocomplete="given-name" data-i18n-placeholder="popup-name-ph" />
+        <input type="email" id="kxPopupEmail" class="kx-popup-field" placeholder="Your email" autocomplete="email" required data-i18n-placeholder="popup-email-ph" />
+        <button type="submit" id="kxPopupSubmit" data-i18n="popup-btn">I'm in →</button>
       </form>
       <div id="kxPopupError"></div>
-      <button id="kxPopupDecline" onclick="kxPopupDismiss()">No thanks, I'll miss out</button>
+      <button id="kxPopupDecline" onclick="kxPopupDismiss()" data-i18n="popup-decline">No thanks, I'll miss out</button>
     </div>
 
     <div id="kxPopupSuccess">
       <div class="kx-success-icon">✓</div>
-      <h3>You're on the list.</h3>
-      <p class="kx-popup-sub">Check your inbox — we'll be in touch<br>before tickets sell out.</p>
+      <h3 data-i18n="popup-success-h">You're on the list.</h3>
+      <p class="kx-popup-sub" data-i18n="popup-success-sub">Check your inbox — we'll be in touch<br>before tickets sell out.</p>
     </div>
   </div>
 </div>
@@ -4755,13 +4767,13 @@ if (location.pathname === '/shop') {
         errEl.textContent = data.error || 'Something went wrong. Try again.';
         errEl.style.display = 'block';
         btn.disabled = false;
-        btn.textContent = 'I\'m in →';
+        btn.textContent = (typeof translations !== 'undefined' && translations[currentLang] && translations[currentLang]['popup-btn']) || "I'm in →";
       }
     } catch(err) {
       errEl.textContent = 'Connection error. Please try again.';
       errEl.style.display = 'block';
       btn.disabled = false;
-      btn.textContent = 'I\'m in →';
+      btn.textContent = (typeof translations !== 'undefined' && translations[currentLang] && translations[currentLang]['popup-btn']) || "I'm in →";
     }
   };
 
