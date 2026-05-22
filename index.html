@@ -1504,6 +1504,7 @@
   html.entry-home #tabBar { opacity: 1 !important; pointer-events: all !important; }
   html.entry-home #langBtn { opacity: 1 !important; pointer-events: all !important; }
   html.entry-home #homeLogoBtn { opacity: 1 !important; pointer-events: all !important; }
+  html.entry-home #bethelCenter { opacity: 1 !important; }
   html.entry-stay #hero { visibility: hidden !important; }
   html.entry-stay #stayPage { opacity: 1 !important; pointer-events: all !important; transition: none !important; }
   html.entry-stay #tabBar { opacity: 1 !important; pointer-events: all !important; }
@@ -2450,11 +2451,12 @@
   </div>
   <div style="position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,0.72) 100%);"></div>
   <div style="position:absolute;inset:0;z-index:3;pointer-events:none;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);"></div>
+  <div id="bethelCenter" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:4;opacity:0;transition:opacity 0.8s ease;pointer-events:none;display:flex;align-items:center;justify-content:center;">
+    <img src="bethel-logo.jpg" alt="Bethel Lozana · Guatapé" style="width:clamp(100px,26vw,150px);height:auto;display:block;filter:invert(1);mix-blend-mode:screen;opacity:0.88;"/>
+  </div>
   <div id="journeyContent" style="position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px 60px;gap:0;pointer-events:none;opacity:0;transition:opacity 0.8s ease;overflow:hidden;">
     <div style="width:100%;max-width:480px;display:flex;flex-direction:column;align-items:center;">
     <img src="konxion-logo.png" alt="KON.X.ION" style="width:clamp(260px,65vw,480px);height:auto;display:block;filter:brightness(0) invert(1) drop-shadow(0 0 10px rgba(4,220,10,1)) drop-shadow(0 0 28px rgba(4,200,10,0.7)) drop-shadow(0 0 60px rgba(4,180,10,0.4));"/>
-    <div style="font-family:'DM Sans',sans-serif;font-size:18px;font-weight:200;color:rgba(4,220,10,0.9);margin-top:12px;margin-bottom:8px;text-shadow:0 0 12px rgba(4,220,10,0.6);">×</div>
-    <img src="bethel-logo.jpg" alt="Bethel Lozana · Guatapé" style="width:clamp(80px,22vw,120px);height:auto;display:block;filter:invert(1);mix-blend-mode:screen;opacity:0.88;"/>
     <div style="margin-top:48px;display:flex;flex-direction:column;align-items:center;gap:14px;">
       <div style="width:40px;height:0.5px;background:rgba(4,210,10,0.4);"></div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
@@ -2463,16 +2465,15 @@
       </div>
       <div style="width:40px;height:0.5px;background:rgba(4,210,10,0.4);"></div>
     </div>
-    <div style="margin-top:20px;display:flex;flex-direction:column;align-items:center;gap:0;background:rgba(255,255,255,0.03);border:0.5px solid rgba(4,200,10,0.2);border-radius:16px;padding:18px 36px;min-width:200px;">
-      <div style="font-family:'Josefin Sans',sans-serif;font-size:8px;letter-spacing:0.45em;text-transform:uppercase;color:rgba(4,200,10,0.6);margin-bottom:10px;">General Admission</div>
+    <div style="margin-top:20px;display:flex;flex-direction:column;align-items:center;gap:0;">
+      <div style="font-family:'Josefin Sans',sans-serif;font-size:8px;letter-spacing:0.45em;text-transform:uppercase;color:rgba(4,200,10,0.6);margin-bottom:8px;">General Admission</div>
       <div style="display:flex;align-items:baseline;gap:6px;">
         <span style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;font-style:italic;color:#fff;line-height:1;">$35</span>
         <span style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:4px;">USD</span>
       </div>
-      <div style="width:32px;height:0.5px;background:rgba(4,200,10,0.2);margin:10px 0;"></div>
-      <div style="display:flex;align-items:baseline;gap:5px;">
-        <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:rgba(255,255,255,0.45);">≈ $147,000</span>
-        <span style="font-family:'Josefin Sans',sans-serif;font-size:8px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.25);">COP</span>
+      <div style="display:flex;align-items:baseline;gap:5px;margin-top:5px;">
+        <span style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:rgba(255,255,255,0.35);">≈ $135,000</span>
+        <span style="font-family:'Josefin Sans',sans-serif;font-size:8px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.2);">COP</span>
       </div>
     </div>
     <div style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:20px;">
@@ -2574,6 +2575,8 @@ function openJourney() {
   _journeyOpenTimers.push(setTimeout(() => {
     content.style.opacity = '1';
     content.style.pointerEvents = 'auto';
+    const bc = document.getElementById('bethelCenter');
+    if (bc) bc.style.opacity = '1';
     const tabBar = document.getElementById('tabBar');
     if (tabBar) { tabBar.style.opacity = '1'; tabBar.style.pointerEvents = 'all'; }
     const lb = document.getElementById('langBtn');
@@ -2606,6 +2609,8 @@ function closeJourney() {
 
   content.style.opacity      = '0';
   content.style.pointerEvents = 'none';
+  const bc = document.getElementById('bethelCenter');
+  if (bc) bc.style.opacity = '0';
   const rsvpBtn = document.getElementById('rsvpBtn');
   if (rsvpBtn) rsvpBtn.style.opacity = '0';
   const contactBtn = document.getElementById('contactBtn');
