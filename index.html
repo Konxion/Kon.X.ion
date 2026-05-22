@@ -1639,6 +1639,39 @@
   text-align: center; margin-top: 6px;
   display: none;
 }
+#kxInviteSubmitBtn {
+  width: 100%;
+  background: rgba(4,200,10,0.92);
+  border: none; border-radius: 100px;
+  color: #000;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase;
+  padding: 16px 32px;
+  cursor: pointer;
+  margin-top: 4px; margin-bottom: 18px;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+#kxInviteSubmitBtn:hover { background: rgb(4,220,10); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(4,200,10,0.3); }
+#kxInviteSubmitBtn:active { transform: translateY(0); box-shadow: none; }
+#kxInviteSubmitBtn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: none; }
+#kxInviteSkip {
+  background: none; border: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px; color: rgba(255,255,255,0.22);
+  cursor: pointer; padding: 4px;
+  transition: color 0.2s;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(255,255,255,0.12);
+  display: block; margin: 0 auto;
+}
+#kxInviteSkip:hover { color: rgba(255,255,255,0.42); }
+#kxInviteError {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px; color: rgba(255,100,100,0.8);
+  text-align: center; margin-top: 6px;
+  display: none;
+}
 @media (max-width: 480px) {
   #kxPopupCard { padding: 40px 22px 28px; border-radius: 20px; }
 }
@@ -1653,11 +1686,12 @@
 
 <!-- ═══ TAB BAR ═══ -->
 <nav id="tabBar" style="opacity:0;pointer-events:none;transition:opacity 0.5s ease;">
-  <button class="tab-btn" onclick="openLineup()"><span style="font-size:14px;" aria-hidden="true">🎧</span> <span data-i18n="nav-lineup">Lineup</span> <span aria-hidden="true" style="display:inline-block;font-size:9px;margin-left:4px;color:rgba(4,200,10,0.75);">▼</span></button>
+  <button class="tab-btn" onclick="openLineup()"><span style="font-size:11px;vertical-align:middle;" aria-hidden="true">🎧</span> <span data-i18n="nav-lineup">Lineup</span> <span aria-hidden="true" style="display:inline-block;font-size:9px;margin-left:4px;color:rgba(4,200,10,0.75);">▼</span></button>
   <div class="tab-dropdown-wrap" id="musicDropWrap">
     <button class="tab-btn" id="musicTabBtn" onclick="toggleMusicDrop(event)" aria-expanded="false" aria-haspopup="true"><span data-i18n="music-nav">Music</span> <span id="musicArrow" aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;color:rgba(4,200,10,0.75);">▼</span></button>
     <div id="musicDropMenu" style="display:none;position:absolute;top:52px;left:0;z-index:200;display:none;flex-direction:column;gap:8px;padding:12px;background:rgba(5,10,5,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(4,200,10,0.22);border-radius:14px;min-width:160px;box-shadow:0 8px 32px rgba(0,0,0,0.6);">
       <button class="music-drop-item" onclick="(function(){ var app='youtube://www.youtube.com/@OFCkonxion'; var web='https://www.youtube.com/@OFCkonxion'; var start=Date.now(); var t=setTimeout(function(){ if(Date.now()-start<2000) window.location=web; },500); window.location=app; })();closeMusicDrop();">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
         <span data-i18n="nav-youtube">YouTube Channel</span>
       </button>
       <button class="music-drop-item" onclick="window.open('https://soundcloud.com/konxion','_blank');closeMusicDrop();">
@@ -4714,7 +4748,19 @@ if (location.pathname === '/shop') {
       <button id="kxPopupDecline" onclick="kxPopupDismiss()" data-i18n="popup-decline">No thanks, I'll miss out</button>
     </div>
 
-    <div id="kxPopupSuccess">
+    <div id="kxPopupInvite" style="display:none;">
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(26px,5.5vw,32px);font-weight:300;font-style:italic;color:#fff;line-height:1.2;margin:0 0 12px;">Invite a friend.</h2>
+      <p class="kx-popup-sub">Know someone who'd love KonXion?<br>Send them an invite.</p>
+      <form id="kxInviteForm" onsubmit="kxInviteSubmit(event)">
+        <input type="text" id="kxInviteFriendName" class="kx-popup-field" placeholder="Friend's name" autocomplete="off" />
+        <input type="email" id="kxInviteFriendEmail" class="kx-popup-field" placeholder="Friend's email" autocomplete="off" required />
+        <button type="submit" id="kxInviteSubmitBtn">Send invite →</button>
+      </form>
+      <div id="kxInviteError"></div>
+      <button id="kxInviteSkip" onclick="kxShowFinalSuccess()">Maybe later</button>
+    </div>
+
+    <div id="kxPopupSuccess" style="display:none; text-align:center; padding:12px 0 8px;">
       <div class="kx-success-icon">✓</div>
       <h3 data-i18n="popup-success-h">You're on the list.</h3>
       <p class="kx-popup-sub" data-i18n="popup-success-sub">Check your inbox — we'll be in touch<br>before tickets sell out.</p>
@@ -4725,13 +4771,11 @@ if (location.pathname === '/shop') {
 <script>
 (function() {
   var STORAGE_KEY = 'kx_popup_subscribed';
-  var SESSION_KEY = 'kx_popup_dismissed';
-  var DELAY_MS = 40000;
+  var DELAY_MS = 60000;
 
   function kxPopupShow() {
     if (localStorage.getItem(STORAGE_KEY)) return;
     if (localStorage.getItem('kx_popup_seen')) return;
-    if (sessionStorage.getItem(SESSION_KEY)) return;
     var overlay = document.getElementById('kxPopupOverlay');
     if (!overlay) return;
     overlay.classList.add('active');
@@ -4739,7 +4783,6 @@ if (location.pathname === '/shop') {
   }
 
   window.kxPopupDismiss = function() {
-    sessionStorage.setItem(SESSION_KEY, '1');
     var overlay = document.getElementById('kxPopupOverlay');
     if (!overlay) return;
     overlay.classList.remove('active');
@@ -4748,6 +4791,12 @@ if (location.pathname === '/shop') {
 
   window.kxPopupHandleOverlayClick = function(e) {
     if (e.target.id === 'kxPopupOverlay') kxPopupDismiss();
+  };
+
+  window.kxShowFinalSuccess = function() {
+    document.getElementById('kxPopupInvite').style.display = 'none';
+    document.getElementById('kxPopupSuccess').style.display = 'block';
+    setTimeout(kxPopupDismiss, 3000);
   };
 
   window.kxPopupSubmit = async function(e) {
@@ -4770,10 +4819,8 @@ if (location.pathname === '/shop') {
       var data = await res.json();
       if (res.ok) {
         localStorage.setItem(STORAGE_KEY, '1');
-        sessionStorage.removeItem(SESSION_KEY);
         document.getElementById('kxPopupFormState').style.display = 'none';
-        document.getElementById('kxPopupSuccess').style.display = 'block';
-        setTimeout(kxPopupDismiss, 3200);
+        document.getElementById('kxPopupInvite').style.display = 'block';
       } else {
         errEl.textContent = data.error || 'Something went wrong. Try again.';
         errEl.style.display = 'block';
@@ -4785,6 +4832,40 @@ if (location.pathname === '/shop') {
       errEl.style.display = 'block';
       btn.disabled = false;
       btn.textContent = (typeof translations !== 'undefined' && translations[currentLang] && translations[currentLang]['popup-btn']) || "I'm in →";
+    }
+  };
+
+  window.kxInviteSubmit = async function(e) {
+    e.preventDefault();
+    var name  = document.getElementById('kxInviteFriendName').value.trim();
+    var email = document.getElementById('kxInviteFriendEmail').value.trim();
+    var btn   = document.getElementById('kxInviteSubmitBtn');
+    var errEl = document.getElementById('kxInviteError');
+
+    errEl.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = '…';
+
+    try {
+      var res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, email: email })
+      });
+      if (res.ok) {
+        kxShowFinalSuccess();
+      } else {
+        var data = await res.json();
+        errEl.textContent = data.error || 'Something went wrong. Try again.';
+        errEl.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Send invite →';
+      }
+    } catch(err) {
+      errEl.textContent = 'Connection error. Please try again.';
+      errEl.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Send invite →';
     }
   };
 
