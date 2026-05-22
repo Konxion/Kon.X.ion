@@ -1498,6 +1498,12 @@
     letter-spacing: 0.22em; text-transform: uppercase; text-decoration: none;
     transition: text-shadow 0.2s;
   }
+  html.entry-home #hero { visibility: hidden !important; }
+  html.entry-home #journey { opacity: 1 !important; pointer-events: all !important; }
+  html.entry-home #journeyContent { opacity: 1 !important; pointer-events: auto !important; transition: none !important; }
+  html.entry-home #tabBar { opacity: 1 !important; pointer-events: all !important; }
+  html.entry-home #langBtn { opacity: 1 !important; pointer-events: all !important; }
+  html.entry-home #homeLogoBtn { opacity: 1 !important; pointer-events: all !important; }
   html.entry-stay #hero { visibility: hidden !important; }
   html.entry-stay #stayPage { opacity: 1 !important; pointer-events: all !important; transition: none !important; }
   html.entry-stay #tabBar { opacity: 1 !important; pointer-events: all !important; }
@@ -1676,6 +1682,7 @@
   #kxPopupCard { padding: 40px 22px 28px; border-radius: 20px; }
 }
 </style>
+<script>if (location.pathname === '/home') document.documentElement.classList.add('entry-home');</script>
 <script>if (location.pathname === '/stay') document.documentElement.classList.add('entry-stay');</script>
 <script>if (location.pathname === '/eventinfo') document.documentElement.classList.add('entry-eventinfo');</script>
 <script>if (location.pathname === '/gettinghere') document.documentElement.classList.add('entry-gettinghere');</script>
@@ -2510,6 +2517,8 @@ function openJourney() {
   _journeyCloseTimers.forEach(t => clearTimeout(t));
   _journeyCloseTimers = [];
 
+  if (location.pathname !== '/home') history.pushState({}, '', '/home');
+
   const journey   = document.getElementById('journey');
   const content   = document.getElementById('journeyContent');
   const blackFade = document.getElementById('blackFade');
@@ -2620,6 +2629,23 @@ function closeJourney() {
     blackFade.style.pointerEvents = 'none';
   }, 1000));
 }
+
+// Start tunnel immediately on direct /home navigation
+window.addEventListener('load', function() {
+  if (location.pathname === '/home') {
+    heartExploding = true;
+    startTunnel();
+  }
+});
+
+// Back button: /home → / closes journey
+window.addEventListener('popstate', function() {
+  if (location.pathname === '/') {
+    closeJourney();
+  } else if (location.pathname === '/home') {
+    openJourney();
+  }
+});
 
 
 function startTunnel() {
