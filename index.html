@@ -2722,20 +2722,17 @@ function startTunnel() {
   };
   window.addEventListener('resize', _tunnelResizeHandler);
 
-  const RINGS      = isMobile ? 18 : 28;
+  const RINGS      = 28;
   const RING_SIDES = 8;
   const SPEED      = 1.4;
   const FOV        = 280;
   const E          = { r:4, g:180, b:10 };
-  const SHADOW     = isMobile ? 3 : 8;
+  const SHADOW     = 8;
   let offset = 0;
-  let frameSkip = 0;
 
   function draw() {
     if (!tunnelRAF && tunnelRAF !== 0) return;
     if (document.hidden) { tunnelRAF = requestAnimationFrame(draw); return; }
-    // Skip every other frame on mobile to halve GPU load
-    if (isMobile && (frameSkip++ % 2 !== 0)) { tunnelRAF = requestAnimationFrame(draw); return; }
     try {
       if (!ctx || !W || !H) { tunnelRAF = requestAnimationFrame(draw); return; }
       ctx.clearRect(0, 0, W, H);
@@ -2774,7 +2771,7 @@ function startTunnel() {
               ctx.lineTo(cx + Math.cos(angle) * nRadius, cy + Math.sin(angle) * nRadius);
               ctx.strokeStyle = `rgba(${E.r},${E.g},${E.b},${alpha * 0.45})`;
               ctx.lineWidth   = Math.max(0.3, perspective * 1.8) * 0.5;
-              ctx.shadowBlur  = isMobile ? 2 : 4;
+              ctx.shadowBlur  = 4;
               ctx.stroke();
             }
           }
