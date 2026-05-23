@@ -2642,6 +2642,8 @@ function closeJourney() {
     heartCanvas.style.opacity = '1';
     heroEl.style.opacity = '1';
     if (tunnelRAF) { cancelAnimationFrame(tunnelRAF); tunnelRAF = null; }
+    if (_tunnelResizeHandler) { window.removeEventListener('resize', _tunnelResizeHandler); _tunnelResizeHandler = null; }
+    clearTimeout(_tunnelResizeTimer);
   }, 800));
 
   _journeyCloseTimers.push(setTimeout(() => {
@@ -2668,11 +2670,31 @@ window.addEventListener('popstate', function() {
   }
 });
 
+// iOS BFCache restore — restart tunnel if journey was open
+window.addEventListener('pageshow', function(e) {
+  if (e.persisted && location.pathname === '/home') {
+    heartExploding = true;
+    if (tunnelRAF) { cancelAnimationFrame(tunnelRAF); tunnelRAF = null; }
+    startTunnel();
+  }
+});
+
+
+let _tunnelResizeHandler = null;
+let _tunnelResizeTimer   = null;
 
 function startTunnel() {
+  // Remove stale resize listener from any previous call
+  if (_tunnelResizeHandler) {
+    window.removeEventListener('resize', _tunnelResizeHandler);
+    _tunnelResizeHandler = null;
+  }
+  clearTimeout(_tunnelResizeTimer);
+
   const canvas = document.getElementById('tunnelCanvas');
   let ctx = canvas.getContext('2d');
   let W, H, cx, cy;
+  const isMobile = window.innerWidth <= 767;
 
   function resize() {
     const w = document.documentElement.clientWidth;
@@ -2681,82 +2703,85 @@ function startTunnel() {
     W = canvas.width  = w;
     H = canvas.height = h;
     cx = W / 2; cy = H / 2;
-    ctx = canvas.getContext('2d');
+    try { ctx = canvas.getContext('2d'); } catch(e) {}
   }
   resize();
-  let _tunnelResizeTimer;
-  window.addEventListener('resize', () => {
-    clearTimeout(_tunnelResizeTimer);
-    _tunnelResizeTimer = setTimeout(resize, 150);
-  });
 
-  const RINGS      = 28;
+  _tunnelResizeHandler = () => {
+    clearTimeout(_tunnelResizeTimer);
+    _tunnelResizeTimer = setTimeout(resize, 200);
+  };
+  window.addEventListener('resize', _tunnelResizeHandler);
+
+  const RINGS      = isMobile ? 18 : 28;
   const RING_SIDES = 8;
   const SPEED      = 1.4;
   const FOV        = 280;
   const E          = { r:4, g:180, b:10 };
-  let offset       = 0;
+  const SHADOW     = isMobile ? 3 : 8;
+  let offset = 0;
+  let frameSkip = 0;
 
   function draw() {
+    if (!tunnelRAF && tunnelRAF !== 0) return;
+    if (document.hidden) { tunnelRAF = requestAnimationFrame(draw); return; }
+    // Skip every other frame on mobile to halve GPU load
+    if (isMobile && (frameSkip++ % 2 !== 0)) { tunnelRAF = requestAnimationFrame(draw); return; }
     try {
-    if (!ctx || !W || !H) { tunnelRAF = requestAnimationFrame(draw); return; }
-    ctx.clearRect(0, 0, W, H);
-    offset = (offset + SPEED) % (1400 / RINGS);
+      if (!ctx || !W || !H) { tunnelRAF = requestAnimationFrame(draw); return; }
+      ctx.clearRect(0, 0, W, H);
+      offset = (offset + SPEED) % (1400 / RINGS);
 
-    for (let r = RINGS - 1; r >= 0; r--) {
-      const depth = r * (1400 / RINGS) + offset;
-      if (depth <= 0) continue;
+      for (let r = RINGS - 1; r >= 0; r--) {
+        const depth = r * (1400 / RINGS) + offset;
+        if (depth <= 0) continue;
+        const perspective = FOV / depth;
+        const radius      = 520 * perspective;
+        const alpha       = Math.min(1, depth / 200) * 0.55;
+        const bright      = Math.min(1, 1.2 - depth / 900);
 
-      const perspective = FOV / depth;
-      const radius      = 520 * perspective;
-      const alpha       = Math.min(1, depth / 200) * 0.55;
-      const bright      = Math.min(1, 1.2 - depth / 900);
+        ctx.beginPath();
+        for (let s = 0; s <= RING_SIDES; s++) {
+          const angle = (s / RING_SIDES) * Math.PI * 2 - Math.PI / RING_SIDES;
+          const px = cx + Math.cos(angle) * radius;
+          const py = cy + Math.sin(angle) * radius;
+          s === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+        }
+        ctx.strokeStyle = `rgba(${E.r},${E.g},${E.b},${alpha})`;
+        ctx.lineWidth   = Math.max(0.3, perspective * 1.8);
+        ctx.shadowColor = `rgba(${E.r},${E.g},${E.b},${bright * 0.6})`;
+        ctx.shadowBlur  = SHADOW * bright;
+        ctx.stroke();
 
-      // Octagonal ring
-      ctx.beginPath();
-      for (let s = 0; s <= RING_SIDES; s++) {
-        const angle = (s / RING_SIDES) * Math.PI * 2 - Math.PI / RING_SIDES;
-        const px = cx + Math.cos(angle) * radius;
-        const py = cy + Math.sin(angle) * radius;
-        s === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
-      }
-      ctx.strokeStyle = `rgba(${E.r},${E.g},${E.b},${alpha})`;
-      ctx.lineWidth   = Math.max(0.3, perspective * 1.8);
-      ctx.shadowColor = `rgba(${E.r},${E.g},${E.b},${bright * 0.6})`;
-      ctx.shadowBlur  = 8 * bright;
-      ctx.stroke();
-
-      // Spoke lines every other ring
-      if (r < RINGS - 1 && r % 2 === 0) {
-        const nDepth = (r + 1) * (1000 / RINGS) + offset;
-        if (nDepth > 0) {
-          const nPersp  = FOV / nDepth;
-          const nRadius = 520 * nPersp;
-          for (let s = 0; s < RING_SIDES; s++) {
-            const angle = (s / RING_SIDES) * Math.PI * 2 - Math.PI / RING_SIDES;
-            ctx.beginPath();
-            ctx.moveTo(cx + Math.cos(angle) * radius,  cy + Math.sin(angle) * radius);
-            ctx.lineTo(cx + Math.cos(angle) * nRadius, cy + Math.sin(angle) * nRadius);
-            ctx.strokeStyle = `rgba(${E.r},${E.g},${E.b},${alpha * 0.45})`;
-            ctx.lineWidth   = Math.max(0.3, perspective * 1.8) * 0.5;
-            ctx.shadowBlur  = 4;
-            ctx.stroke();
+        if (r < RINGS - 1 && r % 2 === 0) {
+          const nDepth = (r + 1) * (1000 / RINGS) + offset;
+          if (nDepth > 0) {
+            const nPersp  = FOV / nDepth;
+            const nRadius = 520 * nPersp;
+            for (let s = 0; s < RING_SIDES; s++) {
+              const angle = (s / RING_SIDES) * Math.PI * 2 - Math.PI / RING_SIDES;
+              ctx.beginPath();
+              ctx.moveTo(cx + Math.cos(angle) * radius,  cy + Math.sin(angle) * radius);
+              ctx.lineTo(cx + Math.cos(angle) * nRadius, cy + Math.sin(angle) * nRadius);
+              ctx.strokeStyle = `rgba(${E.r},${E.g},${E.b},${alpha * 0.45})`;
+              ctx.lineWidth   = Math.max(0.3, perspective * 1.8) * 0.5;
+              ctx.shadowBlur  = isMobile ? 2 : 4;
+              ctx.stroke();
+            }
           }
         }
       }
-    }
 
-    // Center glow
-    const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.min(W,H)*0.55);
-    grd.addColorStop(0, 'rgba(4,180,10,0.07)');
-    grd.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = grd;
-    ctx.shadowBlur = 0;
-    ctx.fillRect(0, 0, W, H);
+      const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.min(W,H)*0.55);
+      grd.addColorStop(0, 'rgba(4,180,10,0.07)');
+      grd.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = grd;
+      ctx.shadowBlur = 0;
+      ctx.fillRect(0, 0, W, H);
 
-    tunnelRAF = requestAnimationFrame(draw);
+      tunnelRAF = requestAnimationFrame(draw);
     } catch(e) {
-      ctx = canvas.getContext('2d');
+      try { ctx = canvas.getContext('2d'); } catch(e2) {}
       tunnelRAF = requestAnimationFrame(draw);
     }
   }
