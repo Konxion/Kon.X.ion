@@ -1050,6 +1050,16 @@
   @keyframes diamondPulse { 0%,100%{opacity:0.6;transform:rotate(45deg) scale(1)} 50%{opacity:1;transform:rotate(45deg) scale(1.3)} }
   @keyframes lineFade    { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
   @keyframes natureDrift { 0%{opacity:0;transform:translateY(10px) scale(0.6)} 25%{opacity:1;transform:translateY(-8px) scale(1)} 70%{opacity:0.8;transform:translateY(-28px) scale(0.9)} 100%{opacity:0;transform:translateY(-55px) scale(0.7)} }
+  /* Stay page cards: transparent on mobile so room photos show through; dark glass on desktop */
+  .stay-card {
+    background: rgba(0,0,0,0.58);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+  @media (max-width: 767px) {
+    .stay-card { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }
+  }
+
   @keyframes stayKenBurns { from{transform:scale(1.0)} to{transform:scale(1.04)} }
   .stay-slide {
     position:absolute; inset:0;
@@ -1827,7 +1837,7 @@
     <div class="stay-slide" style="background-image:url('stay-bg-5.jpeg');"></div>
   </div>
   <!-- Dark overlay for readability -->
-  <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to bottom, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.68) 50%, rgba(0,0,0,0.88) 100%);"></div>
+  <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.38) 50%, rgba(0,0,0,0.65) 100%);"></div>
   <!-- Inner scroll container -->
   <div id="stayScroll" style="position:absolute;inset:0;z-index:2;overflow-y:scroll;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;height:100%;">
   <button onclick="closeStay()" class="back-btn" id="stayBack" data-i18n="back-btn">← Back</button>
@@ -1839,7 +1849,7 @@
     </div>
 
     <!-- CABIN DETAILS — first -->
-    <div style="background:rgba(0,0,0,0.28);border:0.5px solid rgba(4,200,10,0.28);border-radius:20px;padding:24px;margin-bottom:14px;">
+    <div class="stay-card" style="border:0.5px solid rgba(4,200,10,0.28);border-radius:20px;padding:24px;margin-bottom:14px;">
       <div style="font-family:'Josefin Sans',sans-serif;font-size:14px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);margin-bottom:16px;" data-i18n="stay-details-label">Cabin Details</div>
       <div style="text-align:center;padding:12px 0;margin-bottom:16px;border-top:0.5px solid rgba(4,200,10,0.25);border-bottom:0.5px solid rgba(4,200,10,0.25);">
         <div style="display:flex;gap:8px;justify-content:center;margin-bottom:10px;">
@@ -1862,9 +1872,9 @@
             <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.32em;text-transform:uppercase;color:rgba(4,220,10,0.8);" data-i18n="stay-lux-tier">Luxury</div>
             <span style="font-size:10px;letter-spacing:0.15em;color:rgba(4,220,10,1);font-family:'Josefin Sans',sans-serif;text-transform:uppercase;text-shadow:0 0 8px rgba(4,220,10,0.8);white-space:nowrap;border:0.5px solid rgba(4,220,10,0.5);border-radius:999px;padding:5px 12px;">View ›</span>
           </div>
-          <div style="font-family:'DM Sans',sans-serif;font-size:18px;font-weight:400;color:rgba(255,255,255,0.95);letter-spacing:0.01em;margin-bottom:4px;" data-i18n="stay-lux-name">4 cabins · Sleeps 2 or 4</div>
-          <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:rgba(255,255,255,0.45);letter-spacing:0.03em;margin-bottom:14px;" data-i18n="stay-lux-beds">California King or 2 double beds</div>
-          <div style="font-family:'Josefin Sans',sans-serif;font-size:18px;letter-spacing:0.08em;color:rgba(4,220,10,1);text-shadow:0 0 12px rgba(4,220,10,0.45);">$419 <span style="font-size:11px;font-weight:300;color:rgba(255,255,255,0.38);letter-spacing:0.14em;">· COP 1,500,000</span></div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:18px;font-weight:400;color:rgba(255,255,255,0.95);letter-spacing:0.01em;margin-bottom:4px;text-shadow:0 1px 10px rgba(0,0,0,0.9);" data-i18n="stay-lux-name">4 cabins · Sleeps 2 or 4</div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:rgba(255,255,255,0.65);letter-spacing:0.03em;margin-bottom:14px;text-shadow:0 1px 8px rgba(0,0,0,0.9);" data-i18n="stay-lux-beds">California King or 2 double beds</div>
+          <div style="font-family:'Josefin Sans',sans-serif;font-size:18px;letter-spacing:0.08em;color:rgba(4,220,10,1);text-shadow:0 0 12px rgba(4,220,10,0.45),0 1px 8px rgba(0,0,0,0.9);">$419 <span style="font-size:11px;font-weight:300;color:rgba(255,255,255,0.55);letter-spacing:0.14em;">· COP 1,500,000</span></div>
         </div>
         <div style="height:0.5px;background:rgba(4,200,10,0.2);"></div>
         <!-- Premium cabin row -->
@@ -1873,35 +1883,35 @@
             <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.32em;text-transform:uppercase;color:rgba(4,220,10,0.8);" data-i18n="stay-prem-tier">Premium</div>
             <span style="font-size:10px;letter-spacing:0.15em;color:rgba(4,220,10,1);font-family:'Josefin Sans',sans-serif;text-transform:uppercase;text-shadow:0 0 8px rgba(4,220,10,0.8);white-space:nowrap;border:0.5px solid rgba(4,220,10,0.5);border-radius:999px;padding:5px 12px;">View ›</span>
           </div>
-          <div style="font-family:'DM Sans',sans-serif;font-size:18px;font-weight:400;color:rgba(255,255,255,0.95);letter-spacing:0.01em;margin-bottom:4px;" data-i18n="stay-prem-name">5 cabins · Sleeps 4</div>
-          <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:rgba(255,255,255,0.45);letter-spacing:0.03em;margin-bottom:14px;" data-i18n="stay-prem-beds">2 double beds</div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:18px;font-weight:400;color:rgba(255,255,255,0.95);letter-spacing:0.01em;margin-bottom:4px;text-shadow:0 1px 10px rgba(0,0,0,0.9);" data-i18n="stay-prem-name">5 cabins · Sleeps 4</div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:300;color:rgba(255,255,255,0.65);letter-spacing:0.03em;margin-bottom:14px;text-shadow:0 1px 8px rgba(0,0,0,0.9);" data-i18n="stay-prem-beds">2 double beds</div>
           <div style="font-family:'Josefin Sans',sans-serif;font-size:18px;letter-spacing:0.08em;color:rgba(4,220,10,1);text-shadow:0 0 12px rgba(4,220,10,0.45);">$249 <span style="font-size:11px;font-weight:300;color:rgba(255,255,255,0.38);letter-spacing:0.14em;">· COP 900,000</span></div>
         </div>
       </div>
     </div>
 
     <!-- WHAT'S INCLUDED -->
-    <div style="background:rgba(0,0,0,0.28);border:0.5px solid rgba(4,200,10,0.28);border-radius:20px;padding:24px;margin-bottom:14px;">
+    <div class="stay-card" style="border:0.5px solid rgba(4,200,10,0.28);border-radius:20px;padding:24px;margin-bottom:14px;">
       <div style="margin-bottom:20px;">
         <div style="font-family:'Josefin Sans',sans-serif;font-size:14px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);margin-bottom:6px;" data-i18n="stay-included-label">What's Included</div>
         <div data-i18n="stay-included-note" style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.2em;color:rgba(4,220,10,0.65);text-transform:uppercase;">With cabin rental</div>
       </div>
       <!-- Welcome -->
       <div style="font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(4,200,10,0.9);margin-bottom:8px;" data-i18n="stay-group-welcome">Welcome</div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,0.95);line-height:1.75;margin-bottom:20px;" data-i18n="stay-welcome-body">· Welcome drink upon arrival<br>· Free breakfast</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,0.95);line-height:1.75;margin-bottom:20px;text-shadow:0 1px 10px rgba(0,0,0,0.85);" data-i18n="stay-welcome-body">· Welcome drink upon arrival<br>· Free breakfast</div>
       <div style="height:0.5px;background:rgba(4,200,10,0.18);margin-bottom:18px;"></div>
       <!-- Activities -->
       <div style="font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(4,200,10,0.9);margin-bottom:8px;" data-i18n="stay-group-activities">Activities</div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,0.95);line-height:1.75;margin-bottom:20px;" data-i18n="stay-activities-body">· Electric meditation class (1.5 hrs) <span class="med-tip" data-tip="A guided breathwork and sound healing session using binaural frequencies. Leaves you energized and mentally clear." tabindex="0" ontouchstart="this.classList.toggle('tip-open')">i</span><br>· Free padel class at <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 people)<br>· Kayak</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,0.95);line-height:1.75;margin-bottom:20px;text-shadow:0 1px 10px rgba(0,0,0,0.85);" data-i18n="stay-activities-body">· Electric meditation class (1.5 hrs) <span class="med-tip" data-tip="A guided breathwork and sound healing session using binaural frequencies. Leaves you energized and mentally clear." tabindex="0" ontouchstart="this.classList.toggle('tip-open')">i</span><br>· Free padel class at <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 people)<br>· Kayak</div>
       <div style="height:0.5px;background:rgba(4,200,10,0.18);margin-bottom:18px;"></div>
       <!-- Amenities -->
       <div style="font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(4,200,10,0.9);margin-bottom:8px;" data-i18n="stay-group-amenities">Amenities</div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,0.95);line-height:1.75;" data-i18n="stay-amenities-body">· Hot tub<br>· Room service<br>· WiFi</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,0.95);line-height:1.75;text-shadow:0 1px 10px rgba(0,0,0,0.85);" data-i18n="stay-amenities-body">· Hot tub<br>· Room service<br>· WiFi</div>
     </div>
 
 
     <!-- BOOK -->
-    <div style="background:rgba(0,0,0,0.28);border:0.5px solid rgba(4,200,10,0.28);border-radius:20px;padding:24px;margin-bottom:14px;">
+    <div class="stay-card" style="border:0.5px solid rgba(4,200,10,0.28);border-radius:20px;padding:24px;margin-bottom:14px;">
       <div style="font-family:'Josefin Sans',sans-serif;font-size:14px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);margin-bottom:12px;" data-i18n="stay-reserve-label">Reserve a Cabin</div>
       <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,1);line-height:1.75;margin-bottom:18px;" data-i18n="stay-reserve-body">Each cabin is all-inclusive — your stay and party entry in one. Spots are limited.</div>
       <button onclick="openCabinSheet()" style="display:block;width:100%;text-align:center;background:rgba(4,200,10,0.9);color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;padding:16px 24px;border-radius:999px;border:none;cursor:pointer;" data-i18n="stay-cta">Book</button>
@@ -2661,19 +2671,23 @@ window.addEventListener('popstate', function() {
 
 function startTunnel() {
   const canvas = document.getElementById('tunnelCanvas');
-  const ctx    = canvas.getContext('2d');
+  let ctx = canvas.getContext('2d');
   let W, H, cx, cy;
 
   function resize() {
-    W = canvas.width  = document.documentElement.clientWidth;
-    H = canvas.height = document.documentElement.clientHeight;
+    const w = document.documentElement.clientWidth;
+    const h = document.documentElement.clientHeight;
+    if (!w || !h || w < 10 || h < 10) return;
+    W = canvas.width  = w;
+    H = canvas.height = h;
     cx = W / 2; cy = H / 2;
+    ctx = canvas.getContext('2d');
   }
   resize();
   let _tunnelResizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(_tunnelResizeTimer);
-    _tunnelResizeTimer = setTimeout(resize, 50);
+    _tunnelResizeTimer = setTimeout(resize, 150);
   });
 
   const RINGS      = 28;
@@ -2684,6 +2698,8 @@ function startTunnel() {
   let offset       = 0;
 
   function draw() {
+    try {
+    if (!ctx || !W || !H) { tunnelRAF = requestAnimationFrame(draw); return; }
     ctx.clearRect(0, 0, W, H);
     offset = (offset + SPEED) % (1400 / RINGS);
 
@@ -2739,6 +2755,10 @@ function startTunnel() {
     ctx.fillRect(0, 0, W, H);
 
     tunnelRAF = requestAnimationFrame(draw);
+    } catch(e) {
+      ctx = canvas.getContext('2d');
+      tunnelRAF = requestAnimationFrame(draw);
+    }
   }
   draw();
 }
@@ -3234,7 +3254,9 @@ let heartExplodeVels = [];
   }
 
   function resize() {
-    W=canvas.width=document.documentElement.clientWidth; H=canvas.height=document.documentElement.clientHeight;
+    const w=document.documentElement.clientWidth, h=document.documentElement.clientHeight;
+    if (!w || !h || w < 10 || h < 10) return;
+    W=canvas.width=w; H=canvas.height=h;
     cx=W/2; cy=H/2; heartScale=Math.min(W,H)*0.26;
   }
 
