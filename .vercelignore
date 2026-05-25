@@ -4,7 +4,6 @@
 *.mov
 *.MOV
 exports/
-admin/
 slide1-bg.mp4
 slide2-bg.mp4
 slide3-bg.mp4
