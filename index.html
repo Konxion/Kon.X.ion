@@ -1518,8 +1518,22 @@
     color: rgba(255,255,255,0.22); text-decoration: none;
     display: inline-block; margin: 3px 8px;
     transition: color 0.2s;
+    background: none; border: none; cursor: pointer; padding: 0;
   }
   .legal-link:hover { color: rgba(255,255,255,0.45); }
+  #legalOverlay { position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,0);pointer-events:none;transition:background 0.3s; }
+  #legalOverlay.open { background:rgba(0,0,0,0.78);pointer-events:all; }
+  #legalSheet { position:fixed;bottom:0;left:0;right:0;z-index:9501;max-height:90vh;background:#090909;border-radius:22px 22px 0 0;border-top:0.5px solid rgba(4,200,10,0.18);transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);overflow:hidden;display:flex;flex-direction:column; }
+  #legalSheet.open { transform:translateY(0); }
+  #legalScrollArea { overflow-y:auto;flex:1;padding:8px 24px 60px;-webkit-overflow-scrolling:touch; }
+  #legalContent h1 { font-family:'DM Sans',sans-serif;font-weight:200;font-size:24px;letter-spacing:0.12em;text-transform:uppercase;color:#fff;margin-bottom:4px;margin-top:20px; }
+  #legalContent .legal-sub { font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(4,200,10,0.6);margin-bottom:32px; }
+  #legalContent h2 { font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(4,200,10,0.7);margin:28px 0 10px; }
+  #legalContent p { font-size:14px;color:rgba(255,255,255,0.62);line-height:1.8;margin-bottom:12px; }
+  #legalContent ul { padding-left:18px;margin-bottom:12px; }
+  #legalContent ul li { font-size:14px;color:rgba(255,255,255,0.62);line-height:1.8;margin-bottom:5px; }
+  #legalContent a { color:rgba(4,200,10,0.75);text-decoration:none;border-bottom:0.5px solid rgba(4,200,10,0.3); }
+  #legalContent .legal-divider { width:36px;height:0.5px;background:rgba(4,200,10,0.2);margin:32px 0; }
   html.entry-home #hero { visibility: hidden !important; }
   html.entry-home #journey { opacity: 1 !important; pointer-events: all !important; }
   html.entry-home #journeyContent { opacity: 1 !important; pointer-events: auto !important; transition: none !important; }
@@ -1960,12 +1974,11 @@ document.addEventListener('gesturestart', function(e) {
       <img src="konxion-logo.png" alt="KON.X.ION" style="width:min(72%,320px);filter:invert(1) drop-shadow(0 0 18px rgba(4,220,10,0.45));opacity:0.92;">
     </div>
     <div class="legal-footer">
-      <a href="/privacy.html" class="legal-link" target="_blank" rel="noopener">Privacy Policy</a>
-      <a href="/california-privacy.html" class="legal-link" target="_blank" rel="noopener">California Privacy Notice</a>
-      <a href="/terms.html" class="legal-link" target="_blank" rel="noopener">Terms of Sale</a>
-      <a href="/ticket-terms.html" class="legal-link" target="_blank" rel="noopener">Festival Ticket Terms</a>
-      <a href="/terms-of-use.html" class="legal-link" target="_blank" rel="noopener">Terms of Use</a>
-      <a href="/accessibility.html" class="legal-link" target="_blank" rel="noopener">Accessibility Statement</a>
+      <button onclick="openLegal('privacy')" class="legal-link">Privacy Policy</button>
+      <button onclick="openLegal('california')" class="legal-link">California Privacy Notice</button>
+      <button onclick="openLegal('terms')" class="legal-link">Terms of Sale</button>
+      <button onclick="openLegal('ticket-terms')" class="legal-link">Festival Ticket Terms</button>
+      <button onclick="openLegal('terms-of-use')" class="legal-link">Terms of Use</button>
     </div>
 
   </div><!-- end content -->
@@ -2034,12 +2047,11 @@ document.addEventListener('gesturestart', function(e) {
     <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:56px;color:#fff;letter-spacing:0.06em;margin-bottom:16px;" data-i18n="shop-merch">Merch</div>
     <div style="font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(4,200,10,0.8);margin-bottom:48px;" data-i18n="shop-soon">Coming Soon</div>
     <div class="legal-footer">
-      <a href="/privacy.html" class="legal-link" target="_blank" rel="noopener">Privacy Policy</a>
-      <a href="/california-privacy.html" class="legal-link" target="_blank" rel="noopener">California Privacy Notice</a>
-      <a href="/terms.html" class="legal-link" target="_blank" rel="noopener">Terms of Sale</a>
-      <a href="/ticket-terms.html" class="legal-link" target="_blank" rel="noopener">Festival Ticket Terms</a>
-      <a href="/terms-of-use.html" class="legal-link" target="_blank" rel="noopener">Terms of Use</a>
-      <a href="/accessibility.html" class="legal-link" target="_blank" rel="noopener">Accessibility Statement</a>
+      <button onclick="openLegal('privacy')" class="legal-link">Privacy Policy</button>
+      <button onclick="openLegal('california')" class="legal-link">California Privacy Notice</button>
+      <button onclick="openLegal('terms')" class="legal-link">Terms of Sale</button>
+      <button onclick="openLegal('ticket-terms')" class="legal-link">Festival Ticket Terms</button>
+      <button onclick="openLegal('terms-of-use')" class="legal-link">Terms of Use</button>
     </div>
   </div>
 </div>
@@ -2155,12 +2167,11 @@ document.addEventListener('gesturestart', function(e) {
       <div id="lineupSubConfirm" style="display:none;font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(4,220,10,0.85);letter-spacing:0.04em;">You're on the list.</div>
     </div>
     <div class="legal-footer">
-      <a href="/privacy.html" class="legal-link" target="_blank" rel="noopener">Privacy Policy</a>
-      <a href="/california-privacy.html" class="legal-link" target="_blank" rel="noopener">California Privacy Notice</a>
-      <a href="/terms.html" class="legal-link" target="_blank" rel="noopener">Terms of Sale</a>
-      <a href="/ticket-terms.html" class="legal-link" target="_blank" rel="noopener">Festival Ticket Terms</a>
-      <a href="/terms-of-use.html" class="legal-link" target="_blank" rel="noopener">Terms of Use</a>
-      <a href="/accessibility.html" class="legal-link" target="_blank" rel="noopener">Accessibility Statement</a>
+      <button onclick="openLegal('privacy')" class="legal-link">Privacy Policy</button>
+      <button onclick="openLegal('california')" class="legal-link">California Privacy Notice</button>
+      <button onclick="openLegal('terms')" class="legal-link">Terms of Sale</button>
+      <button onclick="openLegal('ticket-terms')" class="legal-link">Festival Ticket Terms</button>
+      <button onclick="openLegal('terms-of-use')" class="legal-link">Terms of Use</button>
     </div>
 
   </div>
@@ -2254,12 +2265,11 @@ document.addEventListener('gesturestart', function(e) {
       <img src="konxion-logo.png" alt="KON.X.ION" style="width:min(72%,320px);filter:invert(1) drop-shadow(0 0 18px rgba(4,220,10,0.45));opacity:0.92;">
     </div>
     <div class="legal-footer">
-      <a href="/privacy.html" class="legal-link" target="_blank" rel="noopener">Privacy Policy</a>
-      <a href="/california-privacy.html" class="legal-link" target="_blank" rel="noopener">California Privacy Notice</a>
-      <a href="/terms.html" class="legal-link" target="_blank" rel="noopener">Terms of Sale</a>
-      <a href="/ticket-terms.html" class="legal-link" target="_blank" rel="noopener">Festival Ticket Terms</a>
-      <a href="/terms-of-use.html" class="legal-link" target="_blank" rel="noopener">Terms of Use</a>
-      <a href="/accessibility.html" class="legal-link" target="_blank" rel="noopener">Accessibility Statement</a>
+      <button onclick="openLegal('privacy')" class="legal-link">Privacy Policy</button>
+      <button onclick="openLegal('california')" class="legal-link">California Privacy Notice</button>
+      <button onclick="openLegal('terms')" class="legal-link">Terms of Sale</button>
+      <button onclick="openLegal('ticket-terms')" class="legal-link">Festival Ticket Terms</button>
+      <button onclick="openLegal('terms-of-use')" class="legal-link">Terms of Use</button>
     </div>
 
   </div>
@@ -2368,12 +2378,11 @@ document.addEventListener('gesturestart', function(e) {
       <a href="mailto:support@konxion.us?subject=KON.X.ION%20Question" class="gh-footer-email gh-footer-glow">support@konxion.us</a>
     </div>
     <div class="legal-footer" style="margin-top:8px;">
-      <a href="/privacy.html" class="legal-link" target="_blank" rel="noopener">Privacy Policy</a>
-      <a href="/california-privacy.html" class="legal-link" target="_blank" rel="noopener">California Privacy Notice</a>
-      <a href="/terms.html" class="legal-link" target="_blank" rel="noopener">Terms of Sale</a>
-      <a href="/ticket-terms.html" class="legal-link" target="_blank" rel="noopener">Festival Ticket Terms</a>
-      <a href="/terms-of-use.html" class="legal-link" target="_blank" rel="noopener">Terms of Use</a>
-      <a href="/accessibility.html" class="legal-link" target="_blank" rel="noopener">Accessibility Statement</a>
+      <button onclick="openLegal('privacy')" class="legal-link">Privacy Policy</button>
+      <button onclick="openLegal('california')" class="legal-link">California Privacy Notice</button>
+      <button onclick="openLegal('terms')" class="legal-link">Terms of Sale</button>
+      <button onclick="openLegal('ticket-terms')" class="legal-link">Festival Ticket Terms</button>
+      <button onclick="openLegal('terms-of-use')" class="legal-link">Terms of Use</button>
     </div>
 
   </div>
@@ -2412,12 +2421,11 @@ document.addEventListener('gesturestart', function(e) {
   </div>
   <button id="beginBtn" data-i18n="begin-btn">Begin Journey</button>
   <div style="position:absolute;bottom:12px;left:0;right:0;" class="legal-footer">
-    <a href="/privacy.html" class="legal-link" target="_blank" rel="noopener">Privacy Policy</a>
-    <a href="/california-privacy.html" class="legal-link" target="_blank" rel="noopener">California Privacy Notice</a>
-    <a href="/terms.html" class="legal-link" target="_blank" rel="noopener">Terms of Sale</a>
-    <a href="/ticket-terms.html" class="legal-link" target="_blank" rel="noopener">Festival Ticket Terms</a>
-    <a href="/terms-of-use.html" class="legal-link" target="_blank" rel="noopener">Terms of Use</a>
-    <a href="/accessibility.html" class="legal-link" target="_blank" rel="noopener">Accessibility Statement</a>
+    <button onclick="openLegal('privacy')" class="legal-link">Privacy Policy</button>
+    <button onclick="openLegal('california')" class="legal-link">California Privacy Notice</button>
+    <button onclick="openLegal('terms')" class="legal-link">Terms of Sale</button>
+    <button onclick="openLegal('ticket-terms')" class="legal-link">Festival Ticket Terms</button>
+    <button onclick="openLegal('terms-of-use')" class="legal-link">Terms of Use</button>
   </div>
 </section>
 
@@ -2476,6 +2484,176 @@ document.addEventListener('gesturestart', function(e) {
     <div class="send-confirm" id="sendConfirm"></div>
   </div>
 </div>
+
+<!-- ═══ LEGAL SHEET ═══ -->
+<div id="legalOverlay" onclick="closeLegal()"></div>
+<div id="legalSheet" role="dialog" aria-modal="true">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px 12px;border-bottom:0.5px solid rgba(255,255,255,0.06);flex-shrink:0;">
+    <div style="width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,0.15);margin:0 auto;position:absolute;left:50%;transform:translateX(-50%);top:10px;"></div>
+    <button onclick="closeLegal()" aria-label="Close" style="margin-left:auto;background:rgba(255,255,255,0.06);border:none;border-radius:50%;width:32px;height:32px;color:rgba(255,255,255,0.55);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+  </div>
+  <div id="legalScrollArea"><div id="legalContent"></div></div>
+</div>
+
+<!-- ═══ LEGAL CONTENT TEMPLATES ═══ -->
+<template id="legal-privacy">
+  <h1>Privacy Policy</h1>
+  <div class="legal-sub">KonXion · Last updated May 2026</div>
+  <p>This policy explains how KonXion ("we", "us") collects and uses your personal information when you purchase tickets, book a cabin, or contact us through konxion.us. We comply with Colombia's data protection law (Ley 1581 de 2012) and applicable international standards.</p>
+  <h2>What we collect</h2>
+  <p>When you buy a ticket or book a cabin: your name, email address, and payment information. Payment data is processed directly by Stripe and never stored on our servers.</p>
+  <p>When you contact us: your name, email address, and the message you send.</p>
+  <p>We do not collect browsing data, cookies, or any information beyond what you voluntarily provide.</p>
+  <h2>How we use it</h2>
+  <p>Your information is used solely to fulfill your ticket or cabin reservation, send you event updates, and respond to your messages. We do not sell, rent, or share your data with third parties for marketing purposes.</p>
+  <h2>Third-party processors</h2>
+  <p><strong style="color:rgba(255,255,255,0.85);">Stripe</strong> processes payments. Your card data goes directly to Stripe and is subject to their privacy policy.</p>
+  <p><strong style="color:rgba(255,255,255,0.85);">Resend</strong> delivers transactional emails. Your name and email are transmitted to Resend for this purpose.</p>
+  <p><strong style="color:rgba(255,255,255,0.85);">Vercel</strong> hosts this website. Standard server logs may be retained by Vercel per their privacy policy.</p>
+  <h2>Data retention</h2>
+  <p>We retain your information for as long as necessary to fulfill your reservation and comply with legal obligations, and no longer than two years after the event.</p>
+  <h2>Your rights</h2>
+  <p>Under Ley 1581 you have the right to access, correct, or request deletion of your personal data at any time. Email us at <a href="mailto:konxion@icloud.com">konxion@icloud.com</a>. We will respond within 15 business days.</p>
+  <h2>Contact</h2>
+  <p>KonXion · <a href="mailto:konxion@icloud.com">konxion@icloud.com</a></p>
+  <div class="legal-divider"></div>
+  <p style="font-size:11px;color:rgba(255,255,255,0.2);">© 2026 KonXion</p>
+</template>
+
+<template id="legal-california">
+  <h1>California Privacy Notice</h1>
+  <div class="legal-sub">KonXion · Last updated May 2026</div>
+  <p>This notice is provided to California residents under the California Consumer Privacy Act (CCPA) and California Privacy Rights Act (CPRA). It supplements our Privacy Policy.</p>
+  <h2>Information we collect</h2>
+  <p>We collect the following categories of personal information:</p>
+  <ul>
+    <li><strong style="color:rgba(255,255,255,0.8);">Identifiers</strong> — name, email address</li>
+    <li><strong style="color:rgba(255,255,255,0.8);">Commercial information</strong> — ticket and cabin purchase records</li>
+    <li><strong style="color:rgba(255,255,255,0.8);">Internet activity</strong> — server logs collected by our hosting provider (Vercel)</li>
+  </ul>
+  <p>We do not collect sensitive personal information, precise geolocation, biometric data, or data from minors.</p>
+  <h2>How we use it</h2>
+  <p>We use this information to process your order, send confirmations and event updates, and respond to inquiries. We do not sell or share your personal information with third parties for cross-context behavioral advertising.</p>
+  <h2>Your California rights</h2>
+  <ul>
+    <li><strong style="color:rgba(255,255,255,0.8);">Right to know</strong> — you may request the categories and specific pieces of personal information we have collected about you</li>
+    <li><strong style="color:rgba(255,255,255,0.8);">Right to delete</strong> — you may request deletion of your personal information, subject to certain exceptions</li>
+    <li><strong style="color:rgba(255,255,255,0.8);">Right to correct</strong> — you may request correction of inaccurate personal information</li>
+    <li><strong style="color:rgba(255,255,255,0.8);">Right to opt-out</strong> — we do not sell or share personal information, so no opt-out is needed</li>
+    <li><strong style="color:rgba(255,255,255,0.8);">Right to non-discrimination</strong> — we will not discriminate against you for exercising any of these rights</li>
+  </ul>
+  <h2>How to submit a request</h2>
+  <p>Email <a href="mailto:konxion@icloud.com">konxion@icloud.com</a> with your request. We will respond within 45 days. We may ask you to verify your identity before processing your request.</p>
+  <h2>Contact</h2>
+  <p>KonXion · <a href="mailto:konxion@icloud.com">konxion@icloud.com</a></p>
+  <div class="legal-divider"></div>
+  <p style="font-size:11px;color:rgba(255,255,255,0.2);">© 2026 KonXion</p>
+</template>
+
+<template id="legal-terms">
+  <h1>Terms of Sale</h1>
+  <div class="legal-sub">KonXion · Last updated May 2026</div>
+  <p>These terms govern the purchase of tickets and cabin bookings for the KonXion event on Saturday, July 18, 2026, at Bethel Lozana, Guatapé, Colombia. By completing a purchase on konxion.us you agree to these terms.</p>
+  <h2>The event</h2>
+  <p>KonXion is an open-air music event featuring international DJs. Doors open at 1PM and the event runs until 5AM on Sunday, July 19, 2026. The venue is Bethel Lozana, Guatapé, Antioquia, Colombia.</p>
+  <h2>General admission tickets</h2>
+  <p>General admission tickets are <strong style="color:rgba(255,255,255,0.85);">$35 USD</strong> per person. Maximum 10 tickets per transaction. Capacity is limited to 120 attendees.</p>
+  <h2>Cabin bookings</h2>
+  <p>Cabin packages include event admission plus one night's accommodation at Bethel Lozana.</p>
+  <ul>
+    <li><strong style="color:rgba(255,255,255,0.85);">Luxury Cabin — $419 USD</strong> · Sleeps 2–4 · King or two double beds</li>
+    <li><strong style="color:rgba(255,255,255,0.85);">Premium Cabin — $249 USD</strong> · Sleeps up to 4 · Two double beds</li>
+  </ul>
+  <p>All cabin prices are per cabin, not per person, and include general admission for all occupants.</p>
+  <h2>Payment</h2>
+  <p>All prices are in USD. Payments are processed securely by Stripe. We do not store your card details.</p>
+  <h2>Cancellation & refunds</h2>
+  <p><strong style="color:rgba(255,255,255,0.85);">Tickets:</strong> All sales are final. No refunds or exchanges, except as required by law or in the event of organiser cancellation.</p>
+  <p><strong style="color:rgba(255,255,255,0.85);">Cabins:</strong> Non-refundable after purchase. Non-transferable without prior written consent.</p>
+  <p><strong style="color:rgba(255,255,255,0.85);">Right of withdrawal (Colombia):</strong> Under Ley 1480 de 2011, consumers who purchase online may withdraw within 5 business days of the transaction, provided the event has not yet occurred. Email <a href="mailto:konxion@icloud.com">konxion@icloud.com</a>. Refunds issued within 15 business days.</p>
+  <h2>Event cancellation or postponement</h2>
+  <p>If KonXion is cancelled, full refunds will be issued. If postponed, tickets remain valid; refunds may be requested within 14 days of the postponement announcement.</p>
+  <h2>Entry & conduct</h2>
+  <ul>
+    <li>Attendees must be 18 or older. Valid government-issued ID required for entry.</li>
+    <li>Tickets and confirmations must be presented (digital or printed) at the door.</li>
+    <li>The organiser may refuse entry or remove any person whose behaviour is deemed unsafe or disruptive.</li>
+    <li>No professional recording equipment. Commercial photography or video is prohibited without written consent.</li>
+    <li>The organiser is not responsible for loss, theft, or damage to personal property.</li>
+  </ul>
+  <h2>Liability</h2>
+  <p>Attendance is at your own risk. KonXion and its organisers shall not be liable for any injury, loss, or damage arising from attendance, except where required by mandatory law.</p>
+  <h2>Contact</h2>
+  <p>KonXion · <a href="mailto:konxion@icloud.com">konxion@icloud.com</a></p>
+  <div class="legal-divider"></div>
+  <p style="font-size:11px;color:rgba(255,255,255,0.2);">© 2026 KonXion</p>
+</template>
+
+<template id="legal-ticket-terms">
+  <h1>Festival Ticket Terms</h1>
+  <div class="legal-sub">KonXion · Saturday July 18 · Bethel Lozana, Guatapé</div>
+  <p>These terms apply to all attendees of KonXion. By entering the event you confirm that you have read and agree to these terms.</p>
+  <h2>Entry requirements</h2>
+  <ul>
+    <li>You must be 18 years of age or older. Valid government-issued photo ID is required at the door.</li>
+    <li>Your ticket confirmation (digital or printed) must be presented for entry.</li>
+    <li>Wristbands issued at entry must be worn for the duration of the event.</li>
+    <li>No re-entry once you have left the venue.</li>
+  </ul>
+  <h2>What's included</h2>
+  <p>General admission provides access to all music stages and common areas for the full duration of the event (1PM Saturday — 5AM Sunday). Cabin guests receive a private room at Bethel Lozana plus general admission.</p>
+  <h2>Prohibited items</h2>
+  <ul>
+    <li>Professional cameras, recording devices, or video equipment</li>
+    <li>Weapons of any kind</li>
+    <li>Outside alcohol (a bar will be available on site)</li>
+    <li>Any item deemed unsafe by venue security</li>
+  </ul>
+  <h2>Photography & recording</h2>
+  <p>Personal photography for non-commercial use is permitted. Commercial photography, video recording, or live streaming requires prior written consent from the organiser. By attending you grant KonXion a royalty-free licence to use any photos or videos that capture you incidentally in promotional materials.</p>
+  <h2>Conduct</h2>
+  <p>KonXion is a respectful and inclusive space. Any behaviour that is abusive, discriminatory, or endangers the safety of others will result in immediate removal from the event without refund. The organiser's decision is final.</p>
+  <h2>Health & safety</h2>
+  <p>Bethel Lozana is an outdoor venue in Guatapé, Antioquia. Attendees should be prepared for varying weather conditions. Basic first aid will be available on site. In the event of a medical emergency, contact event staff immediately.</p>
+  <h2>Liability</h2>
+  <p>Attendance is at your own risk. KonXion and Bethel Lozana are not responsible for loss, theft, or damage to personal property. The organisers shall not be liable for any injury or loss arising from attendance, except as required by mandatory law.</p>
+  <h2>Force majeure</h2>
+  <p>KonXion reserves the right to modify the programme, lineup, or schedule at any time due to circumstances beyond its control. No refund is owed for lineup changes.</p>
+  <h2>Contact</h2>
+  <p>KonXion · <a href="mailto:support@konxion.us">support@konxion.us</a></p>
+  <div class="legal-divider"></div>
+  <p style="font-size:11px;color:rgba(255,255,255,0.2);">© 2026 KonXion</p>
+</template>
+
+<template id="legal-terms-of-use">
+  <h1>Terms of Use</h1>
+  <div class="legal-sub">KonXion · Last updated May 2026</div>
+  <p>These terms govern your use of the konxion.us website. By accessing or using this site you agree to be bound by these terms.</p>
+  <h2>Use of this site</h2>
+  <p>You may use this site only for lawful purposes and in accordance with these terms. You agree not to:</p>
+  <ul>
+    <li>Attempt to gain unauthorised access to any part of the site or its infrastructure</li>
+    <li>Use any automated tool to scrape, crawl, or harvest content from the site</li>
+    <li>Transmit any malicious code or attempt to disrupt the site's operation</li>
+    <li>Use the site in any way that could damage or impair the experience of other users</li>
+  </ul>
+  <h2>Intellectual property</h2>
+  <p>All content on this site — including the KonXion name, logo, design, text, images, and animations — is owned by or licensed to KonXion and protected by copyright and trademark law. You may not reproduce, distribute, or create derivative works from any content on this site without prior written permission.</p>
+  <h2>Third-party links</h2>
+  <p>This site may contain links to third-party websites (including Instagram, TikTok, and Spotify). These links are provided for convenience only. KonXion has no control over the content or privacy practices of those sites and accepts no responsibility for them.</p>
+  <h2>Disclaimer</h2>
+  <p>This site is provided "as is" without warranties of any kind, express or implied. We do not guarantee that the site will be uninterrupted, error-free, or free of viruses or other harmful components.</p>
+  <h2>Limitation of liability</h2>
+  <p>To the maximum extent permitted by law, KonXion shall not be liable for any indirect, incidental, or consequential damages arising out of your use of this site.</p>
+  <h2>Governing law</h2>
+  <p>These terms are governed by the laws of the Republic of Colombia. Any disputes will be subject to the exclusive jurisdiction of the courts of Medellín, Antioquia, Colombia.</p>
+  <h2>Changes to these terms</h2>
+  <p>We may update these terms at any time. Continued use of the site after changes are posted constitutes acceptance of the revised terms.</p>
+  <h2>Contact</h2>
+  <p>KonXion · <a href="mailto:konxion@icloud.com">konxion@icloud.com</a></p>
+  <div class="legal-divider"></div>
+  <p style="font-size:11px;color:rgba(255,255,255,0.2);">© 2026 KonXion</p>
+</template>
 
 <!-- ═══ STRIPE PAYMENT MODAL ═══ -->
 <div id="stripeModal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);">
@@ -4885,6 +5063,25 @@ function toggleLang() {
   localStorage.setItem('konxion_lang_pref', next);
   applyLanguage(next);
 }
+
+// ── Legal Sheet ──
+function openLegal(doc) {
+  var tmpl = document.getElementById('legal-' + doc);
+  if (!tmpl) return;
+  document.getElementById('legalContent').innerHTML = tmpl.innerHTML;
+  document.getElementById('legalScrollArea').scrollTop = 0;
+  document.getElementById('legalOverlay').classList.add('open');
+  document.getElementById('legalSheet').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLegal() {
+  document.getElementById('legalOverlay').classList.remove('open');
+  document.getElementById('legalSheet').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeLegal();
+});
 
 // ── Map Picker ──
 var MAP_URLS = {
