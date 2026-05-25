@@ -2563,7 +2563,7 @@ document.addEventListener('gesturestart', function(e) {
   <div style="position:absolute;inset:0;z-index:3;pointer-events:none;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);"></div>
   <div id="bethelCenter" style="position:absolute;top:48%;left:50%;transform:translate(-50%,-50%);z-index:4;opacity:0;transition:opacity 0.8s ease;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
     <span style="font-family:'DM Sans',sans-serif;font-size:clamp(28px,8vw,42px);font-weight:300;color:rgba(4,220,10,1);text-shadow:0 0 10px rgba(4,220,10,1),0 0 28px rgba(4,200,10,0.8),0 0 60px rgba(4,180,10,0.5);line-height:1;user-select:none;">×</span>
-    <img src="bethel-logo.png" alt="Bethel Lozana · Guatapé" style="width:clamp(100px,26vw,150px);height:auto;display:block;filter:brightness(0) invert(1);opacity:0.88;"/>
+    <img src="bethel-logo.jpg" alt="Bethel Lozana · Guatapé" style="width:clamp(100px,26vw,150px);height:auto;display:block;filter:invert(1);mix-blend-mode:screen;opacity:0.88;"/>
   </div>
   <div id="journeyContent" style="position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:clamp(80px,20vh,160px) 20px clamp(80px,20vh,160px);gap:0;pointer-events:none;opacity:0;transition:opacity 0.8s ease;overflow:hidden;">
     <!-- TOP: KonXion logo -->
@@ -4881,7 +4881,9 @@ function applyLanguage(lang) {
 }
 
 function toggleLang() {
-  applyLanguage(currentLang === 'en' ? 'es' : 'en');
+  var next = currentLang === 'en' ? 'es' : 'en';
+  localStorage.setItem('konxion_lang_pref', next);
+  applyLanguage(next);
 }
 
 // ── Map Picker ──
@@ -5127,6 +5129,20 @@ if (location.pathname === '/shop') {
     </div>
   </div>
 </div>
+<script>
+(function() {
+  var pref = localStorage.getItem('konxion_lang_pref');
+  if (pref) {
+    applyLanguage(pref);
+    return;
+  }
+  fetch('/api/geo')
+    .then(function(r) { return r.json(); })
+    .then(function(data) { if (data.country === 'CO') applyLanguage('es'); })
+    .catch(function() {});
+})();
+</script>
+
 <script>
 (function() {
   var COOKIE_KEY = 'kx_cookie_consent';
