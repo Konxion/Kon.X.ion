@@ -1508,6 +1508,18 @@
     letter-spacing: 0.22em; text-transform: uppercase; text-decoration: none;
     transition: text-shadow 0.2s;
   }
+  .legal-footer {
+    text-align: center;
+    padding: 28px 20px 20px;
+  }
+  .legal-link {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.22); text-decoration: none;
+    display: inline-block; margin: 3px 8px;
+    transition: color 0.2s;
+  }
+  .legal-link:hover { color: rgba(255,255,255,0.45); }
   html.entry-home #hero { visibility: hidden !important; }
   html.entry-home #journey { opacity: 1 !important; pointer-events: all !important; }
   html.entry-home #journeyContent { opacity: 1 !important; pointer-events: auto !important; transition: none !important; }
@@ -1523,9 +1535,13 @@
   html.entry-eventinfo #hero { visibility: hidden !important; }
   html.entry-eventinfo #festivalInfoPage { opacity: 1 !important; pointer-events: all !important; transition: none !important; }
   html.entry-eventinfo #homeLogoBtn { opacity: 1 !important; pointer-events: all !important; }
+  html.entry-eventinfo #tabBar { opacity: 1 !important; pointer-events: all !important; }
+  html.entry-eventinfo #langBtn { opacity: 1 !important; pointer-events: all !important; }
   html.entry-gettinghere #hero { visibility: hidden !important; }
   html.entry-gettinghere #gettingHerePage { opacity: 1 !important; pointer-events: all !important; transition: none !important; }
   html.entry-gettinghere #homeLogoBtn { opacity: 1 !important; pointer-events: all !important; }
+  html.entry-gettinghere #tabBar { opacity: 1 !important; pointer-events: all !important; }
+  html.entry-gettinghere #langBtn { opacity: 1 !important; pointer-events: all !important; }
   html.entry-shop #hero { visibility: hidden !important; }
   html.entry-shop #shopPage { opacity: 1 !important; pointer-events: all !important; transition: none !important; }
   html.entry-shop #homeLogoBtn { opacity: 1 !important; pointer-events: all !important; }
@@ -1713,7 +1729,7 @@ document.addEventListener('gesturestart', function(e) {
 
 <!-- ═══ TAB BAR ═══ -->
 <nav id="tabBar" style="opacity:0;pointer-events:none;transition:opacity 0.5s ease;">
-  <button class="tab-btn" onclick="openLineup()"><span data-i18n="nav-lineup">Lineup</span> <span aria-hidden="true" style="display:inline-block;font-size:9px;margin-left:4px;color:rgba(4,200,10,0.75);">▼</span></button>
+  <button class="tab-btn" onclick="openLineup()"><span data-i18n="nav-lineup">Lineup</span></button>
   <div class="tab-dropdown-wrap" id="musicDropWrap">
     <button class="tab-btn" id="musicTabBtn" onclick="toggleMusicDrop(event)" aria-expanded="false" aria-haspopup="true"><span data-i18n="music-nav">Music</span> <span id="musicArrow" aria-hidden="true" style="display:inline-block;transition:transform 0.25s;font-size:9px;margin-left:4px;color:rgba(4,200,10,0.75);">▼</span></button>
     <div id="musicDropMenu" style="display:none;position:absolute;top:52px;left:0;z-index:200;display:none;flex-direction:column;gap:8px;padding:12px;background:rgba(5,10,5,0.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:0.5px solid rgba(4,200,10,0.22);border-radius:14px;min-width:160px;box-shadow:0 8px 32px rgba(0,0,0,0.6);">
@@ -1763,12 +1779,14 @@ document.addEventListener('gesturestart', function(e) {
 <style>
   @media (max-width: 767px) { #langBtn { display:none !important; } }
   @media (max-width: 767px) { #homeLogoBtn { display:none !important; } }
-  @media (max-width: 767px) { #journeyContent { padding-top: 21vh !important; padding-bottom: 15vh !important; } }
+  @media (max-width: 767px) { #journeyContent { padding-top: 26vh !important; padding-bottom: 15vh !important; } }
+  @media (max-width: 767px) { #bethelCenter { top: 52%; } }
+  @media (min-width: 768px) { #bethelCenter { top: 54%; } }
   @media (min-width: 768px) { #langBtnMobile { display:none !important; } }
   @media (min-width: 768px) { #cabin4CloseBtn { top: 72px !important; } }
 </style>
 <button id="homeLogoBtn" onclick="goHome()" style="position:fixed;top:10px;left:12px;z-index:350;background:none;border:none;padding:4px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity 0.4s ease;line-height:0;">
-  <img src="konxion-logo.png" alt="KonXion" style="height:28px;filter:invert(1) drop-shadow(0 0 6px rgba(4,220,10,0.45));opacity:0.88;display:block;">
+  <img src="konxion-logo.png" alt="KonXion" style="height:28px;filter:brightness(0) invert(1) drop-shadow(0 0 6px rgba(4,220,10,1)) drop-shadow(0 0 18px rgba(4,200,10,0.8)) drop-shadow(0 0 40px rgba(4,180,10,0.4));opacity:1;display:block;">
 </button>
 <div id="langBtn" style="position:fixed;top:10px;right:12px;z-index:350;display:flex;align-items:center;gap:7px;opacity:0;pointer-events:none;transition:opacity 0.4s ease;">
   <span class="lang-opt-en" style="font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.1em;font-weight:400;color:rgba(255,255,255,0.92);transition:color 0.3s;display:flex;align-items:center;gap:4px;white-space:nowrap;">🇺🇸 EN</span>
@@ -1860,19 +1878,30 @@ document.addEventListener('gesturestart', function(e) {
     <!-- CABIN DETAILS — first -->
     <div class="stay-card" style="border:0.5px solid rgba(4,200,10,0.28);border-radius:20px;padding:24px;margin-bottom:14px;">
       <div style="font-family:'Josefin Sans',sans-serif;font-size:14px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.7);margin-bottom:16px;" data-i18n="stay-details-label">Cabin Details</div>
-      <div style="text-align:center;padding:12px 0;margin-bottom:16px;border-top:0.5px solid rgba(4,200,10,0.25);border-bottom:0.5px solid rgba(4,200,10,0.25);">
-        <div style="display:flex;gap:8px;justify-content:center;margin-bottom:10px;">
-          <span style="display:inline-block;width:22px;height:22px;border-radius:5px;background:rgba(4,220,10,0.9);box-shadow:0 0 8px rgba(4,220,10,1),0 0 20px rgba(4,220,10,0.5);"></span>
-          <span style="display:inline-block;width:22px;height:22px;border-radius:5px;background:rgba(4,220,10,0.9);box-shadow:0 0 8px rgba(4,220,10,1),0 0 20px rgba(4,220,10,0.5);"></span>
-          <span style="display:inline-block;width:22px;height:22px;border-radius:5px;background:rgba(4,220,10,0.9);box-shadow:0 0 8px rgba(4,220,10,1),0 0 20px rgba(4,220,10,0.5);"></span>
-          <span style="display:inline-block;width:22px;height:22px;border-radius:5px;background:rgba(4,220,10,0.9);box-shadow:0 0 8px rgba(4,220,10,1),0 0 20px rgba(4,220,10,0.5);"></span>
-          <span style="display:inline-block;width:22px;height:22px;border-radius:5px;background:rgba(4,220,10,0.9);box-shadow:0 0 8px rgba(4,220,10,1),0 0 20px rgba(4,220,10,0.5);"></span>
-          <span style="display:inline-block;width:22px;height:22px;border-radius:5px;background:rgba(4,220,10,0.9);box-shadow:0 0 8px rgba(4,220,10,1),0 0 20px rgba(4,220,10,0.5);"></span>
-          <span style="display:inline-block;width:22px;height:22px;border-radius:5px;background:rgba(4,220,10,0.9);box-shadow:0 0 8px rgba(4,220,10,1),0 0 20px rgba(4,220,10,0.5);"></span>
-          <span style="display:inline-block;width:22px;height:22px;border-radius:5px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.12);"></span>
-          <span style="display:inline-block;width:22px;height:22px;border-radius:5px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.12);"></span>
+      <div style="padding:12px 0;margin-bottom:16px;border-top:0.5px solid rgba(4,200,10,0.25);border-bottom:0.5px solid rgba(4,200,10,0.25);display:flex;flex-direction:column;gap:10px;">
+        <!-- Luxury row -->
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.32em;text-transform:uppercase;color:rgba(4,220,10,0.7);" data-i18n="stay-lux-tier">Luxury</span>
+          <div style="display:flex;gap:5px;">
+            <span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:rgba(4,220,10,0.9);box-shadow:0 0 6px rgba(4,220,10,1),0 0 14px rgba(4,220,10,0.5);"></span>
+            <span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:rgba(4,220,10,0.9);box-shadow:0 0 6px rgba(4,220,10,1),0 0 14px rgba(4,220,10,0.5);"></span>
+            <span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:rgba(4,220,10,0.9);box-shadow:0 0 6px rgba(4,220,10,1),0 0 14px rgba(4,220,10,0.5);"></span>
+            <span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:rgba(4,220,10,0.9);box-shadow:0 0 6px rgba(4,220,10,1),0 0 14px rgba(4,220,10,0.5);"></span>
+          </div>
+          <span style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,0.7);" data-i18n="stay-lux-avail">4 of 4 remaining</span>
         </div>
-        <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 10px rgba(4,220,10,0.8),0 0 24px rgba(4,220,10,0.4);" data-i18n="stay-avail-count">7 of 9 cabins remaining</div>
+        <!-- Premium row -->
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.32em;text-transform:uppercase;color:rgba(4,220,10,0.7);" data-i18n="stay-prem-tier">Premium</span>
+          <div style="display:flex;gap:5px;">
+            <span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:rgba(4,220,10,0.9);box-shadow:0 0 6px rgba(4,220,10,1),0 0 14px rgba(4,220,10,0.5);"></span>
+            <span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:rgba(4,220,10,0.9);box-shadow:0 0 6px rgba(4,220,10,1),0 0 14px rgba(4,220,10,0.5);"></span>
+            <span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:rgba(4,220,10,0.9);box-shadow:0 0 6px rgba(4,220,10,1),0 0 14px rgba(4,220,10,0.5);"></span>
+            <span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.12);"></span>
+            <span style="display:inline-block;width:14px;height:14px;border-radius:3px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.12);"></span>
+          </div>
+          <span style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,0.7);" data-i18n="stay-prem-avail">3 of 5 remaining</span>
+        </div>
       </div>
       <div>
         <!-- Luxury cabin row -->
@@ -1929,6 +1958,14 @@ document.addEventListener('gesturestart', function(e) {
     <!-- LOGO -->
     <div style="text-align:center;margin-top:36px;">
       <img src="konxion-logo.png" alt="KON.X.ION" style="width:min(72%,320px);filter:invert(1) drop-shadow(0 0 18px rgba(4,220,10,0.45));opacity:0.92;">
+    </div>
+    <div class="legal-footer">
+      <a href="/privacy.html" class="legal-link" target="_blank" rel="noopener">Privacy Policy</a>
+      <a href="/california-privacy.html" class="legal-link" target="_blank" rel="noopener">California Privacy Notice</a>
+      <a href="/terms.html" class="legal-link" target="_blank" rel="noopener">Terms of Sale</a>
+      <a href="/ticket-terms.html" class="legal-link" target="_blank" rel="noopener">Festival Ticket Terms</a>
+      <a href="/terms-of-use.html" class="legal-link" target="_blank" rel="noopener">Terms of Use</a>
+      <a href="/accessibility.html" class="legal-link" target="_blank" rel="noopener">Accessibility Statement</a>
     </div>
 
   </div><!-- end content -->
@@ -1996,6 +2033,14 @@ document.addEventListener('gesturestart', function(e) {
   <div style="padding:140px 24px 80px;max-width:520px;margin:0 auto;position:relative;z-index:1;text-align:center;">
     <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:56px;color:#fff;letter-spacing:0.06em;margin-bottom:16px;" data-i18n="shop-merch">Merch</div>
     <div style="font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(4,200,10,0.8);margin-bottom:48px;" data-i18n="shop-soon">Coming Soon</div>
+    <div class="legal-footer">
+      <a href="/privacy.html" class="legal-link" target="_blank" rel="noopener">Privacy Policy</a>
+      <a href="/california-privacy.html" class="legal-link" target="_blank" rel="noopener">California Privacy Notice</a>
+      <a href="/terms.html" class="legal-link" target="_blank" rel="noopener">Terms of Sale</a>
+      <a href="/ticket-terms.html" class="legal-link" target="_blank" rel="noopener">Festival Ticket Terms</a>
+      <a href="/terms-of-use.html" class="legal-link" target="_blank" rel="noopener">Terms of Use</a>
+      <a href="/accessibility.html" class="legal-link" target="_blank" rel="noopener">Accessibility Statement</a>
+    </div>
   </div>
 </div>
 
@@ -2101,7 +2146,22 @@ document.addEventListener('gesturestart', function(e) {
 
       </div><!-- end DJ ROW -->
 
-    <div style="text-align:center;margin-top:32px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(4,200,10,0.65);">More artists to be announced</div>
+    <div style="text-align:center;margin-top:36px;padding:20px 16px;border:0.5px solid rgba(4,200,10,0.18);border-radius:16px;background:rgba(4,200,10,0.04);">
+      <div id="lineupSubLabel" style="font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(4,200,10,0.7);margin-bottom:12px;">More artists to be announced</div>
+      <div id="lineupSubRow" style="display:flex;align-items:center;gap:0;background:rgba(255,255,255,0.04);border:0.5px solid rgba(4,200,10,0.22);border-radius:999px;padding:0 4px 0 14px;height:38px;max-width:280px;margin:0 auto;transition:border-color 0.2s ease;" onfocusin="this.style.borderColor='rgba(4,200,10,0.55)'" onfocusout="this.style.borderColor='rgba(4,200,10,0.22)'">
+        <input id="lineupSubEmail" type="email" placeholder="Get notified →" autocomplete="email" style="flex:1;background:transparent;border:none;outline:none;color:rgba(255,255,255,0.85);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:300;letter-spacing:0.06em;min-width:0;" onkeydown="if(event.key==='Enter')handleLineupSubscribe()">
+        <button onclick="handleLineupSubscribe()" style="background:rgba(4,200,10,0.15);border:none;border-radius:999px;width:30px;height:30px;cursor:pointer;color:rgba(4,220,10,0.85);font-size:16px;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.18s;" onmouseover="this.style.background='rgba(4,200,10,0.28)'" onmouseout="this.style.background='rgba(4,200,10,0.15)'">›</button>
+      </div>
+      <div id="lineupSubConfirm" style="display:none;font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(4,220,10,0.85);letter-spacing:0.04em;">You're on the list.</div>
+    </div>
+    <div class="legal-footer">
+      <a href="/privacy.html" class="legal-link" target="_blank" rel="noopener">Privacy Policy</a>
+      <a href="/california-privacy.html" class="legal-link" target="_blank" rel="noopener">California Privacy Notice</a>
+      <a href="/terms.html" class="legal-link" target="_blank" rel="noopener">Terms of Sale</a>
+      <a href="/ticket-terms.html" class="legal-link" target="_blank" rel="noopener">Festival Ticket Terms</a>
+      <a href="/terms-of-use.html" class="legal-link" target="_blank" rel="noopener">Terms of Use</a>
+      <a href="/accessibility.html" class="legal-link" target="_blank" rel="noopener">Accessibility Statement</a>
+    </div>
 
   </div>
 </div>
@@ -2155,8 +2215,8 @@ document.addEventListener('gesturestart', function(e) {
       </div>
       <div class="venue-map">
         <iframe
-          src="https://www.openstreetmap.org/export/embed.html?bbox=-75.22%2C6.16%2C-75.09%2C6.31&amp;layer=mapnik&amp;marker=6.2341%2C-75.1561"
-          loading="lazy" title="Guatapé, Antioquia, Colombia">
+          src="https://maps.google.com/maps?q=6.2341,-75.1561&z=15&output=embed&hl=en"
+          loading="lazy" title="Bethel Lozana, Guatapé" referrerpolicy="no-referrer-when-downgrade">
         </iframe>
         <a href="https://www.google.com/maps/place/Bethel+Lozana/@6.2341,-75.1561,15z" target="_blank" rel="noopener noreferrer" class="venue-map-strip">
           <div>
@@ -2192,6 +2252,14 @@ document.addEventListener('gesturestart', function(e) {
     <!-- LOGO -->
     <div style="text-align:center;margin-top:36px;">
       <img src="konxion-logo.png" alt="KON.X.ION" style="width:min(72%,320px);filter:invert(1) drop-shadow(0 0 18px rgba(4,220,10,0.45));opacity:0.92;">
+    </div>
+    <div class="legal-footer">
+      <a href="/privacy.html" class="legal-link" target="_blank" rel="noopener">Privacy Policy</a>
+      <a href="/california-privacy.html" class="legal-link" target="_blank" rel="noopener">California Privacy Notice</a>
+      <a href="/terms.html" class="legal-link" target="_blank" rel="noopener">Terms of Sale</a>
+      <a href="/ticket-terms.html" class="legal-link" target="_blank" rel="noopener">Festival Ticket Terms</a>
+      <a href="/terms-of-use.html" class="legal-link" target="_blank" rel="noopener">Terms of Use</a>
+      <a href="/accessibility.html" class="legal-link" target="_blank" rel="noopener">Accessibility Statement</a>
     </div>
 
   </div>
@@ -2299,8 +2367,13 @@ document.addEventListener('gesturestart', function(e) {
       <div class="gh-footer-qlabel gh-footer-glow" data-i18n="gh-q-title">Questions?</div>
       <a href="mailto:support@konxion.us?subject=KON.X.ION%20Question" class="gh-footer-email gh-footer-glow">support@konxion.us</a>
     </div>
-    <div style="text-align:center;margin-top:20px;">
-      <a href="/terms.html" class="gh-footer-privacy gh-footer-glow" target="_blank" rel="noopener" style="margin-right:16px;">Terms of Sale</a><a href="/privacy.html" class="gh-footer-privacy gh-footer-glow" target="_blank" rel="noopener">Privacy Policy</a>
+    <div class="legal-footer" style="margin-top:8px;">
+      <a href="/privacy.html" class="legal-link" target="_blank" rel="noopener">Privacy Policy</a>
+      <a href="/california-privacy.html" class="legal-link" target="_blank" rel="noopener">California Privacy Notice</a>
+      <a href="/terms.html" class="legal-link" target="_blank" rel="noopener">Terms of Sale</a>
+      <a href="/ticket-terms.html" class="legal-link" target="_blank" rel="noopener">Festival Ticket Terms</a>
+      <a href="/terms-of-use.html" class="legal-link" target="_blank" rel="noopener">Terms of Use</a>
+      <a href="/accessibility.html" class="legal-link" target="_blank" rel="noopener">Accessibility Statement</a>
     </div>
 
   </div>
@@ -2332,9 +2405,20 @@ document.addEventListener('gesturestart', function(e) {
     <div class="cd-cell"><span class="cd-num" id="cdSecs">--</span><span class="cd-label">Sec</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:10px;pointer-events:none;user-select:none;">
+    <span style="font-family:'Josefin Sans',sans-serif;font-size:11px;font-weight:200;letter-spacing:0.28em;text-transform:uppercase;color:rgba(4,200,10,0.7);">July 18</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;pointer-events:none;user-select:none;">
     <span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:300;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.85);text-shadow:0 0 8px rgba(4,255,10,0.7),0 0 16px rgba(4,220,10,0.5);">Limited to 120</span>
   </div>
   <button id="beginBtn" data-i18n="begin-btn">Begin Journey</button>
+  <div style="position:absolute;bottom:12px;left:0;right:0;" class="legal-footer">
+    <a href="/privacy.html" class="legal-link" target="_blank" rel="noopener">Privacy Policy</a>
+    <a href="/california-privacy.html" class="legal-link" target="_blank" rel="noopener">California Privacy Notice</a>
+    <a href="/terms.html" class="legal-link" target="_blank" rel="noopener">Terms of Sale</a>
+    <a href="/ticket-terms.html" class="legal-link" target="_blank" rel="noopener">Festival Ticket Terms</a>
+    <a href="/terms-of-use.html" class="legal-link" target="_blank" rel="noopener">Terms of Use</a>
+    <a href="/accessibility.html" class="legal-link" target="_blank" rel="noopener">Accessibility Statement</a>
+  </div>
 </section>
 
 
@@ -2352,7 +2436,7 @@ document.addEventListener('gesturestart', function(e) {
   </div>
 
   <!-- Instagram row -->
-  <a class="sheet-row" href="instagram://user?username=kon.x.ion" onclick="igFallback(event)">
+  <a class="sheet-row" href="https://www.instagram.com/kon.x.ion" target="_blank" rel="noopener noreferrer">
     <div class="row-icon ig-icon">
       <svg class="svg-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="url(#ig-grad)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <defs>
@@ -2455,6 +2539,7 @@ document.addEventListener('gesturestart', function(e) {
   <div class="form-section">
     <label class="form-label" data-i18n="cb-details">Your details</label>
     <input class="form-field" type="text" id="cbname" placeholder="Full Name" autocomplete="name" aria-label="Full Name" data-i18n-placeholder="cb-name-ph">
+    <input class="form-field" type="email" id="cbemail" placeholder="Email" autocomplete="email" aria-label="Email">
     <select class="form-field" id="cbtype" aria-label="Cabin type" style="appearance:none;-webkit-appearance:none;background:transparent;cursor:pointer;">
       <option value="" disabled selected data-i18n="cb-select-prompt">Select cabin type</option>
       <option value="luxury" data-i18n="cb-opt-lux">Luxury Cabin — $419 (sleeps 2–4, King or 2 doubles)</option>
@@ -2476,8 +2561,9 @@ document.addEventListener('gesturestart', function(e) {
   </div>
   <div style="position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,0.72) 100%);"></div>
   <div style="position:absolute;inset:0;z-index:3;pointer-events:none;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);"></div>
-  <div id="bethelCenter" style="position:absolute;top:48%;left:50%;transform:translate(-50%,-50%);z-index:4;opacity:0;transition:opacity 0.8s ease;pointer-events:none;display:flex;align-items:center;justify-content:center;">
-    <img src="bethel-logo.jpg" alt="Bethel Lozana · Guatapé" style="width:clamp(100px,26vw,150px);height:auto;display:block;filter:invert(1);mix-blend-mode:screen;opacity:0.88;"/>
+  <div id="bethelCenter" style="position:absolute;top:48%;left:50%;transform:translate(-50%,-50%);z-index:4;opacity:0;transition:opacity 0.8s ease;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
+    <span style="font-family:'DM Sans',sans-serif;font-size:clamp(28px,8vw,42px);font-weight:300;color:rgba(4,220,10,1);text-shadow:0 0 10px rgba(4,220,10,1),0 0 28px rgba(4,200,10,0.8),0 0 60px rgba(4,180,10,0.5);line-height:1;user-select:none;">×</span>
+    <img src="bethel-logo.png" alt="Bethel Lozana · Guatapé" style="width:clamp(100px,26vw,150px);height:auto;display:block;filter:brightness(0) invert(1);opacity:0.88;"/>
   </div>
   <div id="journeyContent" style="position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:clamp(80px,20vh,160px) 20px clamp(80px,20vh,160px);gap:0;pointer-events:none;opacity:0;transition:opacity 0.8s ease;overflow:hidden;">
     <!-- TOP: KonXion logo -->
@@ -2562,27 +2648,27 @@ function openJourney() {
   heartExploding = true;
 
   // Fade logo + button out
-  heroEl.style.transition = 'opacity 0.8s ease';
+  heroEl.style.transition = 'opacity 0.2s ease';
   heroEl.style.opacity = '0';
 
-  // Fade white background to black over 1.5s
-  blackFade.style.transition = 'opacity 1.5s ease';
+  // Fade white background to black over 0.2s
+  blackFade.style.transition = 'opacity 0.2s ease';
   blackFade.style.opacity = '1';
   blackFade.style.pointerEvents = 'all';
 
-  // Step 2: Start tunnel at 1s (behind the black)
+  // Step 2: Start tunnel at 100ms (behind the black)
   startTunnel();
   _journeyOpenTimers.push(setTimeout(() => {
     journey.style.opacity = '1';
     journey.style.pointerEvents = 'all';
-  }, 1000));
+  }, 100));
 
-  // Step 3: At peak black (1.5s), fade black overlay away revealing tunnel
+  // Step 3: At peak black (200ms), fade black overlay away revealing tunnel
   _journeyOpenTimers.push(setTimeout(() => {
-    blackFade.style.transition = 'opacity 1.2s ease';
+    blackFade.style.transition = 'opacity 0.15s ease';
     blackFade.style.opacity = '0';
     blackFade.style.pointerEvents = 'none';
-  }, 1500));
+  }, 200));
 
   // Step 4: Show event content + back button + tab bar
   _journeyOpenTimers.push(setTimeout(() => {
@@ -2596,7 +2682,7 @@ function openJourney() {
     if (lb) { lb.style.opacity = '1'; lb.style.pointerEvents = ''; }
     const hlb = document.getElementById('homeLogoBtn');
     if (hlb && window.innerWidth >= 768) { hlb.style.opacity = '1'; hlb.style.pointerEvents = ''; }
-  }, 2200));
+  }, 500));
 }
 
 function goHome() {
@@ -2731,7 +2817,6 @@ function startTunnel() {
   let offset = 0;
 
   function draw() {
-    if (!tunnelRAF && tunnelRAF !== 0) return;
     if (document.hidden) { tunnelRAF = requestAnimationFrame(draw); return; }
     try {
       if (!ctx || !W || !H) { tunnelRAF = requestAnimationFrame(draw); return; }
@@ -2795,11 +2880,6 @@ function startTunnel() {
 }
 
 
-function igFallback(e) {
-  setTimeout(() => {
-    if (!document.hidden) window.open('https://www.instagram.com/kon.x.ion', '_blank');
-  }, 1500);
-}
 
 // ── SHEET LOGIC ──
 const sheet      = document.getElementById('sheet');
@@ -2851,6 +2931,32 @@ async function handleSubscribe() {
       document.getElementById('subRow').style.display = 'none';
       document.getElementById('subLabel').style.display = 'none';
       document.getElementById('subConfirm').style.display = 'block';
+    } else {
+      btn.disabled = false;
+    }
+  } catch {
+    btn.disabled = false;
+  }
+}
+
+async function handleLineupSubscribe() {
+  const email = document.getElementById('lineupSubEmail').value.trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    document.getElementById('lineupSubEmail').focus();
+    return;
+  }
+  const btn = document.querySelector('#lineupSubRow button');
+  btn.disabled = true;
+  try {
+    const r = await fetch(SUBSCRIBE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    if (r.ok) {
+      document.getElementById('lineupSubRow').style.display = 'none';
+      document.getElementById('lineupSubLabel').style.display = 'none';
+      document.getElementById('lineupSubConfirm').style.display = 'block';
     } else {
       btn.disabled = false;
     }
@@ -2976,11 +3082,12 @@ function closeCabinSheet() {
   if (lb) { lb.style.opacity = '1'; lb.style.pointerEvents = ''; }
 }
 async function handleCabinBook() {
-  const name     = document.getElementById('cbname').value.trim();
+  const name      = document.getElementById('cbname').value.trim();
+  const email     = document.getElementById('cbemail').value.trim();
   const cabinType = document.getElementById('cbtype').value;
-  const conf     = document.getElementById('cabinConfirm');
-  const btn      = document.querySelector('#cabinSheet .send-btn');
-  if (!name || !cabinType) {
+  const conf      = document.getElementById('cabinConfirm');
+  const btn       = document.querySelector('#cabinSheet .send-btn');
+  if (!name || !email || !cabinType) {
     conf.style.color = 'rgba(200,50,30,0.7)';
     conf.textContent = 'Please fill in all fields.';
     return;
@@ -2991,7 +3098,7 @@ async function handleCabinBook() {
     const r = await fetch(CABIN_CHECKOUT_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ name, cabinType })
+      body: JSON.stringify({ name, email, cabinType })
     });
     const data = await r.json();
     if (!data.clientSecret) throw new Error(data.error || 'No client secret');
@@ -3583,14 +3690,20 @@ function startFestivalBg() {
   });
 
   function resize() {
-    W = canvas.width = document.documentElement.clientWidth;
-    H = canvas.height = document.documentElement.clientHeight;
+    var w = document.documentElement.clientWidth;
+    var h = document.documentElement.clientHeight;
+    if (!w || !h) return;
+    W = canvas.width = w;
+    H = canvas.height = h;
   }
   resize();
-  window.addEventListener('resize', resize);
+  if (canvas._resizeHandler) window.removeEventListener('resize', canvas._resizeHandler);
+  canvas._resizeHandler = resize;
+  window.addEventListener('resize', canvas._resizeHandler);
 
   function draw() {
     if (!canvas._running) return;
+    if (!W || !H) { requestAnimationFrame(draw); return; }
     ctx.clearRect(0, 0, W, H);
 
     // — Spotlight beams —
@@ -3659,7 +3772,12 @@ function startFestivalBg() {
 
 function stopFestivalBg() {
   var canvas = document.getElementById('festivalBgCanvas');
-  if (canvas) canvas._running = false;
+  if (!canvas) return;
+  canvas._running = false;
+  if (canvas._resizeHandler) {
+    window.removeEventListener('resize', canvas._resizeHandler);
+    canvas._resizeHandler = null;
+  }
 }
 
 function startGettingHereBg() {
@@ -4657,7 +4775,7 @@ const translations = {
     'stay-group-welcome':'Welcome','stay-welcome-body':'· Welcome drink upon arrival<br>· Free breakfast',
     'stay-group-activities':'Activities','stay-activities-body':'· Electric meditation class (1.5 hrs) <span class="med-tip" data-tip="A guided breathwork and sound healing session using binaural frequencies. Leaves you energized and mentally clear." tabindex="0" ontouchstart="this.classList.toggle(\'tip-open\')">i</span><br>· Free padel class at <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 people)<br>· Kayak',
     'stay-group-amenities':'Amenities','stay-amenities-body':'· Hot tub<br>· Room service<br>· WiFi',
-    'stay-details-label':'Cabin Details','stay-cabin-lux':'· 4 luxury cabins — sleeps 2 or 4<br><span style="padding-left:0.9em;">1 California King bed or 2 double beds</span>','stay-cabin4':'· 5 premium cabins — sleeps 4<br><span style="padding-left:0.9em;">2 double beds</span>','stay-avail-count':'7 of 9 cabins remaining','cabin4-label':'4-Person Cabin','cabin4-sub':'2 Double Beds',
+    'stay-details-label':'Cabin Details','stay-cabin-lux':'· 4 luxury cabins — sleeps 2 or 4<br><span style="padding-left:0.9em;">1 California King bed or 2 double beds</span>','stay-cabin4':'· 5 premium cabins — sleeps 4<br><span style="padding-left:0.9em;">2 double beds</span>','stay-avail-count':'7 of 9 cabins remaining','stay-lux-avail':'4 of 4 remaining','stay-prem-avail':'3 of 5 remaining','cabin4-label':'4-Person Cabin','cabin4-sub':'2 Double Beds',
     'stay-price-lux':'$419 <span style="color:rgba(255,255,255,0.6);">·</span> COP 1,500,000',
     'stay-price-prem':'$249 <span style="color:rgba(255,255,255,0.6);">·</span> COP 900,000',
     'stay-dm':'Questions? DM us <a href="https://www.instagram.com/kon.x.ion/" target="_blank" style="color:rgba(4,200,10,0.7);text-decoration:none;">@kon.x.ion</a>',
@@ -4711,7 +4829,7 @@ const translations = {
     'stay-group-welcome':'Bienvenida','stay-welcome-body':'· Bebida de bienvenida a la llegada<br>· Desayuno gratis',
     'stay-group-activities':'Actividades','stay-activities-body':'· Clase de electro meditación (1.5 horas) <span class="med-tip" data-tip="Sesión guiada de respiración y curación sonora con frecuencias binaurales. Te dejará lleno de energía y claridad mental." tabindex="0" ontouchstart="this.classList.toggle(\'tip-open\')">i</span><br>· Clase gratuita de pádel en <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 personas)<br>· Kayak',
     'stay-group-amenities':'Amenidades','stay-amenities-body':'· Jacuzzi<br>· Servicio a la habitación<br>· WiFi',
-    'stay-details-label':'Detalles de la Cabaña','stay-cabin-lux':'· 4 cabañas de lujo — 2 o 4 personas<br><span style="padding-left:0.9em;">1 California king o 2 camas dobles</span>','stay-cabin4':'· 5 cabañas premium — 4 personas<br><span style="padding-left:0.9em;">2 camas dobles</span>','stay-avail-count':'7 de 9 cabañas disponibles','cabin4-label':'Cabaña para 4','cabin4-sub':'2 Camas Dobles',
+    'stay-details-label':'Detalles de la Cabaña','stay-cabin-lux':'· 4 cabañas de lujo — 2 o 4 personas<br><span style="padding-left:0.9em;">1 California king o 2 camas dobles</span>','stay-cabin4':'· 5 cabañas premium — 4 personas<br><span style="padding-left:0.9em;">2 camas dobles</span>','stay-avail-count':'7 de 9 cabañas disponibles','stay-lux-avail':'4 de 4 disponibles','stay-prem-avail':'3 de 5 disponibles','cabin4-label':'Cabaña para 4','cabin4-sub':'2 Camas Dobles',
     'stay-price-lux':'COP 1,500,000 <span style="color:rgba(255,255,255,0.6);">·</span> $419',
     'stay-price-prem':'COP 900,000 <span style="color:rgba(255,255,255,0.4);">·</span> $249',
     'stay-reserve-label':'Reserva una Cabaña','stay-reserve-body':'Cada cabaña es todo incluido — tu estadía y entrada al party en uno. Los cupos son limitados. Escríbenos para asegurar tu cabaña.',
@@ -4995,6 +5113,37 @@ if (location.pathname === '/shop') {
     </div>
   </button>
 </div>
+
+<!-- ── COOKIE CONSENT BANNER ── -->
+<div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:99999;background:rgba(8,8,8,0.97);border-top:0.5px solid rgba(4,200,10,0.25);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:18px 24px 22px;box-sizing:border-box;">
+  <div style="max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:14px;">
+    <p style="margin:0;font-family:'DM Sans',sans-serif;font-size:12px;line-height:1.65;color:rgba(255,255,255,0.62);letter-spacing:0.02em;">
+      We and certain third parties may use cookies or similar technologies to process data when you visit our sites. This data may relate to your use of our sites, your preferences, your device, or other information about you. We and third parties may use this information for a variety of purposes, such as enabling the sites to function, to personalize your experience when using our sites, to provide you with advertisements based on your interests, and for analytical purposes.
+      <a href="/privacy.html" target="_blank" style="color:rgba(4,220,10,0.8);text-decoration:none;white-space:nowrap;">Privacy Notice</a>
+    </p>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <button onclick="acceptCookies()" style="background:rgba(4,200,10,0.9);border:none;border-radius:999px;padding:10px 32px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;color:#000;cursor:pointer;white-space:nowrap;">Accept</button>
+      <button onclick="declineCookies()" style="background:none;border:0.5px solid rgba(255,255,255,0.2);border-radius:999px;padding:10px 28px;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;font-weight:400;color:rgba(255,255,255,0.45);cursor:pointer;white-space:nowrap;">Decline</button>
+    </div>
+  </div>
+</div>
+<script>
+(function() {
+  var COOKIE_KEY = 'kx_cookie_consent';
+  var banner = document.getElementById('cookieBanner');
+  if (!localStorage.getItem(COOKIE_KEY)) {
+    setTimeout(function() { banner.style.display = 'block'; }, 1500);
+  }
+  window.acceptCookies = function() {
+    localStorage.setItem(COOKIE_KEY, 'accepted');
+    banner.style.display = 'none';
+  };
+  window.declineCookies = function() {
+    localStorage.setItem(COOKIE_KEY, 'declined');
+    banner.style.display = 'none';
+  };
+})();
+</script>
 
 </body>
 </html>

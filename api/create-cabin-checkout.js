@@ -25,9 +25,9 @@ export default async function handler(req, res) {
   const ip = req.headers['x-forwarded-for']?.split(',')[0].trim() ?? 'unknown';
   if (isRateLimited(ip)) return res.status(429).json({ error: 'Too many requests' });
 
-  const { name, cabinType } = req.body ?? {};
+  const { name, email, cabinType } = req.body ?? {};
 
-  if (!name || !cabinType) return res.status(400).json({ error: 'Missing required fields' });
+  if (!name || !email || !cabinType) return res.status(400).json({ error: 'Missing required fields' });
 
   const product = CABIN_PRODUCTS[cabinType];
   if (!product) return res.status(400).json({ error: 'Invalid cabin type' });
@@ -41,7 +41,9 @@ export default async function handler(req, res) {
     'line_items[0][price_data][product_data][name]': product.name,
     'line_items[0][price_data][product_data][description]': product.description,
     'line_items[0][quantity]': '1',
+    'customer_email': email,
     'metadata[attendee_name]': name,
+    'metadata[attendee_email]': email,
     'metadata[cabin_type]': cabinType,
     'metadata[product]': 'cabin',
   });
