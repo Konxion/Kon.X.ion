@@ -527,6 +527,132 @@ body {
 /* grid layout helpers */
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
+/* ─── FINANCE COMPONENTS ─────────────────────────────── */
+.finance-input {
+  background: rgba(4,200,10,0.05);
+  border: 1px solid var(--green-border);
+  border-radius: 3px;
+  color: var(--green);
+  font-family: 'Josefin', sans-serif;
+  font-size: 18px;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  width: 90px;
+  padding: 6px 10px;
+  text-align: right;
+  outline: none;
+  transition: border-color 0.15s;
+  -moz-appearance: textfield;
+}
+.finance-input::-webkit-inner-spin-button,
+.finance-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+.finance-input:focus { border-color: var(--green); background: rgba(4,200,10,0.09); }
+
+.sales-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 16px;
+}
+.sales-row:last-child { border-bottom: none; }
+.sales-row-label { font-size: 12px; letter-spacing: 0.06em; flex: 1; }
+.sales-row-meta { font-size: 9px; color: var(--text-dim); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 3px; }
+.sales-row-rev { font-family: 'CormorantI', serif; font-size: 22px; color: var(--green); text-align: right; min-width: 100px; }
+.sales-row-rev-sub { font-size: 9px; color: var(--text-dim); letter-spacing: 0.1em; text-align: right; margin-top: 2px; }
+
+.revenue-hero {
+  text-align: center;
+  padding: 32px 20px 28px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  margin-bottom: 28px;
+}
+.revenue-hero-num {
+  font-family: 'CormorantI', serif;
+  font-size: 72px;
+  color: var(--green);
+  line-height: 1;
+}
+.revenue-hero-label {
+  font-size: 8px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: 8px;
+}
+
+.progress-wrap {
+  height: 4px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--green);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+  box-shadow: 0 0 6px rgba(4,220,10,0.6);
+}
+
+.pnl-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 11px;
+  gap: 12px;
+}
+.pnl-row:last-child { border-bottom: none; }
+.pnl-row-label { color: var(--text-dim); letter-spacing: 0.06em; flex: 1; }
+.pnl-row-val { font-family: 'CormorantI', serif; font-size: 20px; color: var(--text); white-space: nowrap; }
+.pnl-row-val.negative { color: rgba(200,60,60,0.9); }
+.pnl-row-val.positive { color: var(--green); }
+.pnl-divider { height: 1px; background: var(--green-border); margin: 8px 0; opacity: 0.4; }
+
+.cost-input-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.cost-input-row:last-child { border-bottom: none; }
+.cost-input-label { flex: 1; font-size: 11px; letter-spacing: 0.05em; }
+.cost-input-field {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text);
+  font-family: 'Josefin', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  width: 110px;
+  padding: 7px 10px;
+  text-align: right;
+  outline: none;
+  transition: border-color 0.15s;
+  -moz-appearance: textfield;
+}
+.cost-input-field::-webkit-inner-spin-button,
+.cost-input-field::-webkit-outer-spin-button { -webkit-appearance: none; }
+.cost-input-field:focus { border-color: var(--green-border); }
+
+.breakeven-callout {
+  padding: 20px 24px;
+  border-radius: 4px;
+  margin-top: 20px;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.breakeven-callout.profitable { background: rgba(4,200,10,0.07); border: 1px solid rgba(4,200,10,0.22); }
+.breakeven-callout.loss { background: rgba(200,60,60,0.06); border: 1px solid rgba(200,60,60,0.2); }
+
 /* ─── SCANLINE TEXTURE ────────────────────────── */
 body::after {
   content: '';
@@ -575,6 +701,10 @@ body::after {
       <a class="sb-link" onclick="nav('email')"><span class="sb-dot"></span>Email Sequence</a>
       <a class="sb-link" onclick="nav('actions')"><span class="sb-dot"></span>Action Items</a>
       <a class="sb-link" onclick="nav('cro')"><span class="sb-dot"></span>CRO & Psychology</a>
+
+      <div class="sb-section">Finance</div>
+      <a class="sb-link" onclick="nav('sales')"><span class="sb-dot"></span>Sales Tracker</a>
+      <a class="sb-link" onclick="nav('pnl')"><span class="sb-dot"></span>P&L</a>
     </div>
     <div class="sb-countdown">
       <div class="sb-cd-label">Days to Event</div>
@@ -1522,6 +1652,226 @@ See you Saturday.
       </div>
     </div>
 
+    <!-- ── SALES TRACKER ── -->
+    <div id="page-sales" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Sales Tracker</div>
+          <div class="page-desc">Update manually · Numbers saved in your browser · Drives P&L</div>
+        </div>
+        <span class="badge badge-dim" id="salesLastSaved">Not saved yet</span>
+      </div>
+
+      <div class="revenue-hero">
+        <div class="revenue-hero-num" id="s-totalNet">$0</div>
+        <div class="revenue-hero-label">Net Revenue (after Stripe fees)</div>
+      </div>
+
+      <div class="stats-grid" style="margin-bottom:28px">
+        <div class="stat-card"><div class="stat-num" id="s-statGA">0</div><div class="stat-label">GA Tickets Sold</div></div>
+        <div class="stat-card"><div class="stat-num" id="s-statLux">0</div><div class="stat-label">Luxury Cabins</div></div>
+        <div class="stat-card"><div class="stat-num" id="s-statPrem">0</div><div class="stat-label">Premium Cabins</div></div>
+        <div class="stat-card"><div class="stat-num" id="s-statGross">$0</div><div class="stat-label">Gross Revenue</div></div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="section-label">Units Sold — Enter Current Numbers</div>
+          <div class="card">
+            <div class="sales-row">
+              <div>
+                <div class="sales-row-label">GA Tickets</div>
+                <div class="sales-row-meta">$35 / ticket · Max ~111</div>
+              </div>
+              <input class="finance-input" type="number" id="in-ga" min="0" max="120" placeholder="0" oninput="updateSales()">
+            </div>
+            <div class="sales-row">
+              <div>
+                <div class="sales-row-label">Luxury Cabins</div>
+                <div class="sales-row-meta">$419 / cabin · 4 total</div>
+                <div style="margin-top:6px">
+                  <div class="progress-wrap" style="width:160px">
+                    <div class="progress-fill" id="prog-lux" style="width:0%"></div>
+                  </div>
+                  <div style="font-size:8px;letter-spacing:0.14em;color:var(--text-dim);margin-top:3px"><span id="lux-rem">4</span> of 4 remaining</div>
+                </div>
+              </div>
+              <input class="finance-input" type="number" id="in-lux" min="0" max="4" placeholder="0" oninput="updateSales()">
+            </div>
+            <div class="sales-row">
+              <div>
+                <div class="sales-row-label">Premium Cabins</div>
+                <div class="sales-row-meta">$249 / cabin · 5 total</div>
+                <div style="margin-top:6px">
+                  <div class="progress-wrap" style="width:160px">
+                    <div class="progress-fill" id="prog-prem" style="width:0%"></div>
+                  </div>
+                  <div style="font-size:8px;letter-spacing:0.14em;color:var(--text-dim);margin-top:3px"><span id="prem-rem">5</span> of 5 remaining</div>
+                </div>
+              </div>
+              <input class="finance-input" type="number" id="in-prem" min="0" max="5" placeholder="0" oninput="updateSales()">
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-label">Revenue Breakdown</div>
+          <div class="card">
+            <div class="pnl-row">
+              <span class="pnl-row-label">GA tickets (<span id="r-gaCount">0</span> × $35)</span>
+              <span class="pnl-row-val" id="r-gaGross">$0</span>
+            </div>
+            <div class="pnl-row">
+              <span class="pnl-row-label">Luxury cabins (<span id="r-luxCount">0</span> × $419)</span>
+              <span class="pnl-row-val" id="r-luxGross">$0</span>
+            </div>
+            <div class="pnl-row">
+              <span class="pnl-row-label">Premium cabins (<span id="r-premCount">0</span> × $249)</span>
+              <span class="pnl-row-val" id="r-premGross">$0</span>
+            </div>
+            <div class="pnl-divider"></div>
+            <div class="pnl-row">
+              <span class="pnl-row-label">Gross revenue</span>
+              <span class="pnl-row-val" id="r-gross">$0</span>
+            </div>
+            <div class="pnl-row">
+              <span class="pnl-row-label">Stripe fees (2.9% + $0.30/txn)</span>
+              <span class="pnl-row-val negative" id="r-fees">−$0</span>
+            </div>
+            <div class="pnl-divider"></div>
+            <div class="pnl-row">
+              <span class="pnl-row-label" style="color:var(--text);font-size:12px;letter-spacing:0.08em">Net revenue</span>
+              <span class="pnl-row-val positive" style="font-size:26px" id="r-net">$0</span>
+            </div>
+          </div>
+
+          <div class="section-label" style="margin-top:20px">Projected at Sellout</div>
+          <div class="card">
+            <div class="pnl-row">
+              <span class="pnl-row-label">111 GA + 4 Luxury + 5 Premium</span>
+              <span class="pnl-row-val positive" id="r-proj">—</span>
+            </div>
+            <div class="pnl-row">
+              <span class="pnl-row-label">Still to collect</span>
+              <span class="pnl-row-val" id="r-remaining">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── P&L ── -->
+    <div id="page-pnl" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">P&L</div>
+          <div class="page-desc">Enter your costs · Revenue pulls from Sales Tracker · Saved in browser</div>
+        </div>
+        <span class="badge badge-dim" id="pnlLastSaved">Not saved yet</span>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="section-label">Fixed Costs — Enter Actuals</div>
+          <div class="card">
+            <div class="cost-input-row">
+              <span class="cost-input-label">Venue / Bethel Lozana</span>
+              <div style="display:flex;align-items:center;gap:6px"><span style="color:var(--text-dim);font-size:12px">$</span><input class="cost-input-field" type="number" id="c-venue" min="0" placeholder="0" oninput="updatePnl()"></div>
+            </div>
+            <div class="cost-input-row">
+              <span class="cost-input-label">Artist fees (total)</span>
+              <div style="display:flex;align-items:center;gap:6px"><span style="color:var(--text-dim);font-size:12px">$</span><input class="cost-input-field" type="number" id="c-artists" min="0" placeholder="0" oninput="updatePnl()"></div>
+            </div>
+            <div class="cost-input-row">
+              <span class="cost-input-label">Production (sound, lighting, etc.)</span>
+              <div style="display:flex;align-items:center;gap:6px"><span style="color:var(--text-dim);font-size:12px">$</span><input class="cost-input-field" type="number" id="c-production" min="0" placeholder="0" oninput="updatePnl()"></div>
+            </div>
+            <div class="cost-input-row">
+              <span class="cost-input-label">Marketing & ads</span>
+              <div style="display:flex;align-items:center;gap:6px"><span style="color:var(--text-dim);font-size:12px">$</span><input class="cost-input-field" type="number" id="c-marketing" min="0" placeholder="0" oninput="updatePnl()"></div>
+            </div>
+            <div class="cost-input-row">
+              <span class="cost-input-label">Hospitality (food, drinks, staff)</span>
+              <div style="display:flex;align-items:center;gap:6px"><span style="color:var(--text-dim);font-size:12px">$</span><input class="cost-input-field" type="number" id="c-hospitality" min="0" placeholder="0" oninput="updatePnl()"></div>
+            </div>
+            <div class="cost-input-row">
+              <span class="cost-input-label">Other</span>
+              <div style="display:flex;align-items:center;gap:6px"><span style="color:var(--text-dim);font-size:12px">$</span><input class="cost-input-field" type="number" id="c-other" min="0" placeholder="0" oninput="updatePnl()"></div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-label">P&L Summary</div>
+          <div class="card">
+            <div class="pnl-row">
+              <span class="pnl-row-label">Net revenue (from Sales Tracker)</span>
+              <span class="pnl-row-val positive" id="pnl-rev">$0</span>
+            </div>
+            <div class="pnl-divider"></div>
+            <div class="pnl-row">
+              <span class="pnl-row-label">Venue</span>
+              <span class="pnl-row-val negative" id="pnl-c-venue">−$0</span>
+            </div>
+            <div class="pnl-row">
+              <span class="pnl-row-label">Artists</span>
+              <span class="pnl-row-val negative" id="pnl-c-artists">−$0</span>
+            </div>
+            <div class="pnl-row">
+              <span class="pnl-row-label">Production</span>
+              <span class="pnl-row-val negative" id="pnl-c-production">−$0</span>
+            </div>
+            <div class="pnl-row">
+              <span class="pnl-row-label">Marketing</span>
+              <span class="pnl-row-val negative" id="pnl-c-marketing">−$0</span>
+            </div>
+            <div class="pnl-row">
+              <span class="pnl-row-label">Hospitality</span>
+              <span class="pnl-row-val negative" id="pnl-c-hospitality">−$0</span>
+            </div>
+            <div class="pnl-row">
+              <span class="pnl-row-label">Other</span>
+              <span class="pnl-row-val negative" id="pnl-c-other">−$0</span>
+            </div>
+            <div class="pnl-row">
+              <span class="pnl-row-label">Stripe fees</span>
+              <span class="pnl-row-val negative" id="pnl-c-stripe">−$0</span>
+            </div>
+            <div class="pnl-divider"></div>
+            <div class="pnl-row" style="padding-top:14px">
+              <span class="pnl-row-label" style="color:var(--text);font-size:13px;letter-spacing:0.1em">Total costs</span>
+              <span class="pnl-row-val negative" style="font-size:22px" id="pnl-totalCosts">−$0</span>
+            </div>
+            <div class="pnl-divider" style="opacity:0.8"></div>
+            <div class="pnl-row" style="padding-top:14px">
+              <span class="pnl-row-label" style="color:var(--text);font-size:14px;letter-spacing:0.1em">Net P&L</span>
+              <span class="pnl-row-val" style="font-size:32px" id="pnl-net">$0</span>
+            </div>
+          </div>
+
+          <div id="pnl-callout" class="breakeven-callout loss" style="display:none"></div>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-top:8px">Projected P&L at Sellout</div>
+      <div class="card">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:center">
+          <div>
+            <div style="font-size:8px;letter-spacing:0.28em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px">Total Costs</div>
+            <div style="font-family:'CormorantI',serif;font-size:36px;color:rgba(200,60,60,0.85)" id="proj-costs">—</div>
+          </div>
+          <div>
+            <div style="font-size:8px;letter-spacing:0.28em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px">Sellout Revenue</div>
+            <div style="font-family:'CormorantI',serif;font-size:36px;color:var(--green)" id="proj-rev">—</div>
+          </div>
+          <div>
+            <div style="font-size:8px;letter-spacing:0.28em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px">Projected Profit</div>
+            <div style="font-family:'CormorantI',serif;font-size:36px" id="proj-profit">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </main>
 </div>
 
@@ -1552,6 +1902,7 @@ function unlockApp() {
   document.getElementById('gate').style.display = 'none';
   document.getElementById('app').classList.add('visible');
   initCountdown();
+  initFinance();
 }
 
 document.getElementById('pwInput').addEventListener('keydown', e => {
@@ -1630,6 +1981,150 @@ function toggleCheck(row) {
   row.classList.toggle('done');
   const cb = row.querySelector('input[type=checkbox]');
   cb.checked = !cb.checked;
+}
+
+// ─── FINANCE ──────────────────────────────────────────
+const gid = id => document.getElementById(id);
+const fmtUSD = n => '$' + Math.round(Math.abs(n)).toLocaleString('en-US');
+const fmtNeg = n => '−$' + Math.round(Math.abs(n)).toLocaleString('en-US');
+
+const GA_PRICE  = 35;
+const LUX_PRICE = 419;
+const PRE_PRICE = 249;
+const MAX_GA    = 111;
+const MAX_LUX   = 4;
+const MAX_PREM  = 5;
+
+let salesState = { ga: 0, lux: 0, prem: 0, gross: 0, fees: 0, net: 0 };
+
+function calcFees(gross, txns) {
+  return Math.round(gross * 0.029 + txns * 0.30);
+}
+
+function updateSales() {
+  const ga   = Math.min(parseInt(gid('in-ga').value)   || 0, MAX_GA);
+  const lux  = Math.min(parseInt(gid('in-lux').value)  || 0, MAX_LUX);
+  const prem = Math.min(parseInt(gid('in-prem').value) || 0, MAX_PREM);
+
+  const gaGross   = ga   * GA_PRICE;
+  const luxGross  = lux  * LUX_PRICE;
+  const premGross = prem * PRE_PRICE;
+  const gross = gaGross + luxGross + premGross;
+  const txns  = ga + lux + prem;
+  const fees  = calcFees(gross, txns);
+  const net   = gross - fees;
+
+  salesState = { ga, lux, prem, gross, fees, net };
+
+  gid('s-totalNet').textContent  = fmtUSD(net);
+  gid('s-statGA').textContent    = ga;
+  gid('s-statLux').textContent   = lux;
+  gid('s-statPrem').textContent  = prem;
+  gid('s-statGross').textContent = fmtUSD(gross);
+
+  gid('r-gaCount').textContent   = ga;
+  gid('r-luxCount').textContent  = lux;
+  gid('r-premCount').textContent = prem;
+  gid('r-gaGross').textContent   = fmtUSD(gaGross);
+  gid('r-luxGross').textContent  = fmtUSD(luxGross);
+  gid('r-premGross').textContent = fmtUSD(premGross);
+  gid('r-gross').textContent     = fmtUSD(gross);
+  gid('r-fees').textContent      = fmtNeg(fees);
+  gid('r-net').textContent       = fmtUSD(net);
+
+  gid('prog-lux').style.width  = (lux  / MAX_LUX  * 100) + '%';
+  gid('prog-prem').style.width = (prem / MAX_PREM * 100) + '%';
+  gid('lux-rem').textContent   = MAX_LUX  - lux;
+  gid('prem-rem').textContent  = MAX_PREM - prem;
+
+  const projGross = MAX_GA * GA_PRICE + MAX_LUX * LUX_PRICE + MAX_PREM * PRE_PRICE;
+  const projFees  = calcFees(projGross, MAX_GA + MAX_LUX + MAX_PREM);
+  const projNet   = projGross - projFees;
+  gid('r-proj').textContent      = fmtUSD(projNet);
+  gid('r-remaining').textContent = net < projNet ? fmtUSD(projNet - net) : '$0';
+
+  const ts = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  gid('salesLastSaved').textContent = 'Saved ' + ts;
+
+  localStorage.setItem('kx_sales', JSON.stringify({ ga, lux, prem }));
+  updatePnl();
+}
+
+function updatePnl() {
+  const { net, fees } = salesState;
+
+  const venue       = parseFloat(gid('c-venue').value)       || 0;
+  const artists     = parseFloat(gid('c-artists').value)     || 0;
+  const production  = parseFloat(gid('c-production').value)  || 0;
+  const marketing   = parseFloat(gid('c-marketing').value)   || 0;
+  const hospitality = parseFloat(gid('c-hospitality').value) || 0;
+  const other       = parseFloat(gid('c-other').value)       || 0;
+
+  const opCosts    = venue + artists + production + marketing + hospitality + other;
+  const totalCosts = opCosts + fees;
+  const pnl        = net - opCosts;
+
+  gid('pnl-rev').textContent         = fmtUSD(net);
+  gid('pnl-c-venue').textContent     = fmtNeg(venue);
+  gid('pnl-c-artists').textContent   = fmtNeg(artists);
+  gid('pnl-c-production').textContent  = fmtNeg(production);
+  gid('pnl-c-marketing').textContent   = fmtNeg(marketing);
+  gid('pnl-c-hospitality').textContent = fmtNeg(hospitality);
+  gid('pnl-c-other').textContent     = fmtNeg(other);
+  gid('pnl-c-stripe').textContent    = fmtNeg(fees);
+  gid('pnl-totalCosts').textContent  = fmtNeg(totalCosts);
+
+  const pnlEl = gid('pnl-net');
+  pnlEl.textContent = pnl >= 0 ? fmtUSD(pnl) : fmtNeg(pnl);
+  pnlEl.className   = 'pnl-row-val ' + (pnl >= 0 ? 'positive' : 'negative');
+
+  const callout = gid('pnl-callout');
+  if (opCosts > 0) {
+    callout.style.display = 'block';
+    if (pnl >= 0) {
+      callout.className   = 'breakeven-callout profitable';
+      callout.textContent = 'Profitable — ' + fmtUSD(pnl) + ' above break-even.';
+    } else {
+      callout.className   = 'breakeven-callout loss';
+      callout.textContent = 'Need ' + fmtUSD(Math.abs(pnl)) + ' more in net revenue to break even.';
+    }
+  } else {
+    callout.style.display = 'none';
+  }
+
+  const projGross = MAX_GA * GA_PRICE + MAX_LUX * LUX_PRICE + MAX_PREM * PRE_PRICE;
+  const projFees  = calcFees(projGross, MAX_GA + MAX_LUX + MAX_PREM);
+  const projNet   = projGross - projFees;
+  const projPnl   = projNet - opCosts;
+  const projTotal = opCosts + projFees;
+
+  gid('proj-costs').textContent  = fmtNeg(projTotal);
+  gid('proj-rev').textContent    = fmtUSD(projNet);
+  const profitEl = gid('proj-profit');
+  profitEl.textContent = projPnl >= 0 ? fmtUSD(projPnl) : fmtNeg(projPnl);
+  profitEl.style.color = projPnl >= 0 ? 'var(--green)' : 'rgba(200,60,60,0.85)';
+
+  const ts = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  gid('pnlLastSaved').textContent = 'Saved ' + ts;
+
+  localStorage.setItem('kx_pnl', JSON.stringify({ venue, artists, production, marketing, hospitality, other }));
+}
+
+function initFinance() {
+  const s = JSON.parse(localStorage.getItem('kx_sales') || '{}');
+  if (s.ga   != null) gid('in-ga').value   = s.ga;
+  if (s.lux  != null) gid('in-lux').value  = s.lux;
+  if (s.prem != null) gid('in-prem').value = s.prem;
+
+  const p = JSON.parse(localStorage.getItem('kx_pnl') || '{}');
+  if (p.venue       != null) gid('c-venue').value       = p.venue;
+  if (p.artists     != null) gid('c-artists').value     = p.artists;
+  if (p.production  != null) gid('c-production').value  = p.production;
+  if (p.marketing   != null) gid('c-marketing').value   = p.marketing;
+  if (p.hospitality != null) gid('c-hospitality').value = p.hospitality;
+  if (p.other       != null) gid('c-other').value       = p.other;
+
+  updateSales();
 }
 </script>
 </body>
