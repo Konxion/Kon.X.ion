@@ -47,7 +47,7 @@ export default async function handler(req, res) {
     headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       from: 'KON.X.ION <events@konxion.us>',
-      to: ['konxion@icloud.com'],
+      to: ['support@konxion.us'],
       subject: `New subscriber — ${safeName || email}`,
       html: `<div style="font-family:sans-serif;padding:24px;max-width:480px;">
         <h2 style="color:#046303;margin:0 0 16px;">New Email Subscriber</h2>

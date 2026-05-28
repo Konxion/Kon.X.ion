@@ -38,7 +38,7 @@ export default async function handler(req, res) {
 
   const payload = {
     from: 'KON.X.ION <events@konxion.us>',
-    to: ['konxion@icloud.com'],
+    to: ['support@konxion.us'],
     reply_to: email,
     subject: `Message from ${safeName}`,
     html: `

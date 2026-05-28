@@ -1,5 +1,6 @@
 const ORIGIN = 'https://konxion.us';
 const GA_PRICE_CENTS = 3500;
+const MAX_GA_TICKETS = 111;
 
 const hits = new Map();
 const WINDOW = 60_000;
@@ -13,6 +14,17 @@ function isRateLimited(ip) {
   entry.count++;
   hits.set(ip, entry);
   return false;
+}
+
+async function countSoldTickets(stripeKey) {
+  const res = await fetch('https://api.stripe.com/v1/checkout/sessions?payment_status=paid&limit=100', {
+    headers: { 'Authorization': `Bearer ${stripeKey}` },
+  });
+  const data = await res.json();
+  if (!Array.isArray(data.data)) return 0;
+  return data.data
+    .filter(s => s.metadata?.product !== 'cabin')
+    .reduce((sum, s) => sum + (parseInt(s.metadata?.quantity, 10) || 1), 0);
 }
 
 export default async function handler(req, res) {
@@ -36,6 +48,24 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Invalid quantity' });
   }
 
+  const stripeKey = process.env.STRIPE_SECRET_KEY;
+
+  try {
+    const sold = await countSoldTickets(stripeKey);
+    const remaining = MAX_GA_TICKETS - sold;
+    if (remaining <= 0) {
+      return res.status(409).json({ error: 'General admission is sold out.' });
+    }
+    if (qty > remaining) {
+      return res.status(409).json({
+        error: `Only ${remaining} ticket${remaining === 1 ? '' : 's'} remaining.`,
+      });
+    }
+  } catch (err) {
+    console.error('Inventory check error:', err);
+    return res.status(500).json({ error: 'Could not verify availability. Please try again.' });
+  }
+
   const params = new URLSearchParams({
     'ui_mode': 'embedded_page',
     'mode': 'payment',
@@ -55,7 +85,7 @@ export default async function handler(req, res) {
     const stripeRes = await fetch('https://api.stripe.com/v1/checkout/sessions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.STRIPE_SECRET_KEY}`,
+        'Authorization': `Bearer ${stripeKey}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: params.toString(),

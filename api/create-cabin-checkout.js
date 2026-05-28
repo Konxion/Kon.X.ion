@@ -5,6 +5,8 @@ const CABIN_PRODUCTS = {
   premium: { name: 'KON.X.ION — Premium Cabin', description: 'Sleeps 4 · 2 Double Beds · Hot tub · Room service · WiFi · Admission included',                    price: 24900 },
 };
 
+const CABIN_MAX = { luxury: 4, premium: 5 };
+
 const hits = new Map();
 const WINDOW = 60_000;
 const LIMIT  = 5;
@@ -19,6 +21,17 @@ function isRateLimited(ip) {
   return false;
 }
 
+async function countSoldCabins(stripeKey, cabinType) {
+  const res = await fetch('https://api.stripe.com/v1/checkout/sessions?payment_status=paid&limit=100', {
+    headers: { 'Authorization': `Bearer ${stripeKey}` },
+  });
+  const data = await res.json();
+  if (!Array.isArray(data.data)) return 0;
+  return data.data.filter(s =>
+    s.metadata?.product === 'cabin' && s.metadata?.cabin_type === cabinType
+  ).length;
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
@@ -29,8 +42,25 @@ export default async function handler(req, res) {
 
   if (!name || !email || !cabinType) return res.status(400).json({ error: 'Missing required fields' });
 
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ error: 'Invalid email' });
+  }
+
   const product = CABIN_PRODUCTS[cabinType];
   if (!product) return res.status(400).json({ error: 'Invalid cabin type' });
+
+  const stripeKey = process.env.STRIPE_SECRET_KEY;
+
+  try {
+    const sold = await countSoldCabins(stripeKey, cabinType);
+    const max  = CABIN_MAX[cabinType];
+    if (sold >= max) {
+      return res.status(409).json({ error: `This cabin type is sold out.` });
+    }
+  } catch (err) {
+    console.error('Inventory check error:', err);
+    return res.status(500).json({ error: 'Could not verify availability. Please try again.' });
+  }
 
   const params = new URLSearchParams({
     'ui_mode': 'embedded_page',
@@ -52,7 +82,7 @@ export default async function handler(req, res) {
     const stripeRes = await fetch('https://api.stripe.com/v1/checkout/sessions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.STRIPE_SECRET_KEY}`,
+        'Authorization': `Bearer ${stripeKey}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: params.toString(),
