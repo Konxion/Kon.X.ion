@@ -662,6 +662,199 @@ body::after {
   pointer-events: none;
   z-index: 9999;
 }
+
+/* ─── SKILLS LIBRARY ──────────────────────────────── */
+.skills-search-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.skills-search {
+  width: 100%;
+  max-width: 420px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 9px 14px;
+  color: var(--text);
+  font-family: 'Josefin', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.skills-search:focus { border-color: var(--green-border); }
+.skills-search::placeholder { color: var(--text-faint); }
+.skills-cat-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.cat-pill {
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-dim);
+  font-family: 'Josefin', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.cat-pill:hover { border-color: var(--green-border); color: var(--text); }
+.cat-pill.active { border-color: var(--green); color: var(--green); background: var(--green-glow); }
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.skills-cat-group { grid-column: 1 / -1; }
+.skills-cat-label {
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  padding: 16px 0 8px;
+  border-top: 1px solid var(--border);
+  margin-top: 4px;
+}
+.skills-cat-label:first-child { border-top: none; margin-top: 0; padding-top: 0; }
+.skill-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.skill-card:hover { border-color: var(--green-border); background: var(--panel-hover); }
+.skill-card-name {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  text-transform: uppercase;
+}
+.skill-card-desc {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.02em;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.skill-card-tag {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(4,200,10,0.55);
+  margin-top: auto;
+  padding-top: 6px;
+}
+/* Drawer */
+.skill-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 200;
+}
+.skill-overlay.open { display: block; }
+.skill-drawer {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  width: min(680px, 95vw);
+  background: #040d06;
+  border-left: 1px solid var(--green-border);
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+.skill-drawer.open { transform: translateX(0); }
+.skill-drawer-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 24px 28px 20px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.skill-drawer-cat {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(4,200,10,0.6);
+  margin-bottom: 4px;
+}
+.skill-drawer-name {
+  font-size: 18px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.skill-drawer-close {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+.skill-drawer-close:hover { color: var(--text); }
+.skill-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px;
+  font-size: 12px;
+  line-height: 1.75;
+  color: var(--text-dim);
+  letter-spacing: 0.02em;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.skill-drawer-body h1, .skill-drawer-body h2 {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin: 22px 0 8px;
+  font-weight: 300;
+}
+.skill-drawer-body h3 {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--text);
+  margin: 16px 0 6px;
+  font-weight: 300;
+}
+.skill-drawer-body strong { color: var(--text); font-weight: 400; }
+.copy-btn {
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  color: var(--green);
+  font-family: 'Josefin', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 7px 16px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.copy-btn:hover { background: rgba(4,200,10,0.25); }
+.copy-btn.copied { color: #fff; }
 </style>
 </head>
 <body>
@@ -705,6 +898,9 @@ body::after {
       <div class="sb-section">Finance</div>
       <a class="sb-link" onclick="nav('sales')"><span class="sb-dot"></span>Sales Tracker</a>
       <a class="sb-link" onclick="nav('pnl')"><span class="sb-dot"></span>P&L</a>
+
+      <div class="sb-section">Skills</div>
+      <a class="sb-link" onclick="nav('skills')"><span class="sb-dot"></span>Marketing Library</a>
     </div>
     <div class="sb-countdown">
       <div class="sb-cd-label">Days to Event</div>
@@ -1872,6 +2068,39 @@ See you Saturday.
       </div>
     </div>
 
+    <!-- ── MARKETING LIBRARY ── -->
+    <div id="page-skills" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Marketing Library</div>
+          <div class="page-desc">42 skills — click any card to view the full playbook</div>
+        </div>
+      </div>
+
+      <div class="skills-search-row">
+        <input id="skillsSearch" class="skills-search" type="text" placeholder="Search skills..." oninput="filterSkills(this.value)">
+        <div class="skills-cat-filters" id="skillsCatFilters"></div>
+      </div>
+
+      <div id="skillsGrid" class="skills-grid"></div>
+    </div>
+
+    <!-- ── SKILL DRAWER ── -->
+    <div id="skillDrawer" class="skill-drawer">
+      <div class="skill-drawer-header">
+        <div>
+          <div class="skill-drawer-cat" id="drawerCat"></div>
+          <div class="skill-drawer-name" id="drawerName"></div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <button class="copy-btn" id="drawerCopyBtn" onclick="copySkillPrompt()">Copy Prompt</button>
+          <button class="skill-drawer-close" onclick="closeDrawer()">✕</button>
+        </div>
+      </div>
+      <div class="skill-drawer-body" id="drawerBody"></div>
+    </div>
+    <div id="skillOverlay" class="skill-overlay" onclick="closeDrawer()"></div>
+
   </main>
 </div>
 
@@ -2126,6 +2355,125 @@ function initFinance() {
 
   updateSales();
 }
+
+// ─── SKILLS LIBRARY ──────────────────────────────────
+let skillsData = null;
+let activeSkillCat = 'All';
+let activeSkillSearch = '';
+let currentSkill = null;
+
+async function initSkills() {
+  if (skillsData) return;
+  try {
+    const r = await fetch('./skills-data.json');
+    skillsData = await r.json();
+    renderCatFilters();
+    renderSkillsGrid();
+  } catch(e) {
+    document.getElementById('skillsGrid').innerHTML = '<div style="color:var(--text-dim);font-size:11px;">Could not load skills data.</div>';
+  }
+}
+
+function renderCatFilters() {
+  const container = document.getElementById('skillsCatFilters');
+  const cats = ['All', ...skillsData.categories];
+  container.innerHTML = cats.map(c =>
+    `<button class="cat-pill${c==='All'?' active':''}" onclick="setCat('${c}',this)">${c}</button>`
+  ).join('');
+}
+
+function setCat(cat, btn) {
+  activeSkillCat = cat;
+  document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  renderSkillsGrid();
+}
+
+function filterSkills(q) {
+  activeSkillSearch = q.toLowerCase();
+  renderSkillsGrid();
+}
+
+function renderSkillsGrid() {
+  const grid = document.getElementById('skillsGrid');
+  const cats = activeSkillCat === 'All' ? skillsData.categories : [activeSkillCat];
+  let html = '';
+  let total = 0;
+
+  for (const cat of cats) {
+    const skills = skillsData.skills.filter(s =>
+      s.category === cat &&
+      (!activeSkillSearch ||
+        s.name.toLowerCase().includes(activeSkillSearch) ||
+        s.description.toLowerCase().includes(activeSkillSearch) ||
+        s.category.toLowerCase().includes(activeSkillSearch))
+    );
+    if (!skills.length) continue;
+    total += skills.length;
+    html += `<div class="skills-cat-group">
+      <div class="skills-cat-label">${cat}</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;">
+        ${skills.map(s => `
+        <div class="skill-card" onclick="openSkill('${s.id}')">
+          <div class="skill-card-name">${s.name}</div>
+          <div class="skill-card-desc">${s.description}</div>
+          <div class="skill-card-tag">${s.category}</div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  if (!total) {
+    html = '<div style="color:var(--text-dim);font-size:11px;padding:24px 0;">No skills match.</div>';
+  }
+  grid.innerHTML = html;
+}
+
+function openSkill(id) {
+  if (!skillsData) return;
+  const skill = skillsData.skills.find(s => s.id === id);
+  if (!skill) return;
+  currentSkill = skill;
+
+  document.getElementById('drawerCat').textContent = skill.category;
+  document.getElementById('drawerName').textContent = skill.name;
+  document.getElementById('drawerBody').innerHTML = renderMarkdown(skill.body);
+  document.getElementById('drawerCopyBtn').textContent = 'Copy Prompt';
+  document.getElementById('drawerCopyBtn').classList.remove('copied');
+
+  document.getElementById('skillDrawer').classList.add('open');
+  document.getElementById('skillOverlay').classList.add('open');
+}
+
+function closeDrawer() {
+  document.getElementById('skillDrawer').classList.remove('open');
+  document.getElementById('skillOverlay').classList.remove('open');
+}
+
+function copySkillPrompt() {
+  if (!currentSkill) return;
+  navigator.clipboard.writeText(currentSkill.body.trim()).then(() => {
+    const btn = document.getElementById('drawerCopyBtn');
+    btn.textContent = 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy Prompt'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function renderMarkdown(md) {
+  return md
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+    .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/`(.+?)`/g, '<code style="background:var(--green-dim);padding:1px 5px;border-radius:2px;font-size:11px;color:var(--green);">$1</code>')
+    .replace(/\n/g, '<br>');
+}
+
+// Pre-load skills data so the page is instant on first visit
+window.addEventListener('DOMContentLoaded', () => { initSkills(); });
 </script>
 </body>
 </html>
