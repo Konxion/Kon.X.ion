@@ -82,7 +82,7 @@ async function sendTicketEmails(apiKey, { name, email, quantity }) {
           </p>
           <div style="border:1px solid rgba(4,200,10,0.3);border-radius:8px;padding:20px;margin:0 0 24px;">
             <div style="font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:8px;">Event Details</div>
-            <div style="font-size:15px;color:#fff;line-height:1.8;">Bethel Lozana<br>Guatapé, Antioquia, Colombia<br>Saturday, July 18 · 1PM — 5AM</div>
+            <div style="font-size:15px;color:#fff;line-height:1.8;">Bethel Lozana<br>Guatapé, Antioquia, Colombia<br>Saturday, July 18 · 3PM — 5AM</div>
           </div>
           <p style="color:rgba(255,255,255,0.4);font-size:12px;margin:0;">Questions? Reply to this email or reach us at support@konxion.us</p>
         </div>`,
@@ -139,7 +139,7 @@ async function sendCabinEmails(apiKey, { name, email, cabinType }) {
           </div>
           <div style="border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:20px;margin:0 0 24px;">
             <div style="font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:8px;">Event Details</div>
-            <div style="font-size:15px;color:#fff;line-height:1.8;">Bethel Lozana<br>Guatapé, Antioquia, Colombia<br>Saturday, July 18 · 1PM — 5AM</div>
+            <div style="font-size:15px;color:#fff;line-height:1.8;">Bethel Lozana<br>Guatapé, Antioquia, Colombia<br>Saturday, July 18 · 3PM — 5AM</div>
           </div>
           <p style="color:rgba(255,255,255,0.4);font-size:12px;margin:0;">Questions? Reply to this email or reach us at support@konxion.us</p>
         </div>`,

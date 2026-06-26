@@ -74,7 +74,7 @@ export default async function handler(req, res) {
     'line_items[0][price_data][currency]': 'usd',
     'line_items[0][price_data][unit_amount]': String(GA_PRICE_CENTS),
     'line_items[0][price_data][product_data][name]': 'KON.X.ION — General Admission',
-    'line_items[0][price_data][product_data][description]': 'Saturday, July 18 · Bethel Lozana, Guatapé, Colombia · 1PM – 5AM',
+    'line_items[0][price_data][product_data][description]': 'Saturday, July 18 · Bethel Lozana, Guatapé, Colombia · 3PM – 5AM',
     'line_items[0][quantity]': String(qty),
     'metadata[attendee_name]': name,
     'metadata[attendee_email]': email,
