@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Stay · KON.X.ION</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200;0,9..40,300;0,9..40,400;1,9..40,200&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Josefin+Sans:wght@100;200;300;400&display=swap" rel="stylesheet">
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --emerald: rgba(4,99,7,1);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  html, body {
+    height: 100%; width: 100%;
+    overflow: hidden;
+    font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    background: #000;
+  }
+
+  /* ── STAY PAGE (full-screen, always visible here) ── */
+  #stayPage {
+    position: fixed; inset: 0; z-index: 1;
+    background: #000;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    overscroll-behavior: contain;
+  }
+
+  /* ── SLIDESHOW ── */
+  .stay-slide {
+    position: absolute; inset: 0;
+    background-color: #000;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+  }
+  @media (min-width: 600px) {
+    .stay-slide { background-size: contain; }
+  }
+
+  /* ── LANGUAGE TOGGLE ── */
+  .lang-toggle {
+    position: fixed; top: 20px; right: 20px; z-index: 50;
+    display: flex; gap: 6px;
+  }
+  .lang-opt {
+    background: none; border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 11px;
+    letter-spacing: 0.15em; text-transform: uppercase; font-weight: 300;
+    padding: 6px 0;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ── STAY PAGE ── -->
+<div id="stayPage">
+
+  <!-- Photo slideshow background -->
+  <div id="stayBgSlides" style="position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;">
+    <div class="stay-slide" style="background-image:url('stay-bg-1.jpeg');"></div>
+    <div class="stay-slide" style="background-image:url('entorno-bethel1.jpeg');"></div>
+    <div class="stay-slide" style="background-image:url('stay-bg-2.jpeg');"></div>
+    <div class="stay-slide" style="background-image:url('luxury1.jpeg');"></div>
+    <div class="stay-slide" style="background-image:url('stay-bg-3.jpeg');"></div>
+    <div class="stay-slide" style="background-image:url('entorno-bethel2.jpeg');"></div>
+    <div class="stay-slide" style="background-image:url('stay-bg-4.jpeg');"></div>
+    <div class="stay-slide" style="background-image:url('luxury3.jpeg');"></div>
+    <div class="stay-slide" style="background-image:url('stay-bg-5.jpeg');"></div>
+    <div class="stay-slide" style="background-image:url('entorno-bethel3.jpeg');"></div>
+    <div class="stay-slide" style="background-image:url('stay-bg-6.jpeg');"></div>
+    <div class="stay-slide" style="background-image:url('2-beds.jpeg');"></div>
+    <div class="stay-slide" style="background-image:url('jacuzzi-premiere.jpeg');"></div>
+  </div>
+
+  <!-- Dark overlay for readability -->
+  <div style="position:fixed;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to bottom, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.72) 100%);"></div>
+
+  <!-- Back button -->
+  <button onclick="history.back()" style="position:fixed;top:68px;left:24px;z-index:50;background:none;border:0.5px solid rgba(4,200,10,0.3);border-radius:999px;padding:8px 16px;min-height:36px;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,220,10,0.8),0 0 20px rgba(4,200,10,0.5),0 0 45px rgba(4,200,10,0.2);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:300;cursor:pointer;" id="stayBack" data-i18n="back-btn">← Back</button>
+
+  <!-- Language toggle -->
+  <div class="lang-toggle">
+    <button class="lang-opt lang-opt-en" onclick="applyLanguage('en')" style="color:rgba(255,255,255,0.9);">EN</button>
+    <span style="color:rgba(255,255,255,0.25);font-size:11px;line-height:1;align-self:center;">·</span>
+    <button class="lang-opt lang-opt-es" onclick="applyLanguage('es')" style="color:rgba(255,255,255,0.35);">ES</button>
+  </div>
+
+  <!-- Content -->
+  <div style="padding:120px 24px 60px;max-width:520px;margin:0 auto;position:relative;z-index:2;">
+    <div style="text-align:center;margin-bottom:48px;">
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;font-size:52px;color:#fff;letter-spacing:0.06em;line-height:1;margin-bottom:10px;" data-i18n="stay-title">Stay</div>
+      <div style="font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,255,10,0.9),0 0 20px rgba(4,220,10,0.7),0 0 50px rgba(4,200,10,0.4),0 0 90px rgba(4,160,8,0.15);" data-i18n="stay-subtitle">Cabin Rentals · Guatapé</div>
+    </div>
+
+    <!-- CABIN DETAILS — first -->
+    <div style="background:rgba(4,200,10,0.06);border:0.5px solid rgba(4,200,10,0.32);border-radius:20px;padding:24px;margin-bottom:14px;">
+      <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,255,10,0.9),0 0 20px rgba(4,220,10,0.8),0 0 50px rgba(4,200,10,0.5),0 0 90px rgba(4,160,8,0.2);margin-bottom:14px;" data-i18n="stay-details-label">Cabin Details</div>
+      <div data-i18n="stay-avail" style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 10px rgba(4,255,10,0.9),0 0 24px rgba(4,220,10,0.8),0 0 50px rgba(4,200,10,0.5),0 0 90px rgba(4,200,10,0.2);text-align:center;padding:9px 0;margin-bottom:16px;border-top:0.5px solid rgba(4,200,10,0.25);border-bottom:0.5px solid rgba(4,200,10,0.25);">⚡ Only 9 Cabins Available</div>
+
+      <!-- Luxury cabin card -->
+      <div onclick="openCabinLuxModal()" style="cursor:pointer;background:rgba(255,255,255,0.03);border:0.5px solid rgba(4,200,10,0.22);border-radius:14px;padding:16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <div style="flex:1;">
+          <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 6px rgba(4,255,10,0.9),0 0 18px rgba(4,220,10,0.7),0 0 40px rgba(4,200,10,0.35);margin-bottom:5px;" data-i18n="cabin-lux-label">Luxury · 4 Cabins</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:300;color:rgba(255,255,255,0.85);line-height:1.4;" data-i18n="cabin-lux-beds">1 California King or 2 Double Beds</div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:0.05em;margin-top:2px;" data-i18n="cabin-lux-sleeps">Sleeps 2 or 4</div>
+          <div style="margin-top:11px;display:flex;align-items:baseline;gap:4px;">
+            <span style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:#fff;">$419</span>
+            <span style="font-family:'DM Sans',sans-serif;font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:0.08em;">USD</span>
+            <span style="font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(255,255,255,0.18);margin:0 4px;">/</span>
+            <span style="font-family:'DM Sans',sans-serif;font-size:13px;color:rgba(255,255,255,0.35);">$1,500,000</span>
+            <span style="font-family:'DM Sans',sans-serif;font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.06em;">COP</span>
+          </div>
+        </div>
+        <div style="font-size:10px;letter-spacing:0.15em;color:rgba(4,220,10,1);font-family:'Josefin Sans',sans-serif;text-transform:uppercase;text-shadow:0 0 8px rgba(4,255,10,0.9),0 0 20px rgba(4,220,10,0.8),0 0 45px rgba(4,200,10,0.45);white-space:nowrap;flex-shrink:0;" data-i18n="view-label">View ›</div>
+      </div>
+
+      <!-- Premium cabin card -->
+      <div onclick="openCabin4Modal()" style="cursor:pointer;background:rgba(255,255,255,0.03);border:0.5px solid rgba(4,200,10,0.22);border-radius:14px;padding:16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <div style="flex:1;">
+          <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 6px rgba(4,255,10,0.9),0 0 18px rgba(4,220,10,0.7),0 0 40px rgba(4,200,10,0.35);margin-bottom:5px;" data-i18n="cabin-prem-label">Premium · 5 Cabins</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:300;color:rgba(255,255,255,0.85);line-height:1.4;" data-i18n="cabin-prem-beds">2 Double Beds</div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:0.05em;margin-top:2px;" data-i18n="cabin-prem-sleeps">Sleeps 4</div>
+          <div style="margin-top:11px;display:flex;align-items:baseline;gap:4px;">
+            <span style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:#fff;">$249</span>
+            <span style="font-family:'DM Sans',sans-serif;font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:0.08em;">USD</span>
+            <span style="font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(255,255,255,0.18);margin:0 4px;">/</span>
+            <span style="font-family:'DM Sans',sans-serif;font-size:13px;color:rgba(255,255,255,0.35);">$900,000</span>
+            <span style="font-family:'DM Sans',sans-serif;font-size:10px;color:rgba(255,255,255,0.25);letter-spacing:0.06em;">COP</span>
+          </div>
+        </div>
+        <div style="font-size:10px;letter-spacing:0.15em;color:rgba(4,220,10,1);font-family:'Josefin Sans',sans-serif;text-transform:uppercase;text-shadow:0 0 8px rgba(4,255,10,0.9),0 0 20px rgba(4,220,10,0.8),0 0 45px rgba(4,200,10,0.45);white-space:nowrap;flex-shrink:0;" data-i18n="view-label">View ›</div>
+      </div>
+      <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 6px rgba(4,220,10,0.9),0 0 18px rgba(4,200,10,0.6),0 0 40px rgba(4,200,10,0.25);text-align:center;" data-i18n="stay-inclusive">All-inclusive · Cabin + Party Entry</div>
+    </div>
+
+    <!-- WHAT'S INCLUDED -->
+    <div style="background:rgba(4,200,10,0.06);border:0.5px solid rgba(4,200,10,0.32);border-radius:20px;padding:24px;margin-bottom:14px;">
+      <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,255,10,0.9),0 0 20px rgba(4,220,10,0.8),0 0 50px rgba(4,200,10,0.5),0 0 90px rgba(4,160,8,0.2);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
+        <span data-i18n="stay-included-label">What's Included</span>
+        <span data-i18n="stay-included-note" style="font-size:8px;letter-spacing:0.15em;color:rgba(4,220,10,1);text-transform:uppercase;text-shadow:0 0 4px rgba(4,220,10,1),0 0 10px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.9),0 0 48px rgba(4,220,10,0.6);">* * * With cabin rental * * *</span>
+      </div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,1);line-height:1.75;" data-i18n="stay-included-body">· Welcome drink upon arrival<br>· Free breakfast<br>· Free padel class at <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 people)<br>· WiFi<br>· Room service<br>· Hot tub<br>· Kayak</div>
+    </div>
+
+    <!-- ABOUT -->
+    <div style="background:rgba(4,200,10,0.06);border:0.5px solid rgba(4,200,10,0.32);border-radius:20px;padding:24px;margin-bottom:14px;">
+      <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,255,10,0.9),0 0 20px rgba(4,220,10,0.8),0 0 50px rgba(4,200,10,0.5),0 0 90px rgba(4,160,8,0.2);margin-bottom:10px;" data-i18n="stay-about-label">About</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,1);line-height:1.75;" data-i18n="stay-about">We've reserved all the cabins in the resort for Kon.X.ion attendees. Wake up in the mountains of Guatapé, steps from the party.</div>
+    </div>
+
+    <!-- BOOK — Stripe -->
+    <div style="background:rgba(4,200,10,0.06);border:0.5px solid rgba(4,200,10,0.32);border-radius:20px;padding:24px;margin-bottom:14px;">
+      <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,255,10,0.9),0 0 20px rgba(4,220,10,0.8),0 0 50px rgba(4,200,10,0.5),0 0 90px rgba(4,160,8,0.2);margin-bottom:10px;" data-i18n="stay-reserve-label">Reserve a Cabin</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,1);line-height:1.75;margin-bottom:18px;" data-i18n="stay-reserve-body">Each cabin is all-inclusive — your stay and party entry in one. Spots are limited.</div>
+      <button onclick="openBookingModal()" style="display:block;width:100%;text-align:center;background:rgba(4,200,10,0.9);color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;padding:16px 24px;border-radius:999px;border:none;cursor:pointer;" data-i18n="stay-cta">Book</button>
+      <div id="bookErr" style="display:none;color:rgba(200,60,40,0.85);font-family:'DM Sans',sans-serif;font-size:12px;text-align:center;margin-top:12px;"></div>
+    </div>
+
+  </div>
+</div><!-- end #stayPage -->
+
+<!-- BOOKING MODAL -->
+<div id="bookingModal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:24px;">
+  <div style="background:#0a1a0c;border:0.5px solid rgba(4,200,10,0.3);border-radius:20px;width:100%;max-width:400px;padding:28px 24px;">
+    <div style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 8px rgba(4,255,10,0.9),0 0 20px rgba(4,220,10,0.8),0 0 50px rgba(4,200,10,0.5);margin-bottom:6px;" data-i18n="stay-reserve-label">Reserve a Cabin</div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:0.05em;margin-bottom:20px;" data-i18n="cb-sub-stay">All-inclusive · Admission + Stay · July 18</div>
+    <input id="bookName" type="text" autocomplete="name" placeholder="Full Name" style="display:block;width:100%;padding:14px 16px;border-radius:12px;border:0.5px solid rgba(4,200,10,0.3);background:rgba(4,200,10,0.06);color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;margin-bottom:12px;outline:none;">
+    <select id="bookType" style="display:block;width:100%;padding:14px 16px;border-radius:12px;border:0.5px solid rgba(4,200,10,0.3);background:rgba(4,200,10,0.06);color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;margin-bottom:20px;outline:none;appearance:none;-webkit-appearance:none;cursor:pointer;">
+      <option value="" disabled selected data-i18n="cb-select-prompt">Select cabin type</option>
+      <option value="luxury" data-i18n="cb-opt-lux">Luxury Cabin — $419 (sleeps 2–4)</option>
+      <option value="premium" data-i18n="cb-opt-prem">Premium Cabin — $249 (sleeps 4)</option>
+    </select>
+    <button id="bookBtn" onclick="submitCabinBooking()" style="display:block;width:100%;padding:15px;border-radius:999px;border:none;background:rgba(4,200,10,0.9);color:#000;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;cursor:pointer;margin-bottom:10px;" data-i18n="stay-cta">Book</button>
+    <button onclick="closeBookingModal()" style="display:block;width:100%;padding:12px;border-radius:999px;border:0.5px solid rgba(255,255,255,0.15);background:transparent;color:rgba(255,255,255,0.45);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;" data-i18n="modal-cancel">Cancel</button>
+    <div id="bookModalErr" style="display:none;color:rgba(200,60,40,0.85);font-family:'DM Sans',sans-serif;font-size:12px;text-align:center;margin-top:10px;"></div>
+  </div>
+</div>
+
+<!-- STRIPE CHECKOUT MODAL -->
+<div id="stripeModal" style="display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);">
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;">
+    <div style="background:#0d0d0d;border:1px solid rgba(4,200,10,0.25);border-radius:18px;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;position:relative;">
+      <button onclick="closeStripeModal()" style="position:sticky;top:0;float:right;margin:14px 14px 0 0;background:rgba(255,255,255,0.06);border:none;border-radius:50%;width:32px;height:32px;color:rgba(255,255,255,0.55);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:1;">✕</button>
+      <div style="clear:both;padding:0 20px 24px;" id="stripeMount"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ CABIN 4 PHOTO MODAL ═══ -->
+<div id="cabin4Modal" onclick="closeCabin4Modal()" style="position:fixed;inset:0;z-index:110;background:rgba(0,0,0,0.95);opacity:0;pointer-events:none;transition:opacity 0.3s ease;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;">
+  <button id="cabin4CloseBtn" onclick="closeCabin4Modal()" style="position:absolute;top:24px;right:24px;background:none;border:none;color:rgba(255,255,255,0.6);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;">✕</button>
+  <div onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;width:100%;max-width:480px;">
+    <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 6px rgba(4,255,10,0.9),0 0 18px rgba(4,220,10,0.7),0 0 40px rgba(4,200,10,0.35);margin-bottom:6px;" data-i18n="cabin4-label">4-Person Cabin</div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(255,255,255,0.35);letter-spacing:0.08em;margin-bottom:24px;" data-i18n="cabin4-sub">2 Double Beds</div>
+    <div style="position:relative;width:100%;">
+      <div id="cabin4Track" style="width:100%;border-radius:16px;overflow:hidden;background:rgba(255,255,255,0.04);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;">
+        <img id="cabin4Img" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;">
+        <div id="cabin4Placeholder" style="color:rgba(255,255,255,0.15);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.1em;text-align:center;">Photos coming soon</div>
+      </div>
+      <button id="cabin4Prev" onclick="cabin4Slide(-1)" style="display:none;position:absolute;left:12px;top:50%;transform:translateY(-50%);background:transparent;border:none;-webkit-appearance:none;appearance:none;color:rgba(255,255,255,0.8);font-size:28px;cursor:pointer;line-height:1;padding:0;text-shadow:0 1px 6px rgba(0,0,0,0.8);">‹</button>
+      <button id="cabin4Next" onclick="cabin4Slide(1)" style="display:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);background:transparent;border:none;-webkit-appearance:none;appearance:none;color:rgba(255,255,255,0.8);font-size:28px;cursor:pointer;line-height:1;padding:0;text-shadow:0 1px 6px rgba(0,0,0,0.8);">›</button>
+    </div>
+    <div id="cabin4Dots" style="display:flex;gap:6px;margin-top:16px;"></div>
+  </div>
+</div>
+
+<!-- ═══ CABIN 2 PHOTO MODAL ═══ -->
+<div id="cabin2Modal" onclick="closeCabin2Modal()" style="position:fixed;inset:0;z-index:110;background:rgba(0,0,0,0.95);opacity:0;pointer-events:none;transition:opacity 0.3s ease;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;">
+  <button onclick="closeCabin2Modal()" style="position:absolute;top:24px;right:24px;background:none;border:none;color:rgba(255,255,255,0.6);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;">✕</button>
+  <div onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;width:100%;max-width:480px;">
+    <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 6px rgba(4,255,10,0.9),0 0 18px rgba(4,220,10,0.7),0 0 40px rgba(4,200,10,0.35);margin-bottom:6px;">2-Person Cabin</div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(255,255,255,0.35);letter-spacing:0.08em;margin-bottom:24px;">1 California Queen Bed</div>
+    <div style="position:relative;width:100%;">
+      <div id="cabin2Track" style="width:100%;border-radius:16px;overflow:hidden;background:rgba(255,255,255,0.04);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;">
+        <img id="cabin2Img" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;">
+        <div id="cabin2Placeholder" style="color:rgba(255,255,255,0.15);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.1em;text-align:center;">Photos coming soon</div>
+      </div>
+      <button id="cabin2Prev" onclick="cabin2Slide(-1)" style="display:none;position:absolute;left:12px;top:50%;transform:translateY(-50%);background:transparent;border:none;-webkit-appearance:none;appearance:none;color:rgba(255,255,255,0.8);font-size:28px;cursor:pointer;line-height:1;padding:0;text-shadow:0 1px 6px rgba(0,0,0,0.8);">‹</button>
+      <button id="cabin2Next" onclick="cabin2Slide(1)" style="display:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);background:transparent;border:none;-webkit-appearance:none;appearance:none;color:rgba(255,255,255,0.8);font-size:28px;cursor:pointer;line-height:1;padding:0;text-shadow:0 1px 6px rgba(0,0,0,0.8);">›</button>
+    </div>
+    <div id="cabin2Dots" style="display:flex;gap:6px;margin-top:16px;"></div>
+  </div>
+</div>
+
+<!-- ═══ CABIN LUXURY PHOTO MODAL ═══ -->
+<div id="cabinLuxModal" onclick="closeCabinLuxModal()" style="position:fixed;inset:0;z-index:110;background:rgba(0,0,0,0.95);opacity:0;pointer-events:none;transition:opacity 0.3s ease;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;">
+  <button onclick="closeCabinLuxModal()" style="position:absolute;top:24px;right:24px;background:none;border:none;color:rgba(255,255,255,0.6);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;">✕</button>
+  <div onclick="event.stopPropagation()" style="display:flex;flex-direction:column;align-items:center;width:100%;max-width:480px;">
+    <div style="font-family:'Josefin Sans',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(4,220,10,1);text-shadow:0 0 6px rgba(4,255,10,0.9),0 0 18px rgba(4,220,10,0.7),0 0 40px rgba(4,200,10,0.35);margin-bottom:6px;">Luxury · 4 Cabins</div>
+    <div style="font-family:'DM Sans',sans-serif;font-size:12px;color:rgba(255,255,255,0.35);letter-spacing:0.08em;margin-bottom:24px;">California King or 2 Double Beds</div>
+    <div style="position:relative;width:100%;">
+      <div id="cabinLuxTrack" style="width:100%;border-radius:16px;overflow:hidden;background:rgba(255,255,255,0.04);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;">
+        <img id="cabinLuxImg" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;">
+        <div id="cabinLuxPlaceholder" style="color:rgba(255,255,255,0.15);font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.1em;text-align:center;">Photos coming soon</div>
+      </div>
+      <button id="cabinLuxPrev" onclick="cabinLuxSlide(-1)" style="display:none;position:absolute;left:12px;top:50%;transform:translateY(-50%);background:transparent;border:none;-webkit-appearance:none;appearance:none;color:rgba(255,255,255,0.8);font-size:28px;cursor:pointer;line-height:1;padding:0;text-shadow:0 1px 6px rgba(0,0,0,0.8);">‹</button>
+      <button id="cabinLuxNext" onclick="cabinLuxSlide(1)" style="display:none;position:absolute;right:12px;top:50%;transform:translateY(-50%);background:transparent;border:none;-webkit-appearance:none;appearance:none;color:rgba(255,255,255,0.8);font-size:28px;cursor:pointer;line-height:1;padding:0;text-shadow:0 1px 6px rgba(0,0,0,0.8);">›</button>
+    </div>
+    <div id="cabinLuxDots" style="display:flex;gap:6px;margin-top:16px;"></div>
+  </div>
+</div>
+
+
+<script>
+// ── Slideshow ──
+function startStayBg() {
+  const slides = Array.from(document.getElementById('stayBgSlides').querySelectorAll('.stay-slide'));
+  if (!slides.length) return;
+  let current = 0;
+  slides[current].style.opacity = '1';
+  setInterval(() => {
+    slides[current].style.opacity = '0';
+    current = (current + 1) % slides.length;
+    slides[current].style.opacity = '1';
+  }, 4000);
+}
+
+// ── Cabin 4 photo modal ──
+var cabin4Photos = [
+  '1-cama-1.jpeg',
+  '1-cama-2.jpeg',
+  '1-cama-3.jpeg',
+  '1-cama-4.jpeg',
+  'dos-camas-1.jpeg',
+  '2-beds.jpeg',
+  '2-beds-2.jpeg',
+  '2-beds4.jpeg'
+];
+var cabin4Index = 0;
+
+function openCabin4Modal() {
+  const modal = document.getElementById('cabin4Modal');
+  modal.style.opacity = '1'; modal.style.pointerEvents = 'all';
+  cabin4Index = 0;
+  cabin4Render();
+  cabin4InitSwipe();
+}
+var cabin4TouchStartX = 0;
+function cabin4InitSwipe() {
+  const track = document.getElementById('cabin4Track');
+  track.ontouchstart = function(e) { cabin4TouchStartX = e.touches[0].clientX; };
+  track.ontouchend = function(e) {
+    const dx = e.changedTouches[0].clientX - cabin4TouchStartX;
+    if (Math.abs(dx) > 40) cabin4Slide(dx < 0 ? 1 : -1);
+  };
+}
+function closeCabin4Modal() {
+  const modal = document.getElementById('cabin4Modal');
+  modal.style.opacity = '0'; modal.style.pointerEvents = 'none';
+}
+function cabin4Render() {
+  const img = document.getElementById('cabin4Img');
+  const placeholder = document.getElementById('cabin4Placeholder');
+  const dots = document.getElementById('cabin4Dots');
+  const prev = document.getElementById('cabin4Prev');
+  const next = document.getElementById('cabin4Next');
+  if (cabin4Photos.length === 0) {
+    img.style.display = 'none'; placeholder.style.display = 'block';
+    prev.style.display = 'none'; next.style.display = 'none';
+    dots.innerHTML = ''; return;
+  }
+  img.src = cabin4Photos[cabin4Index];
+  img.style.display = 'block'; placeholder.style.display = 'none';
+  prev.style.display = cabin4Photos.length > 1 ? 'flex' : 'none';
+  next.style.display = cabin4Photos.length > 1 ? 'flex' : 'none';
+  dots.innerHTML = cabin4Photos.map((_, i) =>
+    `<div style="width:6px;height:6px;border-radius:999px;background:${i===cabin4Index?'rgba(4,200,10,0.9)':'rgba(255,255,255,0.2)'};transition:background 0.2s;"></div>`
+  ).join('');
+}
+function cabin4Slide(dir) {
+  cabin4Index = (cabin4Index + dir + cabin4Photos.length) % cabin4Photos.length;
+  cabin4Render();
+}
+
+// ── Cabin 2 photo modal ──
+var cabin2Photos = [];
+var cabin2Index = 0;
+function openCabin2Modal() {
+  const modal = document.getElementById('cabin2Modal');
+  modal.style.opacity = '1'; modal.style.pointerEvents = 'all';
+  cabin2Index = 0;
+  cabin2Render();
+  cabin2InitSwipe();
+}
+function closeCabin2Modal() {
+  const modal = document.getElementById('cabin2Modal');
+  modal.style.opacity = '0'; modal.style.pointerEvents = 'none';
+}
+function cabin2Render() {
+  const img = document.getElementById('cabin2Img');
+  const placeholder = document.getElementById('cabin2Placeholder');
+  const dots = document.getElementById('cabin2Dots');
+  const prev = document.getElementById('cabin2Prev');
+  const next = document.getElementById('cabin2Next');
+  if (cabin2Photos.length === 0) {
+    img.style.display = 'none'; placeholder.style.display = 'block';
+    prev.style.display = 'none'; next.style.display = 'none';
+    dots.innerHTML = ''; return;
+  }
+  img.src = cabin2Photos[cabin2Index];
+  img.style.display = 'block'; placeholder.style.display = 'none';
+  prev.style.display = cabin2Photos.length > 1 ? 'flex' : 'none';
+  next.style.display = cabin2Photos.length > 1 ? 'flex' : 'none';
+  dots.innerHTML = cabin2Photos.map((_, i) =>
+    `<div style="width:6px;height:6px;border-radius:999px;background:${i===cabin2Index?'rgba(4,200,10,0.9)':'rgba(255,255,255,0.2)'};transition:background 0.2s;"></div>`
+  ).join('');
+}
+function cabin2Slide(dir) {
+  cabin2Index = (cabin2Index + dir + cabin2Photos.length) % cabin2Photos.length;
+  cabin2Render();
+}
+var cabin2TouchStartX = 0;
+function cabin2InitSwipe() {
+  const track = document.getElementById('cabin2Track');
+  track.ontouchstart = function(e) { cabin2TouchStartX = e.touches[0].clientX; };
+  track.ontouchend = function(e) {
+    const dx = e.changedTouches[0].clientX - cabin2TouchStartX;
+    if (Math.abs(dx) > 40) cabin2Slide(dx < 0 ? 1 : -1);
+  };
+}
+
+// ── Cabin Luxury photo modal ──
+var cabinLuxPhotos = [
+  'luxury1.jpeg',
+  'luxury2.jpeg',
+  'luxury3.jpeg',
+  'luxury4.jpeg',
+  'luxury5.jpeg',
+  'jacuzzi-premiere.jpeg'
+];
+var cabinLuxIndex = 0;
+function openCabinLuxModal() {
+  const modal = document.getElementById('cabinLuxModal');
+  modal.style.opacity = '1'; modal.style.pointerEvents = 'all';
+  cabinLuxIndex = 0;
+  cabinLuxRender();
+  cabinLuxInitSwipe();
+}
+function closeCabinLuxModal() {
+  const modal = document.getElementById('cabinLuxModal');
+  modal.style.opacity = '0'; modal.style.pointerEvents = 'none';
+}
+function cabinLuxRender() {
+  const img = document.getElementById('cabinLuxImg');
+  const placeholder = document.getElementById('cabinLuxPlaceholder');
+  const dots = document.getElementById('cabinLuxDots');
+  const prev = document.getElementById('cabinLuxPrev');
+  const next = document.getElementById('cabinLuxNext');
+  if (cabinLuxPhotos.length === 0) {
+    img.style.display = 'none'; placeholder.style.display = 'block';
+    prev.style.display = 'none'; next.style.display = 'none';
+    dots.innerHTML = ''; return;
+  }
+  img.src = cabinLuxPhotos[cabinLuxIndex];
+  img.style.display = 'block'; placeholder.style.display = 'none';
+  prev.style.display = cabinLuxPhotos.length > 1 ? 'flex' : 'none';
+  next.style.display = cabinLuxPhotos.length > 1 ? 'flex' : 'none';
+  dots.innerHTML = cabinLuxPhotos.map((_, i) =>
+    `<div style="width:6px;height:6px;border-radius:999px;background:${i===cabinLuxIndex?'rgba(4,200,10,0.9)':'rgba(255,255,255,0.2)'};transition:background 0.2s;"></div>`
+  ).join('');
+}
+function cabinLuxSlide(dir) {
+  cabinLuxIndex = (cabinLuxIndex + dir + cabinLuxPhotos.length) % cabinLuxPhotos.length;
+  cabinLuxRender();
+}
+var cabinLuxTouchStartX = 0;
+function cabinLuxInitSwipe() {
+  const track = document.getElementById('cabinLuxTrack');
+  track.ontouchstart = function(e) { cabinLuxTouchStartX = e.touches[0].clientX; };
+  track.ontouchend = function(e) {
+    const dx = e.changedTouches[0].clientX - cabinLuxTouchStartX;
+    if (Math.abs(dx) > 40) cabinLuxSlide(dx < 0 ? 1 : -1);
+  };
+}
+
+// ── Bilingual i18n (Stay-relevant keys only) ──
+const translations = {
+  en: {
+    'back-btn': '← Back',
+    'stay-title': 'Stay',
+    'stay-subtitle': 'Cabin Rentals · Guatapé',
+    'stay-about-label': 'About',
+    'stay-about': "We've reserved all the cabins in the resort for Kon.X.ion attendees. Wake up in the mountains of Guatapé, steps from the party.",
+    'stay-included-label': "What's Included",
+    'stay-included-note': '* * * With cabin rental * * *',
+    'stay-included-body': '· Welcome drink upon arrival<br>· Free breakfast<br>· Free padel class at <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 people)<br>· WiFi<br>· Room service<br>· Hot tub<br>· Kayak',
+    'stay-details-label': 'Cabin Details',
+    'cabin-lux-label': 'Luxury · 4 Cabins',
+    'cabin-lux-beds': '1 California King or 2 Double Beds',
+    'cabin-lux-sleeps': 'Sleeps 2 or 4',
+    'cabin-prem-label': 'Premium · 5 Cabins',
+    'cabin-prem-beds': '2 Double Beds',
+    'cabin-prem-sleeps': 'Sleeps 4',
+    'view-label': 'View ›',
+    'stay-inclusive': 'All-inclusive · Cabin + Party Entry',
+    'stay-avail': '⚡ Only 9 Cabins Available',
+    'cabin4-label': '4-Person Cabin',
+    'cabin4-sub': '2 Double Beds',
+    'stay-reserve-label': 'Reserve a Cabin',
+    'stay-reserve-body': 'Each cabin is all-inclusive — your stay and party entry in one. Spots are limited.',
+    'stay-cta': 'Book',
+    'cb-sub-stay': 'All-inclusive · Admission + Stay · July 18',
+    'cb-select-prompt': 'Select cabin type',
+    'cb-opt-lux': 'Luxury Cabin — $419 (sleeps 2–4)',
+    'cb-opt-prem': 'Premium Cabin — $249 (sleeps 4)',
+    'modal-cancel': 'Cancel'
+  },
+  es: {
+    'back-btn': '← Volver',
+    'stay-title': 'Hospedaje',
+    'stay-subtitle': 'Cabañas · Guatapé',
+    'stay-about-label': 'Acerca de',
+    'stay-about': 'Hemos reservado todas las cabañas del resort para los asistentes de Kon.X.ion. Despierta en las montañas de Guatapé, a pasos del party.',
+    'stay-included-label': 'Qué Incluye',
+    'stay-included-note': '* * * Con renta de cabaña * * *',
+    'stay-included-body': '· Bebida de bienvenida a la llegada<br>· Desayuno gratis<br>· Clase gratuita de pádel en <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 personas)<br>· WiFi<br>· Servicio a la habitación<br>· Jacuzzi<br>· Kayak',
+    'stay-details-label': 'Detalles de la Cabaña',
+    'cabin-lux-label': 'Lujo · 4 Cabañas',
+    'cabin-lux-beds': '1 California King o 2 Camas Dobles',
+    'cabin-lux-sleeps': '2 o 4 personas',
+    'cabin-prem-label': 'Premium · 5 Cabañas',
+    'cabin-prem-beds': '2 Camas Dobles',
+    'cabin-prem-sleeps': '4 personas',
+    'view-label': 'Ver ›',
+    'stay-inclusive': 'Todo incluido · Cabaña + Entrada al party',
+    'stay-avail': '⚡ Solo 9 Cabañas Disponibles',
+    'cabin4-label': 'Cabaña para 4',
+    'cabin4-sub': '2 Camas Dobles',
+    'stay-reserve-label': 'Reserva una Cabaña',
+    'stay-reserve-body': 'Cada cabaña es todo incluido — tu estadía y entrada al party en uno. Los cupos son limitados.',
+    'stay-cta': 'Reservar',
+    'cb-sub-stay': 'Todo incluido · Admisión + Estadía · 18 de julio',
+    'cb-select-prompt': 'Selecciona tipo de cabaña',
+    'cb-opt-lux': 'Cabaña Lujo — $419 (2–4 personas)',
+    'cb-opt-prem': 'Cabaña Premium — $249 (4 personas)',
+    'modal-cancel': 'Cancelar'
+  }
+};
+
+let currentLang = 'en';
+
+function applyLanguage(lang) {
+  currentLang = lang;
+  const t = translations[lang];
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.dataset.i18n;
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+  const isEN = lang === 'en';
+  document.querySelectorAll('.lang-opt-en').forEach(function(el) {
+    el.style.color = isEN ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.35)';
+  });
+  document.querySelectorAll('.lang-opt-es').forEach(function(el) {
+    el.style.color = isEN ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.9)';
+  });
+}
+
+// ── Stripe cabin booking ──
+const STRIPE_PK = 'pk_live_51TPA19R3l2fbjjXGWciQiRYRrmvY40TGeGm8dQpSXxIPX0WpI0rCBT1phW7eJ3y22QBYRrw1f38lfNJbyPaDI5mS00y606AFaX';
+const CABIN_CHECKOUT_ENDPOINT = '/api/create-cabin-checkout';
+
+function openBookingModal() {
+  const m = document.getElementById('bookingModal');
+  m.style.display = 'flex';
+  document.getElementById('bookName').value = '';
+  document.getElementById('bookType').value = '';
+  document.getElementById('bookModalErr').style.display = 'none';
+}
+
+function closeBookingModal() {
+  document.getElementById('bookingModal').style.display = 'none';
+}
+
+async function submitCabinBooking() {
+  const name = document.getElementById('bookName').value.trim();
+  const cabinType = document.getElementById('bookType').value;
+  const errEl = document.getElementById('bookModalErr');
+  const btn = document.getElementById('bookBtn');
+
+  errEl.style.display = 'none';
+  if (!name) { errEl.textContent = 'Please enter your name.'; errEl.style.display = 'block'; return; }
+  if (!cabinType) { errEl.textContent = 'Please select a cabin type.'; errEl.style.display = 'block'; return; }
+
+  btn.disabled = true;
+  btn.textContent = '...';
+
+  try {
+    const res = await fetch(CABIN_CHECKOUT_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, cabinType }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Error');
+
+    closeBookingModal();
+    openStripeModal(data.clientSecret);
+  } catch (e) {
+    errEl.textContent = e.message || 'Something went wrong. Please try again.';
+    errEl.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = currentLang === 'es' ? 'Reservar' : 'Book';
+  }
+}
+
+function openStripeModal(clientSecret) {
+  const modal = document.getElementById('stripeModal');
+  const mount = document.getElementById('stripeMount');
+  mount.innerHTML = '';
+  modal.style.display = 'block';
+
+  const stripe = Stripe(STRIPE_PK);
+  const checkout = stripe.initEmbeddedCheckout({ clientSecret });
+  checkout.then(function(c) {
+    c.mount('#stripeMount');
+    modal._checkout = c;
+  });
+}
+
+function closeStripeModal() {
+  const modal = document.getElementById('stripeModal');
+  if (modal._checkout) { modal._checkout.destroy(); modal._checkout = null; }
+  document.getElementById('stripeMount').innerHTML = '';
+  modal.style.display = 'none';
+}
+
+// ── Init ──
+document.addEventListener('DOMContentLoaded', function() {
+  startStayBg();
+});
+</script>
+</body>
+</html>
