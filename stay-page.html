@@ -60,33 +60,6 @@
     padding: 6px 0;
   }
 
-  /* ── TOOLTIP ── */
-  .med-tip {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 16px; height: 16px; border-radius: 50%;
-    border: 1px solid rgba(4,200,10,0.55);
-    color: rgba(4,220,10,1); text-shadow: 0 0 6px rgba(4,255,10,0.9),0 0 14px rgba(4,220,10,0.7); font-size: 10px;
-    font-family: 'DM Sans', sans-serif; font-style: normal;
-    cursor: default; vertical-align: middle; position: relative;
-    line-height: 1; font-weight: 400; letter-spacing: 0;
-  }
-  .med-tip::before {
-    content: attr(data-tip);
-    position: absolute; bottom: calc(100% + 8px); left: 50%;
-    transform: translateX(-50%);
-    background: rgba(10,26,12,0.97); border: 0.5px solid rgba(4,200,10,0.3);
-    color: rgba(255,255,255,0.85); font-size: 12px; line-height: 1.5;
-    padding: 10px 14px; border-radius: 10px;
-    width: 230px; white-space: normal; text-align: left;
-    font-family: 'Cormorant Garamond', serif; font-weight: 300;
-    letter-spacing: 0.02em;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.2s ease;
-    z-index: 999;
-  }
-  .med-tip:hover::before,
-  .med-tip:focus::before,
-  .med-tip.tip-open::before { opacity: 1; }
 </style>
 </head>
 <body>
@@ -178,7 +151,7 @@
         <span data-i18n="stay-included-label">What's Included</span>
         <span data-i18n="stay-included-note" style="font-size:8px;letter-spacing:0.15em;color:rgba(4,220,10,1);text-transform:uppercase;text-shadow:0 0 4px rgba(4,220,10,1),0 0 10px rgba(4,220,10,1),0 0 24px rgba(4,220,10,0.9),0 0 48px rgba(4,220,10,0.6);">* * * With cabin rental * * *</span>
       </div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,1);line-height:1.75;" data-i18n="stay-included-body">· Welcome drink upon arrival<br>· Free breakfast<br>· Electric meditation class (1.5 hours) <span class="med-tip" data-tip="A guided breathwork and sound healing session using binaural frequencies. Leaves you energized and mentally clear." tabindex="0" ontouchstart="this.classList.toggle('tip-open')">i</span><br>· Free padel class at <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 people)<br>· WiFi<br>· Room service<br>· Hot tub<br>· Kayak</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,1);line-height:1.75;" data-i18n="stay-included-body">· Welcome drink upon arrival<br>· Free breakfast<br>· Free padel class at <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 people)<br>· WiFi<br>· Room service<br>· Hot tub<br>· Kayak</div>
     </div>
 
     <!-- ABOUT -->
@@ -463,7 +436,7 @@ const translations = {
     'stay-about': "We've reserved all the cabins in the resort for Kon.X.ion attendees. Wake up in the mountains of Guatapé, steps from the party.",
     'stay-included-label': "What's Included",
     'stay-included-note': '* * * With cabin rental * * *',
-    'stay-included-body': '· Welcome drink upon arrival<br>· Free breakfast<br>· Electric meditation class (1.5 hours) <span class="med-tip" data-tip="A guided breathwork and sound healing session using binaural frequencies. Leaves you energized and mentally clear." tabindex="0" ontouchstart="this.classList.toggle(\'tip-open\')">i</span><br>· Free padel class at <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 people)<br>· WiFi<br>· Room service<br>· Hot tub<br>· Kayak',
+    'stay-included-body': '· Welcome drink upon arrival<br>· Free breakfast<br>· Free padel class at <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 people)<br>· WiFi<br>· Room service<br>· Hot tub<br>· Kayak',
     'stay-details-label': 'Cabin Details',
     'cabin-lux-label': 'Luxury · 4 Cabins',
     'cabin-lux-beds': '1 California King or 2 Double Beds',
@@ -493,7 +466,7 @@ const translations = {
     'stay-about': 'Hemos reservado todas las cabañas del resort para los asistentes de Kon.X.ion. Despierta en las montañas de Guatapé, a pasos del party.',
     'stay-included-label': 'Qué Incluye',
     'stay-included-note': '* * * Con renta de cabaña * * *',
-    'stay-included-body': '· Bebida de bienvenida a la llegada<br>· Desayuno gratis<br>· Clase de meditación eléctrica (1.5 horas) <span class="med-tip" data-tip="Una sesión guiada de respiración y sanación sonora con frecuencias binaurales. Te deja con energía y mente clara." tabindex="0" ontouchstart="this.classList.toggle(\'tip-open\')">i</span><br>· Clase gratuita de pádel en <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 personas)<br>· WiFi<br>· Servicio a la habitación<br>· Jacuzzi<br>· Kayak',
+    'stay-included-body': '· Bebida de bienvenida a la llegada<br>· Desayuno gratis<br>· Clase gratuita de pádel en <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 personas)<br>· WiFi<br>· Servicio a la habitación<br>· Jacuzzi<br>· Kayak',
     'stay-details-label': 'Detalles de la Cabaña',
     'cabin-lux-label': 'Lujo · 4 Cabañas',
     'cabin-lux-beds': '1 California King o 2 Camas Dobles',

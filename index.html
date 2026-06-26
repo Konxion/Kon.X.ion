@@ -1230,26 +1230,6 @@
     color: rgba(255,255,255,0.4); letter-spacing: 0.06em;
   }
 
-  /* Electric meditation tooltip */
-  .med-tip {
-    display:inline-flex;align-items:center;justify-content:center;
-    width:15px;height:15px;border-radius:50%;
-    border:1px solid rgba(4,220,10,0.65);color:rgba(4,220,10,0.9);
-    font-family:'DM Sans',sans-serif;font-size:9px;font-style:normal;font-weight:500;
-    cursor:pointer;margin-left:5px;vertical-align:middle;position:relative;
-    flex-shrink:0;line-height:1;user-select:none;
-  }
-  .med-tip::before {
-    content: attr(data-tip);
-    position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);
-    width:220px;padding:12px 14px;
-    background:rgba(3,10,4,0.97);border:0.5px solid rgba(4,200,10,0.4);border-radius:14px;
-    font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.02em;
-    color:rgba(255,255,255,0.85);line-height:1.55;white-space:normal;font-weight:300;
-    opacity:0;pointer-events:none;transition:opacity 0.18s ease;z-index:200;text-transform:none;
-  }
-  .med-tip:hover::before,.med-tip:focus::before,.med-tip.tip-open::before { opacity:1; }
-
   /* Admission card */
   .admission-card {
     background: var(--card-bg); border: var(--card-border);
@@ -1954,7 +1934,7 @@ document.addEventListener('gesturestart', function(e) {
       <div style="height:0.5px;background:rgba(4,200,10,0.18);margin-bottom:18px;"></div>
       <!-- Activities -->
       <div style="font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(4,200,10,0.9);margin-bottom:8px;" data-i18n="stay-group-activities">Activities</div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,0.95);line-height:1.75;margin-bottom:20px;text-shadow:0 1px 10px rgba(0,0,0,0.85);" data-i18n="stay-activities-body">· Electric meditation class (1.5 hrs) <span class="med-tip" data-tip="A guided breathwork and sound healing session using binaural frequencies. Leaves you energized and mentally clear." tabindex="0" ontouchstart="this.classList.toggle('tip-open')">i</span><br>· Free padel class at <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 people)<br>· Kayak</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;color:rgba(255,255,255,0.95);line-height:1.75;margin-bottom:20px;text-shadow:0 1px 10px rgba(0,0,0,0.85);" data-i18n="stay-activities-body">· Free padel class at <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 people)<br>· Kayak</div>
       <div style="height:0.5px;background:rgba(4,200,10,0.18);margin-bottom:18px;"></div>
       <!-- Amenities -->
       <div style="font-family:'Josefin Sans',sans-serif;font-size:10px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(4,200,10,0.9);margin-bottom:8px;" data-i18n="stay-group-amenities">Amenities</div>
@@ -4931,7 +4911,7 @@ const translations = {
     'stay-about-label':'About','stay-about':"We've reserved all the cabins in the resort for Kon.X.ion attendees. Wake up in the mountains of Guatape, steps from the party.",
     'stay-included-label':"What's Included",'stay-included-note':'* * * With cabin rental * * *',
     'stay-group-welcome':'Welcome','stay-welcome-body':'· Welcome drink upon arrival<br>· Free breakfast',
-    'stay-group-activities':'Activities','stay-activities-body':'· Electric meditation class (1.5 hrs) <span class="med-tip" data-tip="A guided breathwork and sound healing session using binaural frequencies. Leaves you energized and mentally clear." tabindex="0" ontouchstart="this.classList.toggle(\'tip-open\')">i</span><br>· Free padel class at <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 people)<br>· Kayak',
+    'stay-group-activities':'Activities','stay-activities-body':'· Free padel class at <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 people)<br>· Kayak',
     'stay-group-amenities':'Amenities','stay-amenities-body':'· Hot tub<br>· Room service<br>· WiFi',
     'stay-details-label':'Cabin Details','stay-cabin-lux':'· 4 luxury cabins — sleeps 2 or 4<br><span style="padding-left:0.9em;">1 California King bed or 2 double beds</span>','stay-cabin4':'· 5 premium cabins — sleeps 4<br><span style="padding-left:0.9em;">2 double beds</span>','stay-avail-count':'6 of 9 cabins remaining','stay-lux-avail':'3 of 4 remaining','stay-prem-avail':'3 of 5 remaining','cabin4-label':'4-Person Cabin','cabin4-sub':'2 Double Beds',
     'stay-price-lux':'$419 <span style="color:rgba(255,255,255,0.6);">·</span> COP 1,500,000',
@@ -4987,7 +4967,7 @@ const translations = {
     'stay-about-label':'Acerca de','stay-about':'Hemos reservado todas las cabañas del resort para los asistentes de Kon.X.ion. Despierta en las montañas de Guatapé, a pasos del party.',
     'stay-included-label':'Qué Incluye','stay-included-note':'* * * Con renta de cabaña * * *',
     'stay-group-welcome':'Bienvenida','stay-welcome-body':'· Bebida de bienvenida a la llegada<br>· Desayuno gratis',
-    'stay-group-activities':'Actividades','stay-activities-body':'· Clase de electro meditación (1.5 horas) <span class="med-tip" data-tip="Sesión guiada de respiración y curación sonora con frecuencias binaurales. Te dejará lleno de energía y claridad mental." tabindex="0" ontouchstart="this.classList.toggle(\'tip-open\')">i</span><br>· Clase gratuita de pádel en <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 personas)<br>· Kayak',
+    'stay-group-activities':'Actividades','stay-activities-body':'· Clase gratuita de pádel en <a href="https://www.instagram.com/lamayoriapadelclub/" target="_blank" style="color:inherit;text-decoration:underline;text-underline-offset:3px;">@lamayoriapadelclub</a> (2 personas)<br>· Kayak',
     'stay-group-amenities':'Amenidades','stay-amenities-body':'· Jacuzzi<br>· Servicio a la habitación<br>· WiFi',
     'stay-details-label':'Detalles de la Cabaña','stay-cabin-lux':'· 4 cabañas de lujo — 2 o 4 personas<br><span style="padding-left:0.9em;">1 California king o 2 camas dobles</span>','stay-cabin4':'· 5 cabañas premium — 4 personas<br><span style="padding-left:0.9em;">2 camas dobles</span>','stay-avail-count':'6 de 9 cabañas disponibles','stay-lux-avail':'3 de 4 disponibles','stay-prem-avail':'3 de 5 disponibles','cabin4-label':'Cabaña para 4','cabin4-sub':'2 Camas Dobles',
     'stay-price-lux':'COP 1,500,000 <span style="color:rgba(255,255,255,0.6);">·</span> $419',
